@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager _Instance;
-    public Text _Text_Depth;
+    [SerializeField] private Text _Text_Depth;
     [HideInInspector] public bool _InGame;
     [SerializeField] private Joystick _Joystick;
     public bool _EnableJoystick;
@@ -62,17 +62,18 @@ public class GameManager : MonoBehaviour
             int _index = 14;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
-            Timeline._Instance._TransitionsFadeIn.Play();
+            Timeline._Instance._FadeIn.Play();
             // Command
             // Game End
             _ZonePoints[_index] = true;
         }
+        // 生態域分界
         if (_Result > 10900)
         {
             int _index = 13;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
-            Timeline._Instance._TransitionsFadeIn.Play();
+            Timeline._Instance._FadeIn.Play();
             // Command
             // Boss End
             _ZonePoints[_index] = true;
@@ -94,12 +95,13 @@ public class GameManager : MonoBehaviour
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             _ZonePoints[_index] = true;
         }
+        // 生態域分界
         if (_Result > 8000)
         {
             int _index = 10;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
-            Timeline._Instance._TransitionsFadeIn.Play();
+            Timeline._Instance._FadeIn.Play();
             // Command
             // Disable witch.
             _ZonePoints[_index] = true;
@@ -139,12 +141,13 @@ public class GameManager : MonoBehaviour
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             _ZonePoints[_index] = true;
         }
+        // 生態域分界
         if (_Result > 4000)
         {
             int _index = 5;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
-            Timeline._Instance._TransitionsFadeIn.Play();
+            Timeline._Instance._FadeIn.Play();
             _ZonePoints[_index] = true;
         }
         if (_Result > 2900)
@@ -191,26 +194,40 @@ public class GameManager : MonoBehaviour
             if (_ZonePoints[_index]) return;
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             EnemyManager._Instance._BreakSpawnNpcLoop = true;
-            EnemyManager._Instance._MaxCount = 20;
             StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_00_Pool, true, EnemyManager.EnemyType.Null, true, 0.1f, 1, 0.0f));
+            StartCoroutine(SuppliesManager._Instance.CallSupplies(1.0f));
             _ZonePoints[_index] = true;
         }
     }
 
+    public void IdlePlay()
+    {
+        Timeline._Instance._Idle.Play();
+        MenuSystem._Instance.StateChange(MenuSystem.Status.MainMenu);
+    }
     public void GameStartInitialize()
     {
         MenuSystem._Instance.StateChange(MenuSystem.Status.InGame);
-        Player._Instance._Health = 100;
         _InGame = true;
     }
     public void OnMainMenu()
     {
         Timeline._Instance._Idle.Play();
-        MenuSystem._Instance.StateChange(MenuSystem.Status.None);
+        MenuSystem._Instance.StateChange(MenuSystem.Status.MainMenu);
     }
     public void UpdateZone()
     {
-        Timeline._Instance._TransitionsFadeOut.Play();
+        // Command
+        if (_Result > 4000)
+        {
+            EnemyManager._Instance._BreakSpawnNpcLoop = true;
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_00_Pool, true, EnemyManager.EnemyType.Null, true, 0.1f, 1, 0.0f));
+        }
+    }
+    public void ClearAllNPCs()
+    {
+        EnemyManager._Instance._BreakSpawnNpcLoop = true;
+        EnemyAI._RecoveryAll = true;
     }
     public void ResumeGame()
     {

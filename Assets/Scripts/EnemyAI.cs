@@ -31,6 +31,7 @@ public class EnemyAI : MonoBehaviour
     private Vector2 _OutOfDistance_Rotation_Offset;
     private Vector2 _TranslateOffset;
     private Transform _Player;
+    public static Transform _Bait;
     private Vector3 _CurrentPlayerPosition;
     private float _DistanceUpdate;
     private float _TargetLockTime;
@@ -38,10 +39,16 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private bool _Visible;
     [SerializeField] private float _TimeOut;
     private float _Visible_Timer;
+    public static bool _RecoveryAll;
 
     private void Start()
     {
         _Visible = false;
+    }
+
+    private void Update()
+    {
+        if (_RecoveryAll) EnemyManager._Instance.Recovery(_Pool, gameObject);
     }
 
     private void FixedUpdate()
@@ -105,13 +112,12 @@ public class EnemyAI : MonoBehaviour
         {
             transform.localScale = _Scale;
             _Speed = Random.Range(1.5f, 3.5f);
-            if (_Player == null)
+            if (_Bait != null) transform.right = (_Bait.position - transform.position).normalized;
+            else
             {
-                _Player = GameObject.FindGameObjectWithTag("Player").transform;
-                _CurrentPlayerPosition = _Player.position;
+                if (_Player == null) _Player = GameObject.FindGameObjectWithTag("Player").transform;
+                transform.right = (_Player.position - transform.position).normalized;
             }
-            else _CurrentPlayerPosition = _Player.position;
-            transform.right = (_Player.position - transform.position).normalized;
             float _delta(float _value)
             {
                 float _result = Mathf.DeltaAngle(0, _value);

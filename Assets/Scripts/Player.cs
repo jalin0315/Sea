@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,60 +7,113 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     public static Player _Instance;
+    [SerializeField] private Animator _Animator;
     [SerializeField] private SpriteRenderer _SpriteRenderer;
-    public int _Health;
-    public Text _Text_Health;
+    [SerializeField] private Slider _Slider_MaxHealth;
+    [SerializeField] private Slider _Slider_Health;
+    [SerializeField] private Slider _Slider_Power;
+    [SerializeField] private Image _Image_Health;
+    [SerializeField] private Color _HighHealthColor;
+    [SerializeField] private Color _LowHealthColor;
     private bool _Invincible;
-    [SerializeField] private float _InvincibleTime;
-    private float _I_Timer;
-    [SerializeField] private bool _ChangeColor;
-    private bool _Break;
+    [HideInInspector] public int _SkillOptions;
+    [SerializeField] private List<float> _List_SkillPay = new List<float>();
+    public List<float> _List_SkillTime = new List<float>();
+    private bool _EnableSkill;
 
     private void Awake() => _Instance = this;
 
-    private void Update()
+    private void Start()
     {
-        if (GameManager._Instance._InGame) _Text_Health.text = "Health: " + _Health.ToString();
-        Injured();
+        _Slider_MaxHealth.value = 100.0f;
+        _Slider_Health.value = _Slider_MaxHealth.value;
+        _Slider_Power.value = _Slider_Power.maxValue;
     }
 
-    private void Injured()
+    private void Update()
     {
-        if (!_Invincible) return;
-        _I_Timer -= Time.deltaTime;
-        if(_ChangeColor) _SpriteRenderer.color = Color.Lerp(_SpriteRenderer.color, Color.red, Time.deltaTime * 5.0f);
-        else _SpriteRenderer.color = Color.Lerp(_SpriteRenderer.color, Color.white, Time.deltaTime * 5.0f);
-        if (_I_Timer < 0)
+        if (!GameManager._Instance._InGame) return;
+        SkillUpdate();
+    }
+
+    public void InvincibleEnable() => _Invincible = true;
+    public void InvincibleDisable() => _Invincible = false;
+
+    private void HealthBarColorChange()
+    {
+        Color _color_lerp = Color.Lerp(_LowHealthColor, _HighHealthColor, _Slider_Health.value / _Slider_MaxHealth.value);
+        _Image_Health.color = _color_lerp;
+    }
+
+    public void SkillTrigger()
+    {
+        _EnableSkill = true;
+        _Slider_Power.value -= _List_SkillPay[_SkillOptions];
+        switch (_SkillOptions)
         {
-            _SpriteRenderer.color = Color.white;
-            _I_Timer = _InvincibleTime;
-            _Break = true;
-            _Invincible = false;
+            case 0:
+                break;
+            case 1:
+                BaitManager._Instance.Bait();
+                break;
+            case 2:
+                break;
+            default:
+                break;
         }
+        StartCoroutine(Delay(_List_SkillTime[_SkillOptions]));
+        IEnumerator Delay(float _time)
+        {
+            yield return new WaitForSeconds(_time);
+            _EnableSkill = false;
+        }
+    }
+    public void SkillUpdate()
+    {
+        if (_EnableSkill) MenuSystem._Instance._Button_InGameSkill.interactable = false;
+        else
+        {
+            if (_Slider_Power.value < _List_SkillPay[_SkillOptions]) MenuSystem._Instance._Button_InGameSkill.interactable = false;
+            else MenuSystem._Instance._Button_InGameSkill.interactable = true;
+        }
+        switch (_SkillOptions)
+        {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void Supplies(string _tag)
+    {
+        if (_tag == "SuppliesRed")
+        {
+            if (_Slider_Health.value < _Slider_MaxHealth.value)
+            {
+                _Slider_Health.value = _Slider_MaxHealth.value;
+                //if (_Slider_Health.value >= _Slider_MaxHealth.value) _Slider_Health.value = _Slider_MaxHealth.value;
+                HealthBarColorChange();
+            }
+            return;
+        }
+        if (_tag == "SuppliesYellow") _Slider_Power.value = _Slider_Power.maxValue;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!_Invincible)
+        if (!GameManager._Instance._InGame) return;
+        if (_Invincible) return;
+        if (collision.tag == "Enemy")
         {
-            if (collision.tag == "Enemy")
-            {
-                _Health -= 1;
-                StartCoroutine(Test(0.2f));
-                IEnumerator Test(float _time)
-                {
-                    _Break = false;
-                    while (true)
-                    {
-                        if (_Break) break;
-                        _ChangeColor = true;
-                        yield return new WaitForSeconds(_time);
-                        _ChangeColor = false;
-                        yield return new WaitForSeconds(_time);
-                    }
-                }
-                _Invincible = true;
-            }
+            _Slider_Health.value -= 12.5f;
+            if (_Slider_Health.value <= 0.0f) Debug.Log("You are dead.");
+            HealthBarColorChange();
+            _Animator.SetTrigger("Injured");
         }
     }
 }

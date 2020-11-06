@@ -30,7 +30,6 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private GameObject _Prefab_Fish_00;
     [SerializeField] private GameObject _Prefab_Fish_01;
     public Queue<GameObject> _Fish_00_Pool = new Queue<GameObject>();
-    public Queue<GameObject> _Fish_01_Pool = new Queue<GameObject>();
     private int _CurrentCount;
     public int _MaxCount;
     [SerializeField] private float _SpawnOffset;
@@ -77,10 +76,10 @@ public class EnemyManager : MonoBehaviour
         if (_queue.Count > 0)
         {
             GameObject _go = _queue.Dequeue();
-            EnemyAI _enemy_ai = _go.GetComponent<EnemyAI>();
             _go.transform.position = _position;
             _go.transform.rotation = _rotation;
             _go.SetActive(true);
+            EnemyAI _enemy_ai = _go.GetComponent<EnemyAI>();
             _enemy_ai._Pool = _queue;
             _enemy_ai.StateChange(_status);
             _CurrentCount++;
@@ -121,6 +120,7 @@ public class EnemyManager : MonoBehaviour
 
     public IEnumerator SpawnNpc(Queue<GameObject> _pool, bool _random_status, EnemyType _enemy_type, bool _loop, float _loop_time, int _count, float _time)
     {
+        EnemyAI._RecoveryAll = false;
         _BreakSpawnNpcLoop = false;
         while (true)
         {
