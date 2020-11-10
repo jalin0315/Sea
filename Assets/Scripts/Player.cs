@@ -120,8 +120,11 @@ public class Player : MonoBehaviour
     }
     public void DeathDisable()
     {
+        Time.timeScale = 1.0f;
         GameManager._Instance._InGame = true;
         MenuSystem._Instance.StateChange(MenuSystem.Status.InGame);
+        InitializeStart();
+        _Animator.SetBool("Death", false);
     }
     public void DeathMenu()
     {

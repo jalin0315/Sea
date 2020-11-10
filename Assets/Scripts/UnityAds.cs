@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.Advertisements;
 using UnityEngine.UI;
 
-public class Ads : MonoBehaviour, IUnityAdsListener
+public class UnityAds: MonoBehaviour, IUnityAdsListener
 {
-    public static Ads _Instance;
+    public static UnityAds _Instance;
     private readonly string _GameID_Android = "3870441";
     private readonly string _GameID_Ios = "3870440";
     private readonly string _PlacementID_Video = "video";

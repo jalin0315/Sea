@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LightRays2DControl : MonoBehaviour
 {
+    public static LightRays2DControl _Instance;
     [SerializeField] private GameObject _Object_LightRaysCanvas;
     [SerializeField] private RectTransform _RectTransform;
     [SerializeField] private Vector2 _OriginalPos;
@@ -12,11 +13,21 @@ public class LightRays2DControl : MonoBehaviour
     private float _SpeedRate;
     private float _Y;
 
-    private void Start()
+    private void Awake()
     {
-        _OriginalPos = _RectTransform.position;
+        _Instance = this;
+    }
+
+    public void InitializeStart()
+    {
+        _Object_LightRaysCanvas.SetActive(true);
         _SpeedRate = GameManager._Instance._Time / 5;
         _Y = _OriginalPos.y;
+        _RectTransform.position = new Vector3(_RectTransform.position.x, _Y, _RectTransform.position.z);
+    }
+    private void Start()
+    {
+        InitializeStart();
     }
 
     private void Update()

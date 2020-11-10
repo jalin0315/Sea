@@ -169,6 +169,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
+            GoogleAdMob._Instance.HideBanner();
             return;
         }
         if (_Status == Status.ShowSettings)
@@ -191,6 +192,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
+            GoogleAdMob._Instance.ShowBanner();
             return;
         }
         if (_Status == Status.HighScore)
@@ -213,6 +215,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
+            GoogleAdMob._Instance.ShowBanner();
             return;
         }
         if (_Status == Status.Achievement)
@@ -235,6 +238,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
+            GoogleAdMob._Instance.ShowBanner();
             return;
         }
         if (_Status == Status.IllustratedBook)
@@ -257,6 +261,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
+            GoogleAdMob._Instance.ShowBanner();
             return;
         }
         if (_Status == Status.Submarine)
@@ -279,6 +284,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
+            GoogleAdMob._Instance.ShowBanner();
             return;
         }
         if (_Status == Status.Skill)
@@ -301,6 +307,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Skill.SetActive(true);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
+            GoogleAdMob._Instance.ShowBanner();
             return;
         }
         if (_Status == Status.Animation)
@@ -323,6 +330,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
+            GoogleAdMob._Instance.HideBanner();
             return;
         }
         if (_Status == Status.InGame)
@@ -345,6 +353,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(true);
             _Object_Death.SetActive(false);
+            GoogleAdMob._Instance.HideBanner();
             return;
         }
         if (_Status == Status.ShowInGameMenu)
@@ -367,6 +376,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(true);
             _Object_Death.SetActive(false);
+            GoogleAdMob._Instance.ShowBanner();
             return;
         }
         if (_Status == Status.DeathMenu)
@@ -389,6 +399,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(true);
+            GoogleAdMob._Instance.ShowBanner();
             return;
         }
     }

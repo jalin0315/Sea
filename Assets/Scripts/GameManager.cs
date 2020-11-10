@@ -263,7 +263,7 @@ public class GameManager : MonoBehaviour
         SuppliesControl._RecoveryAll = true;
         EnemyManager._Instance._BreakSpawnNpcLoop = true;
         EnemyAI._RecoveryAll = true;
-
+        LightRays2DControl._Instance.InitializeStart();
     }
 
     private void OnApplicationQuit() => print("OnApplicationQuit()");

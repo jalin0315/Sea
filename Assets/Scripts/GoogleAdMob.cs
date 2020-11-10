@@ -7,23 +7,28 @@ using UnityEngine.UI;
 
 public class GoogleAdMob : MonoBehaviour
 {
-    [SerializeField] private Button _Button_InterstitialAd;
+    public static GoogleAdMob _Instance;
     private BannerView _BannerView;
     private InterstitialAd _InterstitialAd;
     private RewardedAd _RewardedAd;
+    [SerializeField] private Button _Button_InterstitialAd;
+    [SerializeField] private Button _Button_Resurrect;
+    private bool _Resurrect;
 
     private void Awake()
     {
+        _Instance = this;
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(initStatus => { });
-        //RequestBanner();
-        RequestInterstitial();
+        RequestBanner();
+        RequestInterstitialAd();
         RequestRewardedAd();
     }
 
     private void Start()
     {
-        _Button_InterstitialAd.onClick.AddListener(UserChoseToWatchAd);
+        _Button_InterstitialAd.onClick.AddListener(InterstitialAd);
+        _Button_Resurrect.onClick.AddListener(() => Resurrect(true));
     }
 
     private void RequestBanner()
@@ -36,7 +41,7 @@ public class GoogleAdMob : MonoBehaviour
             string adUnitId = "unexpected_platform";
 #endif
         // Create a 320x50 banner at the top of the screen.
-        _BannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Top);
+        _BannerView = new BannerView(adUnitId, AdSize.SmartBanner, AdPosition.Bottom);
 
         // Called when an ad request has successfully loaded.
         _BannerView.OnAdLoaded += HandleOnBannerAdLoaded;
@@ -53,31 +58,32 @@ public class GoogleAdMob : MonoBehaviour
         AdRequest request = new AdRequest.Builder().Build();
         // Load the banner with the request.
         _BannerView.LoadAd(request);
+        _BannerView.Hide();
     }
     private void HandleOnBannerAdLoaded(object sender, EventArgs args)
     {
-        print("HandleAdLoaded event received");
+        print("HandleBannerAdLoaded event received");
     }
     private void HandleOnBannerAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
-        print("HandleFailedToReceiveAd event received with message: "
-                            + args.Message);
+        print("HandleFailedToReceiveBannerAd event received with message: " + args.Message);
     }
     private void HandleOnBannerAdOpened(object sender, EventArgs args)
     {
-        print("HandleAdOpened event received");
+        print("HandleBannerAdOpened event received");
     }
     private void HandleOnBannerAdClosed(object sender, EventArgs args)
     {
-        print("HandleAdClosed event received");
-        _BannerView.Destroy();
+        print("HandleBannerAdClosed event received");
     }
     private void HandleOnBannerAdLeavingApplication(object sender, EventArgs args)
     {
-        print("HandleAdLeavingApplication event received");
+        print("HandleBannerAdLeavingApplication event received");
     }
+    public void ShowBanner() => _BannerView.Show();
+    public void HideBanner() => _BannerView.Hide();
 
-    private void RequestInterstitial()
+    private void RequestInterstitialAd()
     {
 #if UNITY_ANDROID
         string adUnitId = "ca-app-pub-3940256099942544/1033173712";
@@ -90,46 +96,47 @@ public class GoogleAdMob : MonoBehaviour
         _InterstitialAd = new InterstitialAd(adUnitId);
 
         // Called when an ad request has successfully loaded.
-        _InterstitialAd.OnAdLoaded += HandleOnAdLoaded;
+        _InterstitialAd.OnAdLoaded += HandleOnInterstitialAdLoaded;
         // Called when an ad request failed to load.
-        _InterstitialAd.OnAdFailedToLoad += HandleOnAdFailedToLoad;
+        _InterstitialAd.OnAdFailedToLoad += HandleOnInterstitialAdFailedToLoad;
         // Called when an ad is shown.
-        _InterstitialAd.OnAdOpening += HandleOnAdOpened;
+        _InterstitialAd.OnAdOpening += HandleOnInterstitialAdOpened;
         // Called when the ad is closed.
-        _InterstitialAd.OnAdClosed += HandleOnAdClosed;
+        _InterstitialAd.OnAdClosed += HandleOnInterstitialAdClosed;
         // Called when the ad click caused the user to leave the application.
-        _InterstitialAd.OnAdLeavingApplication += HandleOnAdLeavingApplication;
+        _InterstitialAd.OnAdLeavingApplication += HandleOnInterstitialAdLeavingApplication;
 
         // Create an empty ad request.
         AdRequest request = new AdRequest.Builder().Build();
         // Load the interstitial with the request.
         _InterstitialAd.LoadAd(request);
     }
-    private void GameOver()
+    private void InterstitialAd()
     {
         if (_InterstitialAd.IsLoaded()) _InterstitialAd.Show();
+        else if (!_InterstitialAd.IsLoaded()) RequestInterstitialAd();
     }
-    private void HandleOnAdLoaded(object sender, EventArgs args)
+    private void HandleOnInterstitialAdLoaded(object sender, EventArgs args)
     {
-        print("HandleAdLoaded event received");
+        print("HandleInterstitialAdLoaded event received");
     }
-    private void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
+    private void HandleOnInterstitialAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
-        print("HandleFailedToReceiveAd event received with message: " + args.Message);
+        print("HandleFailedToReceiveInterstitialAd event received with message: " + args.Message);
     }
-    private void HandleOnAdOpened(object sender, EventArgs args)
+    private void HandleOnInterstitialAdOpened(object sender, EventArgs args)
     {
-        print("HandleAdOpened event received");
+        print("HandleInterstitialAdOpened event received");
     }
-    private void HandleOnAdClosed(object sender, EventArgs args)
+    private void HandleOnInterstitialAdClosed(object sender, EventArgs args)
     {
-        print("HandleAdClosed event received");
+        print("HandleInterstitialAdClosed event received");
         _InterstitialAd.Destroy();
-        RequestInterstitial();
+        RequestInterstitialAd();
     }
-    private void HandleOnAdLeavingApplication(object sender, EventArgs args)
+    private void HandleOnInterstitialAdLeavingApplication(object sender, EventArgs args)
     {
-        print("HandleAdLeavingApplication event received");
+        print("HandleInterstitialAdLeavingApplication event received");
     }
 
     private void RequestRewardedAd()
@@ -162,9 +169,11 @@ public class GoogleAdMob : MonoBehaviour
         // Load the rewarded ad with the request.
         _RewardedAd.LoadAd(request);
     }
-    private void UserChoseToWatchAd()
+    private void Resurrect(bool _enable)
     {
+        _Resurrect = _enable;
         if (_RewardedAd.IsLoaded()) _RewardedAd.Show();
+        else if (!_RewardedAd.IsLoaded()) RequestRewardedAd();
     }
     private void HandleRewardedAdLoaded(object sender, EventArgs args)
     {
@@ -180,8 +189,8 @@ public class GoogleAdMob : MonoBehaviour
     }
     private void HandleRewardedAdFailedToShow(object sender, AdErrorEventArgs args)
     {
-        print("HandleRewardedAdFailedToShow event received with message: "
-                             + args.Message);
+        print("HandleRewardedAdFailedToShow event received with message: " + args.Message);
+        RequestRewardedAd();
     }
     private void HandleRewardedAdClosed(object sender, EventArgs args)
     {
@@ -193,5 +202,10 @@ public class GoogleAdMob : MonoBehaviour
         string type = args.Type;
         double amount = args.Amount;
         print("HandleRewardedAdRewarded event received for " + amount.ToString() + " " + type);
+        if (_Resurrect)
+        {
+            Player._Instance.DeathDisable();
+            _Resurrect = false;
+        }
     }
 }
