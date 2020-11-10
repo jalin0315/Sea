@@ -6,7 +6,7 @@ public class LightRays2DControl : MonoBehaviour
 {
     [SerializeField] private GameObject _Object_LightRaysCanvas;
     [SerializeField] private RectTransform _RectTransform;
-    private Vector2 _OriginalPos;
+    [SerializeField] private Vector2 _OriginalPos;
     [SerializeField] private float _UpperLimit;
     [SerializeField] private float _Speed;
     private float _SpeedRate;
@@ -16,7 +16,7 @@ public class LightRays2DControl : MonoBehaviour
     {
         _OriginalPos = _RectTransform.position;
         _SpeedRate = GameManager._Instance._Time / 5;
-        _Y = _RectTransform.position.y;
+        _Y = _OriginalPos.y;
     }
 
     private void Update()

@@ -18,7 +18,8 @@ public class MenuSystem : MonoBehaviour
         Skill,
         Animation,
         InGame,
-        ShowInGameMenu
+        ShowInGameMenu,
+        DeathMenu
     }
     public Status _Status;
     [Space(20)]
@@ -39,6 +40,7 @@ public class MenuSystem : MonoBehaviour
     [SerializeField] private GameObject _Object_Power;
     [SerializeField] private GameObject _Object_Skill;
     [SerializeField] private GameObject _Object_InGameSkill;
+    [SerializeField] private GameObject _Object_Death;
 
     [Space(20)]
     /*
@@ -65,6 +67,8 @@ public class MenuSystem : MonoBehaviour
     [SerializeField] private Button _Button_Skill01;
     [SerializeField] private Button _Button_Skill02;
     public Button _Button_InGameSkill;
+    [SerializeField] private Button _Button_Restart;
+    [SerializeField] private Button _Button_Resurrect;
     [Space(20)]
     [SerializeField] private Image _Image_Audio;
     [Space(20)]
@@ -93,6 +97,8 @@ public class MenuSystem : MonoBehaviour
         _Button_Skill01.onClick.AddListener(() => OnButtonSkillSelected(1));
         _Button_Skill02.onClick.AddListener(() => OnButtonSkillSelected(2));
         _Button_InGameSkill.onClick.AddListener(OnButtonInGameSkill);
+        _Button_Restart.onClick.AddListener(OnButtonRestart);
+        _Button_Resurrect.onClick.AddListener(OnButtonResurrect);
         _Text_Prompt.text = "Click to Start";
     }
 
@@ -103,6 +109,7 @@ public class MenuSystem : MonoBehaviour
     private void OnButtonSkillSelected(int _skill_options)
     {
         StateChange(Status.Animation);
+        MovementSystem._Instance._FloatingJoystick.Initialize();
         _Image_InGameSkill.sprite = _List_Sprite_Skill[_skill_options];
         Player._Instance._SkillOptions = _skill_options;
         Timeline._Instance._Idle.Stop();
@@ -126,14 +133,18 @@ public class MenuSystem : MonoBehaviour
         else _Image_Audio.sprite = _Sprite_Audio_UnMute;
     }
     private void OnButtonHighScore() => StateChange(Status.HighScore);
+    // 重製遊戲邏輯
     private void OnButtonReturnMainMenu()
     {
+        Time.timeScale = 1.0f;
         GameManager._Instance._InGame = false;
         Timeline._Instance._ReturnMainMenu.Play();
         StateChange(Status.Animation);
     }
     private void OnButtonAchievement() => StateChange(Status.Achievement);
     private void OnButtonIllustratedBook() => StateChange(Status.IllustratedBook);
+    private void OnButtonRestart() => OnButtonReturnMainMenu();
+    private void OnButtonResurrect() => Debug.Log("OnButtonResurrect()");
 
     public void StateChange(Status _status)
     {
@@ -157,6 +168,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Power.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            _Object_Death.SetActive(false);
             return;
         }
         if (_Status == Status.ShowSettings)
@@ -178,6 +190,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Power.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            _Object_Death.SetActive(false);
             return;
         }
         if (_Status == Status.HighScore)
@@ -199,6 +212,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Power.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            _Object_Death.SetActive(false);
             return;
         }
         if (_Status == Status.Achievement)
@@ -220,6 +234,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Power.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            _Object_Death.SetActive(false);
             return;
         }
         if (_Status == Status.IllustratedBook)
@@ -241,6 +256,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Power.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            _Object_Death.SetActive(false);
             return;
         }
         if (_Status == Status.Submarine)
@@ -262,6 +278,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Power.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            _Object_Death.SetActive(false);
             return;
         }
         if (_Status == Status.Skill)
@@ -283,6 +300,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Power.SetActive(false);
             _Object_Skill.SetActive(true);
             _Object_InGameSkill.SetActive(false);
+            _Object_Death.SetActive(false);
             return;
         }
         if (_Status == Status.Animation)
@@ -304,6 +322,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Power.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            _Object_Death.SetActive(false);
             return;
         }
         if (_Status == Status.InGame)
@@ -325,6 +344,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Power.SetActive(true);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(true);
+            _Object_Death.SetActive(false);
             return;
         }
         if (_Status == Status.ShowInGameMenu)
@@ -346,6 +366,29 @@ public class MenuSystem : MonoBehaviour
             _Object_Power.SetActive(true);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(true);
+            _Object_Death.SetActive(false);
+            return;
+        }
+        if (_Status == Status.DeathMenu)
+        {
+            _Object_Play.SetActive(false);
+            _Object_Prompt.SetActive(false);
+            _Object_Settings.SetActive(false);
+            _Object_InGameMenu.SetActive(false);
+            _Object_Fold.SetActive(false);
+            _Object_Cancel.SetActive(false);
+            _Object_Audio.SetActive(false);
+            _Object_HighScore.SetActive(false);
+            _Object_ReturnMainMenu.SetActive(false);
+            _Object_Achievement.SetActive(false);
+            _Object_IllustratedBook.SetActive(false);
+            _Object_Advertising.SetActive(false);
+            _Object_Depth.SetActive(false);
+            _Object_Health.SetActive(false);
+            _Object_Power.SetActive(false);
+            _Object_Skill.SetActive(false);
+            _Object_InGameSkill.SetActive(false);
+            _Object_Death.SetActive(true);
             return;
         }
     }

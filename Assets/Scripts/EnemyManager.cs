@@ -29,7 +29,14 @@ public class EnemyManager : MonoBehaviour
     [HideInInspector] public List<GameObject> _Waypoints = new List<GameObject>();
     [SerializeField] private GameObject _Prefab_Fish_00;
     [SerializeField] private GameObject _Prefab_Fish_01;
+    [SerializeField] private GameObject _Prefab_Fish_02;
+    [SerializeField] private GameObject _Prefab_Fish_03;
+    [SerializeField] private GameObject _Prefab_Fish_04;
     public Queue<GameObject> _Fish_00_Pool = new Queue<GameObject>();
+    public Queue<GameObject> _Fish_01_Pool = new Queue<GameObject>();
+    public Queue<GameObject> _Fish_02_Pool = new Queue<GameObject>();
+    public Queue<GameObject> _Fish_03_Pool = new Queue<GameObject>();
+    public Queue<GameObject> _Fish_04_Pool = new Queue<GameObject>();
     private int _CurrentCount;
     public int _MaxCount;
     [SerializeField] private float _SpawnOffset;
@@ -38,10 +45,34 @@ public class EnemyManager : MonoBehaviour
     private void Awake()
     {
         _Instance = this;
-        for (int _i = 0; _i < 50; _i++)
+        for (int _i = 0; _i < 10; _i++)
         {
             GameObject _go = Instantiate(_Prefab_Fish_00, Vector2.zero, Quaternion.identity, transform);
             _Fish_00_Pool.Enqueue(_go);
+            _go.SetActive(false);
+        }
+        for (int _i = 0; _i < 10; _i++)
+        {
+            GameObject _go = Instantiate(_Prefab_Fish_01, Vector2.zero, Quaternion.identity, transform);
+            _Fish_01_Pool.Enqueue(_go);
+            _go.SetActive(false);
+        }
+        for (int _i = 0; _i < 10; _i++)
+        {
+            GameObject _go = Instantiate(_Prefab_Fish_02, Vector2.zero, Quaternion.identity, transform);
+            _Fish_02_Pool.Enqueue(_go);
+            _go.SetActive(false);
+        }
+        for (int _i = 0; _i < 10; _i++)
+        {
+            GameObject _go = Instantiate(_Prefab_Fish_03, Vector2.zero, Quaternion.identity, transform);
+            _Fish_03_Pool.Enqueue(_go);
+            _go.SetActive(false);
+        }
+        for (int _i = 0; _i < 10; _i++)
+        {
+            GameObject _go = Instantiate(_Prefab_Fish_04, Vector2.zero, Quaternion.identity, transform);
+            _Fish_04_Pool.Enqueue(_go);
             _go.SetActive(false);
         }
     }
@@ -124,11 +155,7 @@ public class EnemyManager : MonoBehaviour
         _BreakSpawnNpcLoop = false;
         while (true)
         {
-            if (_BreakSpawnNpcLoop)
-            {
-                _BreakSpawnNpcLoop = false;
-                break;
-            }
+            if (_BreakSpawnNpcLoop) break;
             yield return new WaitForSeconds(_loop_time);
             if (_CurrentCount >= _MaxCount && _MaxCount != 0) continue;
             if (_pool.Count <= 0) continue;

@@ -6,9 +6,10 @@ public class BaitControl : MonoBehaviour
 {
     public Rigidbody2D _Rigidbody2D;
     public Queue<GameObject> _Queue = new Queue<GameObject>();
+    public static bool _RecoveryAll;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void Update()
     {
-        if (collision.tag == "Enemy") return;
+        if (_RecoveryAll) BaitManager._Instance.Recovery(_Queue, gameObject);
     }
 }

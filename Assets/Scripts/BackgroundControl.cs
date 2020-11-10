@@ -15,6 +15,7 @@ public class BackgroundControl : MonoBehaviour
     [SerializeField] private List<float> _List_SpeedRate;
     [SerializeField] private int _RecoveryLastLayer;
     public Queue<GameObject> _Pool = new Queue<GameObject>();
+    public static bool _RecoveryAll;
 
     private void Awake()
     {
@@ -32,6 +33,11 @@ public class BackgroundControl : MonoBehaviour
             // X = 現速 / 原速
             _List_SpeedRate[_i] = GameManager._Instance._Time / 5;
         }
+    }
+
+    private void Update()
+    {
+        if (_RecoveryAll) BackgroundManager._Instance.Recovery(_Pool, gameObject);
     }
 
     private void FixedUpdate()

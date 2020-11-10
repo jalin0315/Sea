@@ -43,10 +43,11 @@ public class BaitManager : MonoBehaviour
 
     public void Bait()
     {
+        BaitControl._RecoveryAll = false;
         ReUse(_Queue_Pool_Bait);
     }
 
-    private void Recovery(Queue<GameObject> _queue, GameObject _go)
+    public void Recovery(Queue<GameObject> _queue, GameObject _go)
     {
         EnemyAI._Bait = null;
         _queue.Enqueue(_go);

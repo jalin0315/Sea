@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class MovementSystem : MonoBehaviour
 {
     public static MovementSystem _Instance;
-    [SerializeField] private FloatingJoystick _FloatingJoystick;
+    public FloatingJoystick _FloatingJoystick;
     [SerializeField] private SpriteRenderer _SpriteRenderer;
     public Rigidbody2D _Rigidbody2D;
     [SerializeField] private float _Speed;

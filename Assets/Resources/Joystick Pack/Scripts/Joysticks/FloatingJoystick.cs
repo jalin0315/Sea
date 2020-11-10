@@ -11,6 +11,13 @@ public class FloatingJoystick : Joystick
         background.gameObject.SetActive(false);
     }
 
+    public void Initialize()
+    {
+        background.gameObject.SetActive(false);
+        input = Vector2.zero;
+        handle.anchoredPosition = Vector2.zero;
+    }
+
     public override void OnPointerDown(PointerEventData eventData)
     {
         if (GameManager._Instance._InGame)

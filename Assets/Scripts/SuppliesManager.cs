@@ -54,16 +54,18 @@ public class SuppliesManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(_time);
+            if (SuppliesControl._RecoveryAll) break;
             int _i = Random.Range(1, 101);
             if (_i > 0 && _i <= 50)
             {
                 ReUse(_Queue_Pool_SuppliesRed);
+                yield return new WaitForSeconds(_time);
                 continue;
             }
             if (_i > 50 && _i <= 100)
             {
                 ReUse(_Queue_Pool_SuppliesYellow);
+                yield return new WaitForSeconds(_time);
                 continue;
             }
         }
