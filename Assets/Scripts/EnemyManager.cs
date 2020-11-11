@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -156,7 +157,7 @@ public class EnemyManager : MonoBehaviour
         while (true)
         {
             if (_BreakSpawnNpcLoop) break;
-            yield return new WaitForSeconds(_loop_time);
+            yield return new WaitForSeconds(Random.Range(0.0f, _loop_time));
             if (_CurrentCount >= _MaxCount && _MaxCount != 0) continue;
             if (_pool.Count <= 0) continue;
             if (_random_status) _EnemyType = (EnemyType)Random.Range(0, 6);

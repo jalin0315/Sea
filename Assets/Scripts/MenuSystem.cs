@@ -30,27 +30,19 @@ public class MenuSystem : MonoBehaviour
     [SerializeField] private GameObject _Object_Fold;
     [SerializeField] private GameObject _Object_Cancel;
     [SerializeField] private GameObject _Object_Audio;
+    [SerializeField] private GameObject _Object_Vibrate;
     [SerializeField] private GameObject _Object_HighScore;
     [SerializeField] private GameObject _Object_ReturnMainMenu;
     [SerializeField] private GameObject _Object_Achievement;
     [SerializeField] private GameObject _Object_IllustratedBook;
-    [SerializeField] private GameObject _Object_Advertising;
+    [SerializeField] private GameObject _Object_InterstitialAd;
     [SerializeField] private GameObject _Object_Depth;
     [SerializeField] private GameObject _Object_Health;
     [SerializeField] private GameObject _Object_Power;
     [SerializeField] private GameObject _Object_Skill;
     [SerializeField] private GameObject _Object_InGameSkill;
     [SerializeField] private GameObject _Object_Death;
-
     [Space(20)]
-    /*
-    [SerializeField] private Image _Image_Play;
-    [SerializeField] private Image _Image_Settings;
-    [SerializeField] private Image _Image_Cancel;
-    [SerializeField] private Image _Image_HighScore;
-    [SerializeField] private Image _Image_Achievement;
-    [SerializeField] private Image _Image_IllustratedBook;
-    */
     [SerializeField] private Image _Image_InGameSkill;
     [Space(20)]
     [SerializeField] private Button _Button_Play;
@@ -59,10 +51,12 @@ public class MenuSystem : MonoBehaviour
     [SerializeField] private Button _Button_Fold;
     [SerializeField] private Button _Button_Cancel;
     [SerializeField] private Button _Button_Audio;
+    [SerializeField] private Button _Button_Vibrate;
     [SerializeField] private Button _Button_HighScore;
     [SerializeField] private Button _Button_ReturnMainMenu;
     [SerializeField] private Button _Button_Achievement;
     [SerializeField] private Button _Button_IllustratedBook;
+    [SerializeField] private Button _Button_InterstitialAd;
     [SerializeField] private Button _Button_Skill00;
     [SerializeField] private Button _Button_Skill01;
     [SerializeField] private Button _Button_Skill02;
@@ -71,9 +65,12 @@ public class MenuSystem : MonoBehaviour
     [SerializeField] private Button _Button_Resurrect;
     [Space(20)]
     [SerializeField] private Image _Image_Audio;
+    [SerializeField] private Image _Image_Vibrate;
     [Space(20)]
     [SerializeField] private Sprite _Sprite_Audio_UnMute;
     [SerializeField] private Sprite _Sprite_Audio_Mute;
+    [SerializeField] private Sprite _Sprite_UnVibrate;
+    [SerializeField] private Sprite _Sprite_Vibrate;
     [SerializeField] private List<Sprite> _List_Sprite_Skill;
     [Space(20)]
     [SerializeField] private Text _Text_Prompt;
@@ -89,10 +86,12 @@ public class MenuSystem : MonoBehaviour
         _Button_Fold.onClick.AddListener(OnButtonFold);
         _Button_Cancel.onClick.AddListener(OnButtonCancel);
         _Button_Audio.onClick.AddListener(OnButtonAudio);
+        _Button_Vibrate.onClick.AddListener(OnButtonVibrate);
         _Button_HighScore.onClick.AddListener(OnButtonHighScore);
         _Button_ReturnMainMenu.onClick.AddListener(OnButtonReturnMainMenu);
         _Button_Achievement.onClick.AddListener(OnButtonAchievement);
         _Button_IllustratedBook.onClick.AddListener(OnButtonIllustratedBook);
+        _Button_InterstitialAd.onClick.AddListener(OnButtonInterstitialAd);
         _Button_Skill00.onClick.AddListener(() => OnButtonSkillSelected(0));
         _Button_Skill01.onClick.AddListener(() => OnButtonSkillSelected(1));
         _Button_Skill02.onClick.AddListener(() => OnButtonSkillSelected(2));
@@ -115,10 +114,7 @@ public class MenuSystem : MonoBehaviour
         Timeline._Instance._Idle.Stop();
         Timeline._Instance._Opening.Play();
     }
-    private void OnButtonInGameSkill()
-    {
-        Player._Instance.SkillTrigger();
-    }
+    private void OnButtonInGameSkill() => Player._Instance.SkillTrigger();
     private void OnButtonSettings() => StateChange(Status.ShowSettings);
     private void OnButtonInGameMenu() => StateChange(Status.ShowInGameMenu);
     private void OnButtonFold()
@@ -132,19 +128,34 @@ public class MenuSystem : MonoBehaviour
         if (_Image_Audio.sprite == _Sprite_Audio_UnMute) _Image_Audio.sprite = _Sprite_Audio_Mute;
         else _Image_Audio.sprite = _Sprite_Audio_UnMute;
     }
+    private void OnButtonVibrate()
+    {
+        if (_Image_Vibrate.sprite == _Sprite_UnVibrate)
+        {
+            GameManager._Instance._Enable_Vibrate = true;
+            Handheld.Vibrate();
+            _Image_Vibrate.sprite = _Sprite_Vibrate;
+        }
+        else
+        {
+            GameManager._Instance._Enable_Vibrate = false;
+            _Image_Vibrate.sprite = _Sprite_UnVibrate;
+        }
+    }
     private void OnButtonHighScore() => StateChange(Status.HighScore);
-    // 重製遊戲邏輯
     private void OnButtonReturnMainMenu()
     {
+        StateChange(Status.Animation);
         Time.timeScale = 1.0f;
         GameManager._Instance._InGame = false;
+        MovementSystem._Instance._FloatingJoystick.Initialize();
         Timeline._Instance._ReturnMainMenu.Play();
-        StateChange(Status.Animation);
     }
     private void OnButtonAchievement() => StateChange(Status.Achievement);
     private void OnButtonIllustratedBook() => StateChange(Status.IllustratedBook);
+    private void OnButtonInterstitialAd() => GoogleAdMob._Instance.InterstitialAd();
     private void OnButtonRestart() => OnButtonReturnMainMenu();
-    private void OnButtonResurrect() => Debug.Log("OnButtonResurrect()");
+    private void OnButtonResurrect() => GoogleAdMob._Instance.Resurrect(true);
 
     public void StateChange(Status _status)
     {
@@ -158,11 +169,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(false);
             _Object_Audio.SetActive(false);
+            _Object_Vibrate.SetActive(false);
             _Object_HighScore.SetActive(false);
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
-            _Object_Advertising.SetActive(true);
+            _Object_InterstitialAd.SetActive(true);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
@@ -181,11 +193,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Fold.SetActive(true);
             _Object_Cancel.SetActive(false);
             _Object_Audio.SetActive(true);
+            _Object_Vibrate.SetActive(true);
             _Object_HighScore.SetActive(true);
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(true);
             _Object_IllustratedBook.SetActive(true);
-            _Object_Advertising.SetActive(true);
+            _Object_InterstitialAd.SetActive(true);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
@@ -204,11 +217,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(true);
             _Object_Audio.SetActive(false);
+            _Object_Vibrate.SetActive(false);
             _Object_HighScore.SetActive(false);
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
-            _Object_Advertising.SetActive(false);
+            _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
@@ -227,11 +241,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(true);
             _Object_Audio.SetActive(false);
+            _Object_Vibrate.SetActive(false);
             _Object_HighScore.SetActive(false);
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
-            _Object_Advertising.SetActive(false);
+            _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
@@ -250,11 +265,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(true);
             _Object_Audio.SetActive(false);
+            _Object_Vibrate.SetActive(false);
             _Object_HighScore.SetActive(false);
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
-            _Object_Advertising.SetActive(false);
+            _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
@@ -273,11 +289,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(true);
             _Object_Audio.SetActive(false);
+            _Object_Vibrate.SetActive(false);
             _Object_HighScore.SetActive(false);
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
-            _Object_Advertising.SetActive(false);
+            _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
@@ -296,11 +313,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(true);
             _Object_Audio.SetActive(false);
+            _Object_Vibrate.SetActive(false);
             _Object_HighScore.SetActive(false);
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
-            _Object_Advertising.SetActive(false);
+            _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
@@ -319,11 +337,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(false);
             _Object_Audio.SetActive(false);
+            _Object_Vibrate.SetActive(false);
             _Object_HighScore.SetActive(false);
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
-            _Object_Advertising.SetActive(false);
+            _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
@@ -342,11 +361,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(false);
             _Object_Audio.SetActive(false);
+            _Object_Vibrate.SetActive(false);
             _Object_HighScore.SetActive(false);
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
-            _Object_Advertising.SetActive(false);
+            _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(true);
             _Object_Health.SetActive(true);
             _Object_Power.SetActive(true);
@@ -354,6 +374,7 @@ public class MenuSystem : MonoBehaviour
             _Object_InGameSkill.SetActive(true);
             _Object_Death.SetActive(false);
             GoogleAdMob._Instance.HideBanner();
+            GameManager._Instance.GameState(true);
             return;
         }
         if (_Status == Status.ShowInGameMenu)
@@ -365,18 +386,20 @@ public class MenuSystem : MonoBehaviour
             _Object_Fold.SetActive(true);
             _Object_Cancel.SetActive(false);
             _Object_Audio.SetActive(true);
+            _Object_Vibrate.SetActive(true);
             _Object_HighScore.SetActive(false);
             _Object_ReturnMainMenu.SetActive(true);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
-            _Object_Advertising.SetActive(false);
+            _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(true);
             _Object_Health.SetActive(true);
             _Object_Power.SetActive(true);
             _Object_Skill.SetActive(false);
-            _Object_InGameSkill.SetActive(true);
+            _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
             GoogleAdMob._Instance.ShowBanner();
+            GameManager._Instance.GameState(false);
             return;
         }
         if (_Status == Status.DeathMenu)
@@ -388,11 +411,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(false);
             _Object_Audio.SetActive(false);
+            _Object_Vibrate.SetActive(false);
             _Object_HighScore.SetActive(false);
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
-            _Object_Advertising.SetActive(false);
+            _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);

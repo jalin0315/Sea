@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     public Animator _Animator;
     [SerializeField] private SpriteRenderer _SpriteRenderer;
     [SerializeField] private Slider _Slider_MaxHealth;
-    [SerializeField] private Slider _Slider_Health;
+    public Slider _Slider_Health;
     [SerializeField] private Slider _Slider_Power;
     [SerializeField] private Image _Image_Health;
     [SerializeField] private Color _HighHealthColor;
@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     public List<float> _List_SkillTime = new List<float>();
     public bool _EnableSkill;
     [SerializeField] private ParticleSystem _ParticleSystem_Death;
+    [SerializeField] private ParticleSystem _ParticleSystem_Light;
 
     private void Awake() => _Instance = this;
 
@@ -59,6 +60,7 @@ public class Player : MonoBehaviour
         switch (_SkillOptions)
         {
             case 0:
+                _ParticleSystem_Light.Play();
                 break;
             case 1:
                 BaitManager._Instance.Bait();
@@ -109,7 +111,23 @@ public class Player : MonoBehaviour
             }
             return;
         }
-        if (_tag == "SuppliesYellow") _Slider_Power.value = _Slider_Power.maxValue;
+        if (_tag == "SuppliesYellow")
+        {
+            _Slider_Power.value = _Slider_Power.maxValue;
+            return;
+        }
+        if (_tag == "SuppliesAd")
+        {
+            GoogleAdMob._Instance.MaxHealthPower(true);
+            return;
+        }
+    }
+    public void MaxHealthPower()
+    {
+        _Slider_Health.value = _Slider_MaxHealth.value;
+        _Slider_Power.value = _Slider_Power.maxValue;
+        HealthBarColorChange();
+        _Animator.SetTrigger("Invincible");
     }
 
     public void DeathEnable()
@@ -122,6 +140,7 @@ public class Player : MonoBehaviour
     {
         Time.timeScale = 1.0f;
         GameManager._Instance._InGame = true;
+        MovementSystem._Instance._FloatingJoystick.Initialize();
         MenuSystem._Instance.StateChange(MenuSystem.Status.InGame);
         InitializeStart();
         _Animator.SetBool("Death", false);
@@ -142,8 +161,9 @@ public class Player : MonoBehaviour
         {
             _Slider_Health.value -= 12.5f;
             if (_Slider_Health.value <= 0.0f) _Animator.SetBool("Death", true);
+            else _Animator.SetTrigger("Injured");
             HealthBarColorChange();
-            _Animator.SetTrigger("Injured");
+            if (GameManager._Instance._Enable_Vibrate) Handheld.Vibrate();
         }
     }
 }

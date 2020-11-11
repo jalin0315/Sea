@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool _InGame;
     [SerializeField] private Joystick _Joystick;
     public bool _EnableJoystick;
+    public bool _Enable_Vibrate;
     public float _Time;
     [HideInInspector] public float _Meter;
     public float _MaxMeter;
@@ -21,13 +22,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Light _BG_SpotLight;
     [SerializeField] private Color _Original_BG_SL_Color;
     private float _BG_M_Max_Result;
+    [SerializeField] private GameObject _Object_Background_DeepSea;
+    [SerializeField] private GameObject _Object_AmbientLight;
+    [SerializeField] private GameObject _Object_PlayerLight;
 
     private void Awake() => _Instance = this;
 
-    public void InitializeStart()
+    private void InitializeStart()
     {
         _InGame = false;
         _BG_M_Max_Result = 1 / _BG_MaxMeter;
+        _Object_Background_DeepSea.SetActive(false);
+        _Object_AmbientLight.SetActive(true);
+        _Object_PlayerLight.SetActive(false);
     }
     private void Start() => InitializeStart();
 
@@ -54,7 +61,7 @@ public class GameManager : MonoBehaviour
         _BG_SpotLight.color = new Color(_r, _g, _b, 1.0f);
     }
 
-    [HideInInspector] public List<bool> _ZonePoints = new List<bool>();
+    private List<bool> _ZonePoints = new List<bool>();
     private void ZoneTrigger()
     {
         if (_Result > 11000)
@@ -163,28 +170,21 @@ public class GameManager : MonoBehaviour
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             _ZonePoints[_index] = true;
         }
-        if (_Result > 2000)
+        if (_Result > 1900)
         {
             int _index = 3;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
-            // Command
-            // 海洋補給品
-            // 每 120 秒隨機抽樣
-            // 30 % Red
-            // 50 % Yellow
-            // 20 % Pass
-            SuppliesControl._RecoveryAll = false;
-            StartCoroutine(SuppliesManager._Instance.CallSupplies(120.0f));
+            BackgroundControl._RecoveryAll = false;
+            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             _ZonePoints[_index] = true;
         }
-        if (_Result > 1900)
+        if (_Result > 1000)
         {
             int _index = 2;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
-            BackgroundControl._RecoveryAll = false;
-            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
+            StartCoroutine(SuppliesManager._Instance.CallSupplies(120.0f));
             _ZonePoints[_index] = true;
         }
         if (_Result > 900)
@@ -204,12 +204,13 @@ public class GameManager : MonoBehaviour
             BackgroundControl._RecoveryAll = false;
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             EnemyManager._Instance._BreakSpawnNpcLoop = false;
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_00_Pool, true, EnemyManager.EnemyType.Null, true, 0.25f, 1, 0.0f));
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_01_Pool, true, EnemyManager.EnemyType.Null, true, 0.25f, 1, 0.0f));
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_02_Pool, true, EnemyManager.EnemyType.Null, true, 0.25f, 1, 0.0f));
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_03_Pool, true, EnemyManager.EnemyType.Null, true, 0.25f, 1, 0.0f));
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_04_Pool, true, EnemyManager.EnemyType.Null, true, 0.25f, 1, 0.0f));
-            //StartCoroutine(SuppliesManager._Instance.CallSupplies(1.0f));
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_00_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_01_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_02_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_03_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_04_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            SuppliesControl._RecoveryAll = false;
+            StartCoroutine(SuppliesManager._Instance.CallSuppliesAd(60.0f));
             _ZonePoints[_index] = true;
         }
     }
@@ -229,14 +230,52 @@ public class GameManager : MonoBehaviour
         Timeline._Instance._Idle.Play();
         MenuSystem._Instance.StateChange(MenuSystem.Status.MainMenu);
     }
+    private List<bool> _UpdateZonePoints = new List<bool>();
     public void UpdateZone()
     {
-        // Command
+        if (_Result > 8000)
+        {
+            int _index = 1;
+            if (_UpdateZonePoints.Count - 1 < _index) _UpdateZonePoints.Add(false);
+            if (_UpdateZonePoints[_index]) return;
+            EnemyManager._Instance._BreakSpawnNpcLoop = false;
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_00_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_01_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_02_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_03_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_04_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            _UpdateZonePoints[_index] = true;
+        }
+        if (_Result > 4000)
+        {
+            int _index = 0;
+            if (_UpdateZonePoints.Count - 1 < _index) _UpdateZonePoints.Add(false);
+            if (_UpdateZonePoints[_index]) return;
+            EnemyManager._Instance._BreakSpawnNpcLoop = false;
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_00_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_01_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_02_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_03_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_04_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            _UpdateZonePoints[_index] = true;
+        }
     }
+    private List<bool> _TransitionPoints = new List<bool>();
     public void Transition()
     {
-        //EnemyManager._Instance._BreakSpawnNpcLoop = true;
+        EnemyManager._Instance._BreakSpawnNpcLoop = true;
         EnemyAI._RecoveryAll = true;
+        // 生態域分界
+        if (_Result > 8000)
+        {
+            int _index = 0;
+            if (_TransitionPoints.Count - 1 < _index) _TransitionPoints.Add(false);
+            if (_TransitionPoints[_index]) return;
+            _Object_Background_DeepSea.SetActive(true);
+            _Object_AmbientLight.SetActive(false);
+            _Object_PlayerLight.SetActive(true);
+            _TransitionPoints[_index] = true;
+        }
     }
     public void ResumeGame()
     {
@@ -248,11 +287,30 @@ public class GameManager : MonoBehaviour
         _InGame = false;
         _Joystick.background.gameObject.SetActive(false);
     }
+    public void GameState(bool _in_game)
+    {
+        if (_in_game)
+        {
+            _InGame = _in_game;
+            Time.timeScale = 1.0f;
+            return;
+        }
+        if (!_in_game)
+        {
+            _InGame = _in_game;
+            Time.timeScale = 0.0f;
+            MovementSystem._Instance._FloatingJoystick.Initialize();
+            return;
+        }
+    }
     public void ReGameLogic()
     {
         _Meter = 0.0f;
         _Result = 0;
+        InitializeStart();
         for (int _i = 0; _i < _ZonePoints.Count; _i++) _ZonePoints[_i] = false;
+        for (int _i = 0; _i < _UpdateZonePoints.Count; _i++) _UpdateZonePoints[_i] = false;
+        for (int _i = 0; _i < _TransitionPoints.Count; _i++) _TransitionPoints[_i] = false;
         BackgroundControl._RecoveryAll = true;
         Player._Instance._Transform_Player.position = Vector2.zero;
         Player._Instance.InitializeStart();

@@ -11,9 +11,8 @@ public class GoogleAdMob : MonoBehaviour
     private BannerView _BannerView;
     private InterstitialAd _InterstitialAd;
     private RewardedAd _RewardedAd;
-    [SerializeField] private Button _Button_InterstitialAd;
-    [SerializeField] private Button _Button_Resurrect;
-    private bool _Resurrect;
+    public bool _Resurrect;
+    public bool _MaxHealthPower;
 
     private void Awake()
     {
@@ -23,12 +22,6 @@ public class GoogleAdMob : MonoBehaviour
         RequestBanner();
         RequestInterstitialAd();
         RequestRewardedAd();
-    }
-
-    private void Start()
-    {
-        _Button_InterstitialAd.onClick.AddListener(InterstitialAd);
-        _Button_Resurrect.onClick.AddListener(() => Resurrect(true));
     }
 
     private void RequestBanner()
@@ -111,7 +104,7 @@ public class GoogleAdMob : MonoBehaviour
         // Load the interstitial with the request.
         _InterstitialAd.LoadAd(request);
     }
-    private void InterstitialAd()
+    public void InterstitialAd()
     {
         if (_InterstitialAd.IsLoaded()) _InterstitialAd.Show();
         else if (!_InterstitialAd.IsLoaded()) RequestInterstitialAd();
@@ -169,9 +162,14 @@ public class GoogleAdMob : MonoBehaviour
         // Load the rewarded ad with the request.
         _RewardedAd.LoadAd(request);
     }
-    private void Resurrect(bool _enable)
+    public void Resurrect(bool _enable)
     {
         _Resurrect = _enable;
+        if (_RewardedAd.IsLoaded()) _RewardedAd.Show();
+    }
+    public void MaxHealthPower(bool _enable)
+    {
+        _MaxHealthPower = _enable;
         if (_RewardedAd.IsLoaded()) _RewardedAd.Show();
         else if (!_RewardedAd.IsLoaded()) RequestRewardedAd();
     }
@@ -195,6 +193,8 @@ public class GoogleAdMob : MonoBehaviour
     private void HandleRewardedAdClosed(object sender, EventArgs args)
     {
         print("HandleRewardedAdClosed event received");
+        _Resurrect = false;
+        _MaxHealthPower = false;
         RequestRewardedAd();
     }
     private void HandleUserEarnedReward(object sender, Reward args)
@@ -206,6 +206,13 @@ public class GoogleAdMob : MonoBehaviour
         {
             Player._Instance.DeathDisable();
             _Resurrect = false;
+            return;
+        }
+        if (_MaxHealthPower)
+        {
+            Player._Instance.MaxHealthPower();
+            _MaxHealthPower = false;
+            return;
         }
     }
 }
