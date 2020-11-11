@@ -8610,7 +8610,7 @@ MonoBehaviour:
   _InGame: 0
   _Joystick: {fileID: 1058714271}
   _EnableJoystick: 1
-  _Enable_Vibrate: 0
+  _Enable_Vibrate: 1
   _Time: 5
   _Meter: 0
   _MaxMeter: 11000

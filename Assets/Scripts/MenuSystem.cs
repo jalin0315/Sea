@@ -417,7 +417,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
-            _Object_Depth.SetActive(false);
+            _Object_Depth.SetActive(true);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
             _Object_Skill.SetActive(false);
