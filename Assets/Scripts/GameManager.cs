@@ -210,7 +210,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_03_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
             StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_04_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
             SuppliesControl._RecoveryAll = false;
-            StartCoroutine(SuppliesManager._Instance.CallSuppliesAd(60.0f));
+            StartCoroutine(SuppliesManager._Instance.CallSuppliesAd(60.0f)); // 60.0f
             _ZonePoints[_index] = true;
         }
     }

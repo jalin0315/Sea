@@ -112,5 +112,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Scale: {x: 0.1, y: 0.1, z: 1}
-  _Speed: 0.5
+  _Speed: 1
   _Direction: 0

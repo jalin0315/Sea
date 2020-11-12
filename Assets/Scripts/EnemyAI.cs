@@ -69,7 +69,7 @@ public class EnemyAI : MonoBehaviour
             //_Speed = Random.Range(0.5f, 1.0f);
             _PatrolTime = Random.Range(10.0f, 20.0f);
             _P_Timer = _PatrolTime;
-            _PatrolIntervalTime = Random.Range(0.0f, 5.0f);
+            _PatrolIntervalTime = 5.0f;
             _P_I_Timer = _PatrolIntervalTime;
             return;
         }
@@ -171,7 +171,8 @@ public class EnemyAI : MonoBehaviour
                     int _index = Random.Range(0, EnemyManager._Instance._Waypoints.Count);
                     _WaypointTarget = EnemyManager._Instance._Waypoints[_index];
                     //_Speed = Random.Range(0.5f, 1.0f);
-                    _PatrolIntervalTime = Random.Range(0.0f, 5.0f);
+                    //_PatrolIntervalTime = Random.Range(0.0f, 5.0f);
+                    _PatrolIntervalTime = 5.0f;
                     _P_I_Timer = _PatrolIntervalTime;
                     _OutOfDistance_Position_Offset = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f));
                     _OutOfDistance_Rotation_Offset = new Vector2(Random.Range(-180.0f, 180.0f), Random.Range(-180.0f, 180.0f));

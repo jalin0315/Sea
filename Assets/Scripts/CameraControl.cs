@@ -45,7 +45,7 @@ public class CameraControl : MonoBehaviour
     private void FixedUpdate()
     {
         if (!GameManager._Instance._InGame) return;
-        transform.position = Vector3.Lerp(transform.position, new Vector3(_Target.position.x + (MovementSystem._Instance._Rigidbody2D.velocity.x * 2.5f), transform.position.y, transform.position.z), Time.deltaTime * 2.5f);
-        //transform.position = Vector3.MoveTowards(transform.position, new Vector3(_Target.position.x, transform.position.y, transform.position.z), 1.0f);
+        //transform.position = Vector3.Lerp(transform.position, new Vector3(_Target.position.x + (MovementSystem._Instance._Rigidbody2D.velocity.x * 2.5f), transform.position.y, transform.position.z), Time.deltaTime * 2.5f);
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(_Target.position.x, transform.position.y, transform.position.z), 1.0f);
     }
 }

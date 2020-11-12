@@ -10,7 +10,7 @@ public class SuppliesControl : MonoBehaviour
     public int _Direction;
     public static bool _RecoveryAll;
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (_RecoveryAll)
         {
@@ -26,16 +26,20 @@ public class SuppliesControl : MonoBehaviour
         }
         if (tag == "SuppliesAd")
         {
-            if (_Direction == 0)
+            Vector2 _origin = SuppliesManager._Instance._Camera.ScreenToWorldPoint(Vector2.zero);
+            Vector2 _vertex = SuppliesManager._Instance._Camera.ScreenToWorldPoint(new Vector2(SuppliesManager._Instance._Camera.pixelWidth, SuppliesManager._Instance._Camera.pixelHeight));
+            if (transform.position.x > _vertex.x)
             {
-                transform.Translate(Vector2.right * _Speed * Time.deltaTime, Space.Self);
-                return;
+                transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 180.0f);
+                transform.localScale = new Vector3(_Scale.x, -_Scale.y, _Scale.z);
             }
-            if (_Direction == 1)
+            else if (transform.position.x < _origin.x)
             {
-                transform.Translate(Vector2.left * _Speed * Time.deltaTime, Space.Self);
-                return;
+                transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0.0f);
+                transform.localScale = _Scale;
             }
+            transform.Translate(Vector2.right * _Speed * Time.deltaTime, Space.Self);
+            return;
         }
     }
 
