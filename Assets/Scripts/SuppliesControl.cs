@@ -7,7 +7,6 @@ public class SuppliesControl : MonoBehaviour
     public Vector3 _Scale;
     [SerializeField] private float _Speed;
     public Queue<GameObject> _Queue = new Queue<GameObject>();
-    public int _Direction;
     public static bool _RecoveryAll;
 
     private void FixedUpdate()

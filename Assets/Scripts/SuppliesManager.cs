@@ -40,30 +40,45 @@ public class SuppliesManager : MonoBehaviour
         }
     }
 
-    private void ReUse(Queue<GameObject> _queue, Vector2 _position, int _ad_direction)
+    private void ReUse(Queue<GameObject> _queue, Vector2 _position, int _direction)
     {
         if (_queue.Count <= 0) return;
         GameObject _go = _queue.Dequeue();
         _go.SetActive(true);
-        _go.transform.position = _position;
+        _go.transform.position = new Vector3(_position.x, _position.y, 1.0f);
         SuppliesControl _s_c = _go.GetComponent<SuppliesControl>();
         _s_c._Queue = _queue;
         _go.transform.localScale = _s_c._Scale;
-        _s_c._Direction = _ad_direction;
+        if (_queue == _Queue_Pool_SuppliesRed)
+        {
+            QuestArrowPointerSystem._Instance.ReUse(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesRed, _go.transform);
+            return;
+        }
+        if (_queue == _Queue_Pool_SuppliesYellow)
+        {
+            QuestArrowPointerSystem._Instance.ReUse(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesYellow, _go.transform);
+            return;
+        }
         if (_queue == _Queue_Pool_SuppliesAd)
         {
-            if (_ad_direction == 1) _go.transform.localScale = new Vector3(-_s_c._Scale.x, _s_c._Scale.y, _s_c._Scale.z);
-            StartCoroutine(Delay(15.0f)); // 30.0f
+            if (_direction == 0) _go.transform.localScale = new Vector3(-_s_c._Scale.x, _s_c._Scale.y, _s_c._Scale.z);
+            else if (_direction == 1) _go.transform.localScale = new Vector3(_s_c._Scale.x, _s_c._Scale.y, _s_c._Scale.z);
+            QuestArrowPointerSystem._Instance.ReUse(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesAd, _go.transform);
+            StartCoroutine(Delay(30.0f)); // 30.0f
             IEnumerator Delay(float _time)
             {
                 yield return new WaitForSeconds(_time);
                 Recovery(_queue, _go);
             }
+            return;
         }
     }
 
     public void Recovery(Queue<GameObject> _queue, GameObject _go)
     {
+        if (_queue == _Queue_Pool_SuppliesRed) QuestArrowPointerSystem._Instance.Recovery(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesRed, _go.transform);
+        else if (_queue == _Queue_Pool_SuppliesYellow) QuestArrowPointerSystem._Instance.Recovery(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesYellow, _go.transform);
+        else if (_queue == _Queue_Pool_SuppliesAd) QuestArrowPointerSystem._Instance.Recovery(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesAd, _go.transform);
         _queue.Enqueue(_go);
         _go.SetActive(false);
     }
