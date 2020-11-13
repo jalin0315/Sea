@@ -10,12 +10,13 @@ public class Player : MonoBehaviour
     public Transform _Transform_Player;
     public Animator _Animator;
     [SerializeField] private SpriteRenderer _SpriteRenderer;
-    [SerializeField] private Slider _Slider_MaxHealth;
+    public Slider _Slider_MaxHealth;
     public Slider _Slider_Health;
     [SerializeField] private Slider _Slider_Power;
     [SerializeField] private Image _Image_Health;
     [SerializeField] private Color _HighHealthColor;
     [SerializeField] private Color _LowHealthColor;
+    public float _MaxHealthLess;
     private bool _Invincible;
     [SerializeField] private ParticleSystem _ParticleSystem_Invincible;
     [HideInInspector] public int _SkillOptions;
@@ -142,7 +143,9 @@ public class Player : MonoBehaviour
         GameManager._Instance._InGame = true;
         MovementSystem._Instance._FloatingJoystick.Initialize();
         MenuSystem._Instance.StateChange(MenuSystem.Status.InGame);
-        InitializeStart();
+        _Slider_Health.value = _Slider_MaxHealth.value;
+        _Slider_Power.value = _Slider_Power.maxValue;
+        HealthBarColorChange();
         _Animator.SetBool("Death", false);
     }
     public void DeathMenu()

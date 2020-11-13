@@ -17,11 +17,13 @@ public class GameManager : MonoBehaviour
     public float _Time;
     [HideInInspector] public float _Meter;
     public float _MaxMeter;
-    public float _BG_MaxMeter;
     public int _Result;
-    [SerializeField] private Light _BG_SpotLight;
-    [SerializeField] private Color _Original_BG_SL_Color;
-    private float _BG_M_Max_Result;
+    public float _Light_MaxMeter;
+    private float _Light_Result;
+    [SerializeField] private Light _Light_BG;
+    [SerializeField] private Color _Color_BG_Original;
+    [SerializeField] private List<Light> _List_AmbientLights_00;
+    [SerializeField] private Color _Color_AmbientLights_00_Original;
     [SerializeField] private GameObject _Object_Background_DeepSea;
     [SerializeField] private GameObject _Object_AmbientLight;
     [SerializeField] private GameObject _Object_PlayerLight;
@@ -31,7 +33,7 @@ public class GameManager : MonoBehaviour
     private void InitializeStart()
     {
         _InGame = false;
-        _BG_M_Max_Result = 1 / _BG_MaxMeter;
+        _Light_Result = 1 / _Light_MaxMeter;
         _Object_Background_DeepSea.SetActive(false);
         _Object_AmbientLight.SetActive(true);
         _Object_PlayerLight.SetActive(false);
@@ -54,11 +56,18 @@ public class GameManager : MonoBehaviour
         _Text_Depth.text = _Result.ToString("###,###") + " " + "Metres";
         _Meter += _Time * Time.deltaTime;
         _Result = Convert.ToInt32(_Meter);
-        if (_Result > _BG_MaxMeter) return;
-        float _r = _Original_BG_SL_Color.r - (_Result * _Original_BG_SL_Color.r * _BG_M_Max_Result);
-        float _g = _Original_BG_SL_Color.g - (_Result * _Original_BG_SL_Color.g * _BG_M_Max_Result);
-        float _b = _Original_BG_SL_Color.b - (_Result * _Original_BG_SL_Color.b * _BG_M_Max_Result);
-        _BG_SpotLight.color = new Color(_r, _g, _b, 1.0f);
+        if (_Result > _Light_MaxMeter) return;
+        float _bg_r = _Color_BG_Original.r - (_Result * _Color_BG_Original.r * _Light_Result);
+        float _bg_g = _Color_BG_Original.g - (_Result * _Color_BG_Original.g * _Light_Result);
+        float _bg_b = _Color_BG_Original.b - (_Result * _Color_BG_Original.b * _Light_Result);
+        _Light_BG.color = new Color(_bg_r, _bg_g, _bg_b, 1.0f);
+        float _lm_00_r = _Color_AmbientLights_00_Original.r - (_Result * _Color_AmbientLights_00_Original.r * _Light_Result);
+        float _lm_00_g = _Color_AmbientLights_00_Original.g - (_Result * _Color_AmbientLights_00_Original.g * _Light_Result);
+        float _lm_00_b = _Color_AmbientLights_00_Original.b - (_Result * _Color_AmbientLights_00_Original.b * _Light_Result);
+        for (int _i = 0; _i < _List_AmbientLights_00.Count; _i++)
+        {
+            _List_AmbientLights_00[_i].color = new Color(_lm_00_r, _lm_00_g, _lm_00_b, 1.0f);
+        }
     }
 
     private List<bool> _ZonePoints = new List<bool>();
@@ -66,7 +75,7 @@ public class GameManager : MonoBehaviour
     {
         if (_Result > 11000)
         {
-            int _index = 14;
+            int _index = 20;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
             Timeline._Instance._FadeIn.Play();
@@ -77,7 +86,7 @@ public class GameManager : MonoBehaviour
         // 生態域分界
         if (_Result > 10900)
         {
-            int _index = 13;
+            int _index = 19;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
             Timeline._Instance._FadeIn.Play();
@@ -87,16 +96,26 @@ public class GameManager : MonoBehaviour
         }
         if (_Result > 10000)
         {
-            int _index = 12;
+            int _index = 18;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
             // Command
             // Boss
+            Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
             _ZonePoints[_index] = true;
         }
+        if (_Result > 9000)
+        {
+            int _index = 17;
+            if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
+            if (_ZonePoints[_index]) return;
+            Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
+            _ZonePoints[_index] = true;
+        }
+
         if (_Result > 8900)
         {
-            int _index = 11;
+            int _index = 16;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
             BackgroundControl._RecoveryAll = false;
@@ -106,17 +125,18 @@ public class GameManager : MonoBehaviour
         // 生態域分界
         if (_Result > 8000)
         {
-            int _index = 10;
+            int _index = 15;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
-            Timeline._Instance._FadeIn.Play();
             // Command
             // Disable witch.
+            Timeline._Instance._FadeIn.Play();
+            Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
             _ZonePoints[_index] = true;
         }
         if (_Result > 7100)
         {
-            int _index = 9;
+            int _index = 14;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
             // Command
@@ -125,27 +145,51 @@ public class GameManager : MonoBehaviour
             // 定向攻擊生物比例不變
             _ZonePoints[_index] = true;
         }
+        if (_Result > 7000)
+        {
+            int _index = 13;
+            if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
+            if (_ZonePoints[_index]) return;
+            Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
+            _ZonePoints[_index] = true;
+        }
         if (_Result > 6900)
         {
-            int _index = 8;
+            int _index = 12;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
             BackgroundControl._RecoveryAll = false;
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
+            _ZonePoints[_index] = true;
+        }
+        if (_Result > 6000)
+        {
+            int _index = 11;
+            if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
+            if (_ZonePoints[_index]) return;
+            Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
             _ZonePoints[_index] = true;
         }
         if (_Result > 5900)
         {
-            int _index = 7;
+            int _index = 10;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
             BackgroundControl._RecoveryAll = false;
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             _ZonePoints[_index] = true;
         }
+        if (_Result > 5000)
+        {
+            int _index = 9;
+            if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
+            if (_ZonePoints[_index]) return;
+            Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
+            _ZonePoints[_index] = true;
+        }
         if (_Result > 4900)
         {
-            int _index = 6;
+            int _index = 8;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
             BackgroundControl._RecoveryAll = false;
@@ -155,19 +199,36 @@ public class GameManager : MonoBehaviour
         // 生態域分界
         if (_Result > 4000)
         {
-            int _index = 5;
+            int _index = 7;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
             Timeline._Instance._FadeIn.Play();
+            Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
+            _ZonePoints[_index] = true;
+        }
+        if (_Result > 3000)
+        {
+            int _index = 6;
+            if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
+            if (_ZonePoints[_index]) return;
+            Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
             _ZonePoints[_index] = true;
         }
         if (_Result > 2900)
         {
-            int _index = 4;
+            int _index = 5;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
             BackgroundControl._RecoveryAll = false;
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
+            _ZonePoints[_index] = true;
+        }
+        if (_Result > 2000)
+        {
+            int _index = 4;
+            if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
+            if (_ZonePoints[_index]) return;
+            Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
             _ZonePoints[_index] = true;
         }
         if (_Result > 1900)
@@ -184,6 +245,7 @@ public class GameManager : MonoBehaviour
             int _index = 2;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
+            Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
             StartCoroutine(SuppliesManager._Instance.CallSupplies(120.0f));
             _ZonePoints[_index] = true;
         }
@@ -204,11 +266,7 @@ public class GameManager : MonoBehaviour
             BackgroundControl._RecoveryAll = false;
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             EnemyManager._Instance._BreakSpawnNpcLoop = false;
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_00_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_01_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_02_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_03_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_04_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_Pool, true, EnemyManager.EnemyType.Null, true, 0.5f, 1, 0.0f));
             SuppliesControl._RecoveryAll = false;
             StartCoroutine(SuppliesManager._Instance.CallSuppliesAd(60.0f)); // 60.0f
             _ZonePoints[_index] = true;
@@ -239,11 +297,7 @@ public class GameManager : MonoBehaviour
             if (_UpdateZonePoints.Count - 1 < _index) _UpdateZonePoints.Add(false);
             if (_UpdateZonePoints[_index]) return;
             EnemyManager._Instance._BreakSpawnNpcLoop = false;
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_00_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_01_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_02_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_03_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_04_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_Pool, true, EnemyManager.EnemyType.Null, true, 0.5f, 1, 0.0f));
             _UpdateZonePoints[_index] = true;
         }
         if (_Result > 4000)
@@ -252,11 +306,7 @@ public class GameManager : MonoBehaviour
             if (_UpdateZonePoints.Count - 1 < _index) _UpdateZonePoints.Add(false);
             if (_UpdateZonePoints[_index]) return;
             EnemyManager._Instance._BreakSpawnNpcLoop = false;
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_00_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_01_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_02_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_03_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_04_Pool, true, EnemyManager.EnemyType.Null, true, 5.0f, 1, 0.0f));
+            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_Pool, true, EnemyManager.EnemyType.Null, true, 0.5f, 1, 0.0f));
             _UpdateZonePoints[_index] = true;
         }
     }

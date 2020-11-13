@@ -45,10 +45,11 @@ public class SuppliesManager : MonoBehaviour
         if (_queue.Count <= 0) return;
         GameObject _go = _queue.Dequeue();
         _go.SetActive(true);
-        _go.transform.position = new Vector3(_position.x, _position.y, 1.0f);
+        _go.transform.position = new Vector3(_position.x, _position.y, 0.8f);
         SuppliesControl _s_c = _go.GetComponent<SuppliesControl>();
         _s_c._Queue = _queue;
         _go.transform.localScale = _s_c._Scale;
+        _s_c._Direction = _direction;
         if (_queue == _Queue_Pool_SuppliesRed)
         {
             QuestArrowPointerSystem._Instance.ReUse(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesRed, _go.transform);
@@ -61,8 +62,8 @@ public class SuppliesManager : MonoBehaviour
         }
         if (_queue == _Queue_Pool_SuppliesAd)
         {
-            if (_direction == 0) _go.transform.localScale = new Vector3(-_s_c._Scale.x, _s_c._Scale.y, _s_c._Scale.z);
-            else if (_direction == 1) _go.transform.localScale = new Vector3(_s_c._Scale.x, _s_c._Scale.y, _s_c._Scale.z);
+            if (_direction == 0) _go.transform.localScale = _s_c._Scale;
+            else if (_direction == 1) _go.transform.localScale = new Vector3(-_s_c._Scale.x, _s_c._Scale.y, _s_c._Scale.z);
             QuestArrowPointerSystem._Instance.ReUse(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesAd, _go.transform);
             StartCoroutine(Delay(30.0f)); // 30.0f
             IEnumerator Delay(float _time)

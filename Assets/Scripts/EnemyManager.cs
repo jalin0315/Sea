@@ -28,16 +28,9 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private GameObject _Waypoint;
     [SerializeField] private int _NumberOfWaypoints;
     [HideInInspector] public List<GameObject> _Waypoints = new List<GameObject>();
-    [SerializeField] private GameObject _Prefab_Fish_00;
-    [SerializeField] private GameObject _Prefab_Fish_01;
-    [SerializeField] private GameObject _Prefab_Fish_02;
-    [SerializeField] private GameObject _Prefab_Fish_03;
-    [SerializeField] private GameObject _Prefab_Fish_04;
-    public Queue<GameObject> _Fish_00_Pool = new Queue<GameObject>();
-    public Queue<GameObject> _Fish_01_Pool = new Queue<GameObject>();
-    public Queue<GameObject> _Fish_02_Pool = new Queue<GameObject>();
-    public Queue<GameObject> _Fish_03_Pool = new Queue<GameObject>();
-    public Queue<GameObject> _Fish_04_Pool = new Queue<GameObject>();
+    [SerializeField] private int _Quantity_Size;
+    [SerializeField] private List<GameObject> _List_Prefab_Fish = new List<GameObject>();
+    public Queue<GameObject> _Fish_Pool = new Queue<GameObject>();
     private int _CurrentCount;
     public int _MaxCount;
     [SerializeField] private float _SpawnOffset;
@@ -46,35 +39,14 @@ public class EnemyManager : MonoBehaviour
     private void Awake()
     {
         _Instance = this;
-        for (int _i = 0; _i < 10; _i++)
+        for (int _i = 0; _i < _Quantity_Size; _i++)
         {
-            GameObject _go = Instantiate(_Prefab_Fish_00, Vector2.zero, Quaternion.identity, transform);
-            _Fish_00_Pool.Enqueue(_go);
-            _go.SetActive(false);
-        }
-        for (int _i = 0; _i < 10; _i++)
-        {
-            GameObject _go = Instantiate(_Prefab_Fish_01, Vector2.zero, Quaternion.identity, transform);
-            _Fish_01_Pool.Enqueue(_go);
-            _go.SetActive(false);
-        }
-        for (int _i = 0; _i < 10; _i++)
-        {
-            GameObject _go = Instantiate(_Prefab_Fish_02, Vector2.zero, Quaternion.identity, transform);
-            _Fish_02_Pool.Enqueue(_go);
-            _go.SetActive(false);
-        }
-        for (int _i = 0; _i < 10; _i++)
-        {
-            GameObject _go = Instantiate(_Prefab_Fish_03, Vector2.zero, Quaternion.identity, transform);
-            _Fish_03_Pool.Enqueue(_go);
-            _go.SetActive(false);
-        }
-        for (int _i = 0; _i < 10; _i++)
-        {
-            GameObject _go = Instantiate(_Prefab_Fish_04, Vector2.zero, Quaternion.identity, transform);
-            _Fish_04_Pool.Enqueue(_go);
-            _go.SetActive(false);
+            for (int _j = 0; _j < _List_Prefab_Fish.Count; _j++)
+            {
+                GameObject _go = Instantiate(_List_Prefab_Fish[_j], Vector2.zero, Quaternion.identity, transform);
+                _Fish_Pool.Enqueue(_go);
+                _go.SetActive(false);
+            }
         }
     }
 
@@ -113,8 +85,13 @@ public class EnemyManager : MonoBehaviour
             _go.SetActive(true);
             EnemyAI _enemy_ai = _go.GetComponent<EnemyAI>();
             _enemy_ai._Pool = _queue;
-            _enemy_ai.StateChange(_status);
             _CurrentCount++;
+            if (GameManager._Instance._Meter >= 8000.0f) { _enemy_ai._ScaleMagnification = Random.Range(20.0f, 26.0f); _MaxCount = 1; _enemy_ai.StateChange(_status); return; }
+            if (GameManager._Instance._Meter >= 6000.0f) { _enemy_ai._ScaleMagnification = Random.Range(10.0f, 16.0f); _MaxCount = 2; _enemy_ai.StateChange(_status); return; }
+            if (GameManager._Instance._Meter >= 4000.0f) { _enemy_ai._ScaleMagnification = Random.Range(5.0f, 10.1f); _MaxCount = 3; _enemy_ai.StateChange(_status); return; }
+            if (GameManager._Instance._Meter >= 2000.0f) { _enemy_ai._ScaleMagnification = Random.Range(2.0f, 4.1f); _MaxCount = 10; _enemy_ai.StateChange(_status); return; }
+            if (GameManager._Instance._Meter >= 1000.0f) { _enemy_ai._ScaleMagnification = Random.Range(1.6f, 2.1f); _MaxCount = 20; _enemy_ai.StateChange(_status); return; }
+            if (GameManager._Instance._Meter >= 0.0f) { _enemy_ai._ScaleMagnification = Random.Range(1.0f, 1.6f); _MaxCount = 20; _enemy_ai.StateChange(_status); return; }
             return;
         }
         else Debug.LogErrorFormat("{0} is out of range!");

@@ -8,6 +8,8 @@ public class SuppliesControl : MonoBehaviour
     [SerializeField] private float _Speed;
     public Queue<GameObject> _Queue = new Queue<GameObject>();
     public static bool _RecoveryAll;
+    public int _Direction;
+    [SerializeField] private List<GameObject> _List_LightGroup = new List<GameObject>();
 
     private void FixedUpdate()
     {
@@ -25,6 +27,8 @@ public class SuppliesControl : MonoBehaviour
         }
         if (tag == "SuppliesAd")
         {
+            // 螢幕內自動轉向
+            /*
             Vector2 _origin = SuppliesManager._Instance._Camera.ScreenToWorldPoint(Vector2.zero);
             Vector2 _vertex = SuppliesManager._Instance._Camera.ScreenToWorldPoint(new Vector2(SuppliesManager._Instance._Camera.pixelWidth, SuppliesManager._Instance._Camera.pixelHeight));
             if (transform.position.x > _vertex.x)
@@ -38,7 +42,17 @@ public class SuppliesControl : MonoBehaviour
                 transform.localScale = _Scale;
             }
             transform.Translate(Vector2.right * _Speed * Time.deltaTime, Space.Self);
-            return;
+            */
+            if (_Direction == 0)
+            {
+                transform.Translate(Vector2.right * _Speed * Time.deltaTime, Space.Self);
+                return;
+            }
+            if (_Direction == 1)
+            {
+                transform.Translate(Vector2.left * _Speed * Time.deltaTime, Space.Self);
+                return;
+            }
         }
     }
 
