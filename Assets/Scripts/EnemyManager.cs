@@ -69,12 +69,6 @@ public class EnemyManager : MonoBehaviour
         //if (Input.GetKeyDown(KeyCode.B)) _BreakSpawnNpcLoop = true;
     }
 
-    private void StateChange(EnemyType _enemy_type)
-    {
-        _EnemyType = _enemy_type;
-        if (_EnemyType == EnemyType.Null) return;
-    }
-
     private void ReUse(Queue<GameObject> _queue, EnemyAI.Status _status, Vector3 _position, Quaternion _rotation)
     {
         if (_queue.Count > 0)
@@ -336,6 +330,73 @@ public class EnemyManager : MonoBehaviour
                 else continue;
             }
         }
+    }
+
+    private IEnumerator NewSpawnNpc(Queue<GameObject> _pool)
+    {
+        yield return StartCoroutine(Duration());
+        // Command
+        //int _index = Random.Range(0, 9);
+        int _index = 0;
+        switch (_index)
+        {
+            case 0:
+                _EnemyType = EnemyType.PatrolFish;
+                break;
+            case 1:
+                // Command
+                // Left and Right
+                break;
+            case 2:
+                // Command
+                // Left Style and Right Style
+                break;
+            case 3:
+                // Command
+                // Left Up to Down
+                break;
+            case 4:
+                // Command
+                // Left Down to Up
+                break;
+            case 5:
+                // Command
+                // Right Up to Down
+                break;
+            case 6:
+                // Command
+                // Right Down to Up
+                break;
+            case 7:
+                // Command
+                // Target Fast Speed Large Quantity
+                break;
+            case 8:
+                // Command
+                // Target Slow Speed Small Quantity
+                break;
+        }
+        if (_EnemyType == EnemyType.PatrolFish)
+        {
+            _MaxCount = 5;
+            while (true)
+            {
+                if (_pool.Count <= 0)
+                    continue;
+                if (_CurrentCount >= _MaxCount && _MaxCount != 0)
+                    continue;
+            }
+        }
+    }
+    private IEnumerator Duration()
+    {
+        yield return new WaitForSeconds(Random.Range(30.0f, 61.0f));
+        // Command
+        // 斷開魚池
+        yield return new WaitForSeconds(10.0f);
+        // Command
+        // 重複隨機抽取 AI 模式
+        //yield return StartCoroutine(NewSpawnNpc());
     }
 
     private void OnDrawGizmos()

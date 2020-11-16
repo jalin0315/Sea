@@ -35,6 +35,7 @@ public class MenuSystem : MonoBehaviour
     [SerializeField] private GameObject _Object_ReturnMainMenu;
     [SerializeField] private GameObject _Object_Achievement;
     [SerializeField] private GameObject _Object_IllustratedBook;
+    [SerializeField] private GameObject _Object_Submarine;
     [SerializeField] private GameObject _Object_InterstitialAd;
     [SerializeField] private GameObject _Object_Depth;
     [SerializeField] private GameObject _Object_Health;
@@ -174,6 +175,7 @@ public class MenuSystem : MonoBehaviour
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
+            _Object_Submarine.SetActive(false);
             _Object_InterstitialAd.SetActive(true);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
@@ -198,6 +200,7 @@ public class MenuSystem : MonoBehaviour
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(true);
             _Object_IllustratedBook.SetActive(true);
+            _Object_Submarine.SetActive(false);
             _Object_InterstitialAd.SetActive(true);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
@@ -222,6 +225,7 @@ public class MenuSystem : MonoBehaviour
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
+            _Object_Submarine.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
@@ -246,6 +250,7 @@ public class MenuSystem : MonoBehaviour
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
+            _Object_Submarine.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
@@ -270,6 +275,7 @@ public class MenuSystem : MonoBehaviour
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
+            _Object_Submarine.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
@@ -294,6 +300,7 @@ public class MenuSystem : MonoBehaviour
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
+            _Object_Submarine.SetActive(true);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
@@ -318,6 +325,7 @@ public class MenuSystem : MonoBehaviour
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
+            _Object_Submarine.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
@@ -342,6 +350,7 @@ public class MenuSystem : MonoBehaviour
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
+            _Object_Submarine.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
@@ -366,6 +375,7 @@ public class MenuSystem : MonoBehaviour
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
+            _Object_Submarine.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(true);
             _Object_Health.SetActive(true);
@@ -391,6 +401,7 @@ public class MenuSystem : MonoBehaviour
             _Object_ReturnMainMenu.SetActive(true);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
+            _Object_Submarine.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(true);
             _Object_Health.SetActive(true);
@@ -416,6 +427,7 @@ public class MenuSystem : MonoBehaviour
             _Object_ReturnMainMenu.SetActive(false);
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
+            _Object_Submarine.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(true);
             _Object_Health.SetActive(false);

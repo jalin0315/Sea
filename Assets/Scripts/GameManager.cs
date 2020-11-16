@@ -266,7 +266,7 @@ public class GameManager : MonoBehaviour
             BackgroundControl._RecoveryAll = false;
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             EnemyManager._Instance._BreakSpawnNpcLoop = false;
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_Pool, true, EnemyManager.EnemyType.Null, true, 0.5f, 1, 0.0f));
+            //StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_Pool, true, EnemyManager.EnemyType.Null, true, 0.5f, 1, 0.0f));
             SuppliesControl._RecoveryAll = false;
             StartCoroutine(SuppliesManager._Instance.CallSuppliesAd(60.0f)); // 60.0f
             _ZonePoints[_index] = true;
@@ -297,7 +297,6 @@ public class GameManager : MonoBehaviour
             if (_UpdateZonePoints.Count - 1 < _index) _UpdateZonePoints.Add(false);
             if (_UpdateZonePoints[_index]) return;
             EnemyManager._Instance._BreakSpawnNpcLoop = false;
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_Pool, true, EnemyManager.EnemyType.Null, true, 0.5f, 1, 0.0f));
             _UpdateZonePoints[_index] = true;
         }
         if (_Result > 4000)
@@ -306,7 +305,6 @@ public class GameManager : MonoBehaviour
             if (_UpdateZonePoints.Count - 1 < _index) _UpdateZonePoints.Add(false);
             if (_UpdateZonePoints[_index]) return;
             EnemyManager._Instance._BreakSpawnNpcLoop = false;
-            StartCoroutine(EnemyManager._Instance.SpawnNpc(EnemyManager._Instance._Fish_Pool, true, EnemyManager.EnemyType.Null, true, 0.5f, 1, 0.0f));
             _UpdateZonePoints[_index] = true;
         }
     }
