@@ -21,7 +21,7 @@ public class EnemyAI : MonoBehaviour
     public Queue<GameObject> _Pool = new Queue<GameObject>();
     [SerializeField] private Vector3 _Scale;
     public float _ScaleMagnification;
-    [SerializeField] private float _Speed;
+    public float _Speed;
     [SerializeField] private float _RotateSpeed;
     private GameObject _WaypointTarget;
     private float _PatrolTime;
@@ -38,9 +38,14 @@ public class EnemyAI : MonoBehaviour
     private float _TargetLockTime;
     private float _T_L_Timer;
     [SerializeField] private bool _Visible;
-    [SerializeField] private float _TimeOut;
+    public float _TimeOut;
     private float _Visible_Timer;
     public static bool _RecoveryAll;
+
+    private void Awake()
+    {
+        _Scale = transform.localScale;
+    }
 
     private void Start()
     {
@@ -67,7 +72,6 @@ public class EnemyAI : MonoBehaviour
             transform.localScale = _Scale * _ScaleMagnification;
             int _index = Random.Range(0, EnemyManager._Instance._Waypoints.Count);
             _WaypointTarget = EnemyManager._Instance._Waypoints[_index];
-            //_Speed = Random.Range(0.5f, 1.0f);
             _PatrolTime = Random.Range(10.0f, 20.0f);
             _P_Timer = _PatrolTime;
             _PatrolIntervalTime = 5.0f;
@@ -89,7 +93,6 @@ public class EnemyAI : MonoBehaviour
         if (_Status == Status.SwimLeft)
         {
             transform.localScale = new Vector3(-_Scale.x, _Scale.y, _Scale.z) * _ScaleMagnification;
-            //_Speed = Random.Range(0.5f, 2.0f);
             _TranslateOffset = new Vector2(0.0f, 0.0f);
             return;
         }
@@ -112,7 +115,6 @@ public class EnemyAI : MonoBehaviour
         if (_Status == Status.Target)
         {
             transform.localScale = _Scale * _ScaleMagnification;
-            _Speed = Random.Range(1.5f, 3.5f);
             if (_Bait != null) transform.right = (_Bait.position - transform.position).normalized;
             else
             {
@@ -150,6 +152,10 @@ public class EnemyAI : MonoBehaviour
         if (_Status == Status.Null) return;
         if (_Status == Status.Patrol)
         {
+            if (_WaypointTarget.transform.position.x > transform.position.x)
+                transform.localScale = _Scale * _ScaleMagnification;
+            if (_WaypointTarget.transform.position.x < transform.position.x)
+                transform.localScale = new Vector3(-_Scale.x, _Scale.y, _Scale.z) * _ScaleMagnification;
             if (_P_Timer > 0.0f)
             {
                 _P_Timer -= Time.deltaTime;
@@ -159,28 +165,27 @@ public class EnemyAI : MonoBehaviour
                     if (Vector2.Distance(transform.position, _WaypointTarget.transform.position) > 1.0f)
                     {
                         transform.position = Vector2.MoveTowards(transform.position, _WaypointTarget.transform.position, Time.deltaTime * _Speed);
-                        transform.right = Vector2.Lerp(transform.right, (_WaypointTarget.transform.position - transform.position).normalized, Time.deltaTime * _RotateSpeed);
+                        //transform.right = Vector2.Lerp(transform.right, (_WaypointTarget.transform.position - transform.position).normalized, Time.deltaTime * _RotateSpeed);
                     }
                     else
                     {
                         transform.position = Vector2.Lerp(transform.position, _WaypointTarget.transform.position + _OutOfDistance_Position_Offset, Time.deltaTime * 0.5f);
-                        transform.right = Vector2.Lerp(transform.right, _OutOfDistance_Rotation_Offset, Time.deltaTime * 0.01f);
+                        //transform.right = Vector2.Lerp(transform.right, _OutOfDistance_Rotation_Offset, Time.deltaTime * 0.01f);
                     }
                 }
                 else if (_P_I_Timer < 0.0f)
                 {
                     int _index = Random.Range(0, EnemyManager._Instance._Waypoints.Count);
                     _WaypointTarget = EnemyManager._Instance._Waypoints[_index];
-                    //_Speed = Random.Range(0.5f, 1.0f);
-                    //_PatrolIntervalTime = Random.Range(0.0f, 5.0f);
                     _PatrolIntervalTime = 5.0f;
                     _P_I_Timer = _PatrolIntervalTime;
                     _OutOfDistance_Position_Offset = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f));
-                    _OutOfDistance_Rotation_Offset = new Vector2(Random.Range(-180.0f, 180.0f), Random.Range(-180.0f, 180.0f));
+                    //_OutOfDistance_Rotation_Offset = new Vector2(Random.Range(-180.0f, 180.0f), Random.Range(-180.0f, 180.0f));
                 }
             }
             else if (_P_Timer < 0.0f)
             {
+                _Speed = 4.0f;
                 transform.Translate(Vector2.right * Time.deltaTime * _Speed, Space.Self);
             }
             float _delta(float _value)
@@ -188,8 +193,10 @@ public class EnemyAI : MonoBehaviour
                 float _result = Mathf.DeltaAngle(0, _value);
                 return _result;
             }
-            if (_delta(transform.eulerAngles.z) > 90.0f || _delta(transform.eulerAngles.z) < -90.0f) transform.localScale = new Vector3(transform.localScale.x, -_Scale.y * _ScaleMagnification, transform.localScale.z);
-            else transform.localScale = new Vector3(transform.localScale.x, _Scale.y * _ScaleMagnification, transform.localScale.z);
+            if (_delta(transform.eulerAngles.z) > 90.0f || _delta(transform.eulerAngles.z) < -90.0f)
+                transform.localScale = new Vector3(transform.localScale.x, -_Scale.y * _ScaleMagnification, transform.localScale.z);
+            else
+                transform.localScale = new Vector3(transform.localScale.x, _Scale.y * _ScaleMagnification, transform.localScale.z);
             if (!_Visible) _Visible_Timer -= Time.deltaTime;
             if (_Visible_Timer < 0.0f) EnemyManager._Instance.Recovery(_Pool, gameObject);
             return;
