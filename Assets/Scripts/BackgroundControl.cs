@@ -37,7 +37,8 @@ public class BackgroundControl : MonoBehaviour
 
     private void Update()
     {
-        if (_RecoveryAll) BackgroundManager._Instance.Recovery(_Pool, gameObject);
+        if (_RecoveryAll)
+            BackgroundManager._Instance.Recovery(_Pool, gameObject);
     }
 
     private void FixedUpdate()

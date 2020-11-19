@@ -9,6 +9,8 @@ public class SuppliesControl : MonoBehaviour
     public Queue<GameObject> _Queue = new Queue<GameObject>();
     public static bool _RecoveryAll;
     public int _Direction;
+    public float _Time;
+    public float _Timer;
     [SerializeField] private List<GameObject> _List_LightGroup = new List<GameObject>();
 
     private void FixedUpdate()
@@ -43,6 +45,7 @@ public class SuppliesControl : MonoBehaviour
             }
             transform.Translate(Vector2.right * _Speed * Time.deltaTime, Space.Self);
             */
+            /*
             if (_Direction == 0)
             {
                 transform.Translate(Vector2.right * _Speed * Time.deltaTime, Space.Self);
@@ -52,6 +55,20 @@ public class SuppliesControl : MonoBehaviour
             {
                 transform.Translate(Vector2.left * _Speed * Time.deltaTime, Space.Self);
                 return;
+            }
+            */
+            if (_Timer > 0)
+            {
+                _Timer -= Time.deltaTime;
+                transform.position = Vector2.Lerp(transform.position, new Vector2(transform.position.x, 0.0f), Time.deltaTime * _Speed);
+            }
+            else if (_Timer <= 0)
+            {
+                Vector2 _vertex = SuppliesManager._Instance._Camera.ScreenToWorldPoint(new Vector2(SuppliesManager._Instance._Camera.pixelWidth, SuppliesManager._Instance._Camera.pixelHeight));
+                transform.position = Vector2.Lerp(transform.position, new Vector2(transform.position.x, _vertex.y + 10.0f), Time.deltaTime * _Speed);
+                if (transform.position.y > _vertex.y + 5.0f)
+                    SuppliesManager._Instance.Recovery(_Queue, gameObject);
+                _Timer = 0;
             }
         }
     }

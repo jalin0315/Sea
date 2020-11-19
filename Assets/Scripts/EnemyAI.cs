@@ -54,7 +54,8 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
-        if (_RecoveryAll) EnemyManager._Instance.Recovery(_Pool, gameObject);
+        if (_RecoveryAll)
+            EnemyManager._Instance.Recovery(_Pool, gameObject);
     }
 
     private void FixedUpdate()
@@ -152,10 +153,12 @@ public class EnemyAI : MonoBehaviour
         if (_Status == Status.Null) return;
         if (_Status == Status.Patrol)
         {
+            /*
             if (_WaypointTarget.transform.position.x > transform.position.x)
                 transform.localScale = _Scale * _ScaleMagnification;
             if (_WaypointTarget.transform.position.x < transform.position.x)
                 transform.localScale = new Vector3(-_Scale.x, _Scale.y, _Scale.z) * _ScaleMagnification;
+            */
             if (_P_Timer > 0.0f)
             {
                 _P_Timer -= Time.deltaTime;
@@ -165,12 +168,12 @@ public class EnemyAI : MonoBehaviour
                     if (Vector2.Distance(transform.position, _WaypointTarget.transform.position) > 1.0f)
                     {
                         transform.position = Vector2.MoveTowards(transform.position, _WaypointTarget.transform.position, Time.deltaTime * _Speed);
-                        //transform.right = Vector2.Lerp(transform.right, (_WaypointTarget.transform.position - transform.position).normalized, Time.deltaTime * _RotateSpeed);
+                        transform.right = Vector2.Lerp(transform.right, (_WaypointTarget.transform.position - transform.position).normalized, Time.deltaTime * _RotateSpeed);
                     }
                     else
                     {
                         transform.position = Vector2.Lerp(transform.position, _WaypointTarget.transform.position + _OutOfDistance_Position_Offset, Time.deltaTime * 0.5f);
-                        //transform.right = Vector2.Lerp(transform.right, _OutOfDistance_Rotation_Offset, Time.deltaTime * 0.01f);
+                        transform.right = Vector2.Lerp(transform.right, _OutOfDistance_Rotation_Offset, Time.deltaTime * 0.01f);
                     }
                 }
                 else if (_P_I_Timer < 0.0f)

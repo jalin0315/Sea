@@ -10,6 +10,7 @@ public class BaitControl : MonoBehaviour
 
     private void Update()
     {
-        if (_RecoveryAll) BaitManager._Instance.Recovery(_Queue, gameObject);
+        if (_RecoveryAll)
+            BaitManager._Instance.Recovery(_Queue, gameObject);
     }
 }

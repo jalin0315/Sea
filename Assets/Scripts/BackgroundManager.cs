@@ -26,6 +26,7 @@ public class BackgroundManager : MonoBehaviour
 
     public void ReUse(Queue<GameObject> _pool)
     {
+        BackgroundControl._RecoveryAll = false;
         if (_pool.Count > 0)
         {
             GameObject _reuse = _pool.Dequeue();

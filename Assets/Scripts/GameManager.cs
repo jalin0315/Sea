@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     public float _Time;
     [HideInInspector] public float _Meter;
     public float _MaxMeter;
-    public int _Result;
+    [HideInInspector] public int _Result;
     public float _Light_MaxMeter;
     private float _Light_Result;
     [SerializeField] private Light _Light_BG;
@@ -112,13 +112,11 @@ public class GameManager : MonoBehaviour
             Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
             _ZonePoints[_index] = true;
         }
-
         if (_Result > 8900)
         {
             int _index = 17;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
-            BackgroundControl._RecoveryAll = false;
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             _ZonePoints[_index] = true;
         }
@@ -158,7 +156,6 @@ public class GameManager : MonoBehaviour
             int _index = 13;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
-            BackgroundControl._RecoveryAll = false;
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             _ZonePoints[_index] = true;
         }
@@ -175,7 +172,6 @@ public class GameManager : MonoBehaviour
             int _index = 11;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
-            BackgroundControl._RecoveryAll = false;
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             _ZonePoints[_index] = true;
         }
@@ -192,7 +188,6 @@ public class GameManager : MonoBehaviour
             int _index = 9;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
-            BackgroundControl._RecoveryAll = false;
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             _ZonePoints[_index] = true;
         }
@@ -219,7 +214,6 @@ public class GameManager : MonoBehaviour
             int _index = 6;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
-            BackgroundControl._RecoveryAll = false;
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             _ZonePoints[_index] = true;
         }
@@ -229,6 +223,8 @@ public class GameManager : MonoBehaviour
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
             Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
+            EnemyManager._Instance.IEnumeratorSpawnNpc01(false);
+            EnemyManager._Instance.IEnumeratorSpawnNpc02(true);
             _ZonePoints[_index] = true;
         }
         if (_Result > 1900)
@@ -236,7 +232,6 @@ public class GameManager : MonoBehaviour
             int _index = 4;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
-            BackgroundControl._RecoveryAll = false;
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             _ZonePoints[_index] = true;
         }
@@ -246,7 +241,7 @@ public class GameManager : MonoBehaviour
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
             Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
-            StartCoroutine(SuppliesManager._Instance.CallSupplies(120.0f));
+            StartCoroutine(SuppliesManager._Instance._CallSupplies_Singleton);
             _ZonePoints[_index] = true;
         }
         if (_Result > 900)
@@ -254,18 +249,17 @@ public class GameManager : MonoBehaviour
             int _index = 2;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
-            BackgroundControl._RecoveryAll = false;
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             _ZonePoints[_index] = true;
         }
-        
-        if (_Result > 100)
+
+        if (_Result > 600)
         {
             int _index = 1;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
-            //StopCoroutine(EnemyManager._Instance.InitializeSpawnNpc());
-            //StartCoroutine(EnemyManager._Instance.SpawnNpc_00());
+            EnemyManager._Instance.IEnumeratorSpawnNpc00(false);
+            EnemyManager._Instance.IEnumeratorSpawnNpc01(true);
             _ZonePoints[_index] = true;
         }
         if (_Result > 0)
@@ -273,13 +267,10 @@ public class GameManager : MonoBehaviour
             int _index = 0;
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
-            BackgroundControl._RecoveryAll = false;
+            EnemyManager._Instance.IEnumeratorSpawnNpc00(true);
+            StartCoroutine(SuppliesManager._Instance._CallSupplies_Singleton);
+            StartCoroutine(SuppliesManager._Instance._CallSuppliesAd_Singleton);
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
-            EnemyManager._Instance._BreakSpawnNpcLoop = false;
-            //StartCoroutine(EnemyManager._Instance.InitializeSpawnNpc());
-            StartCoroutine(EnemyManager._Instance.SpawnNpc_01());
-            SuppliesControl._RecoveryAll = false;
-            StartCoroutine(SuppliesManager._Instance.CallSuppliesAd(60.0f));
             _ZonePoints[_index] = true;
         }
     }
@@ -307,7 +298,6 @@ public class GameManager : MonoBehaviour
             int _index = 1;
             if (_UpdateZonePoints.Count - 1 < _index) _UpdateZonePoints.Add(false);
             if (_UpdateZonePoints[_index]) return;
-            EnemyManager._Instance._BreakSpawnNpcLoop = false;
             _UpdateZonePoints[_index] = true;
         }
         if (_Result > 4000)
@@ -315,14 +305,12 @@ public class GameManager : MonoBehaviour
             int _index = 0;
             if (_UpdateZonePoints.Count - 1 < _index) _UpdateZonePoints.Add(false);
             if (_UpdateZonePoints[_index]) return;
-            EnemyManager._Instance._BreakSpawnNpcLoop = false;
             _UpdateZonePoints[_index] = true;
         }
     }
     private List<bool> _TransitionPoints = new List<bool>();
     public void Transition()
     {
-        EnemyManager._Instance._BreakSpawnNpcLoop = true;
         EnemyAI._RecoveryAll = true;
         // 生態域分界
         if (_Result > 8000)
@@ -339,7 +327,6 @@ public class GameManager : MonoBehaviour
     public void ResumeGame()
     {
         _InGame = true;
-        EnemyAI._RecoveryAll = false;
     }
     public void PauseGame()
     {
@@ -370,17 +357,17 @@ public class GameManager : MonoBehaviour
         for (int _i = 0; _i < _ZonePoints.Count; _i++) _ZonePoints[_i] = false;
         for (int _i = 0; _i < _UpdateZonePoints.Count; _i++) _UpdateZonePoints[_i] = false;
         for (int _i = 0; _i < _TransitionPoints.Count; _i++) _TransitionPoints[_i] = false;
-        BackgroundControl._RecoveryAll = true;
         Player._Instance._Transform_Player.position = Vector2.zero;
         Player._Instance.InitializeStart();
         Player._Instance._Animator.SetBool("Death", false);
         Player._Instance._EnableSkill = false;
         CameraControl._Instance._Transform_Camera.position = new Vector3(Vector2.zero.x, Vector2.zero.y, CameraControl._Instance._Transform_Camera.position.z);
-        BaitControl._RecoveryAll = true;
-        SuppliesControl._RecoveryAll = true;
-        EnemyManager._Instance._BreakSpawnNpcLoop = true;
+        EnemyManager._Instance.IEnumeratorStopAllCoroutines();
         EnemyAI._RecoveryAll = true;
+        SuppliesControl._RecoveryAll = true;
+        BaitControl._RecoveryAll = true;
         LightRays2DControl._Instance.InitializeStart();
+        BackgroundControl._RecoveryAll = true;
     }
 
     private void OnApplicationQuit() => print("OnApplicationQuit()");

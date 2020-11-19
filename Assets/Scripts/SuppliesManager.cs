@@ -40,8 +40,15 @@ public class SuppliesManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        _CallSupplies_Singleton = CallSupplies(1.0f); // 120.0f
+        _CallSuppliesAd_Singleton = CallSuppliesAd(1.0f); // 60.0f
+    }
+
     private void ReUse(Queue<GameObject> _queue, Vector2 _position, int _direction)
     {
+        SuppliesControl._RecoveryAll = false;
         if (_queue.Count <= 0) return;
         GameObject _go = _queue.Dequeue();
         _go.SetActive(true);
@@ -49,7 +56,6 @@ public class SuppliesManager : MonoBehaviour
         SuppliesControl _s_c = _go.GetComponent<SuppliesControl>();
         _s_c._Queue = _queue;
         _go.transform.localScale = _s_c._Scale;
-        _s_c._Direction = _direction;
         if (_queue == _Queue_Pool_SuppliesRed)
         {
             QuestArrowPointerSystem._Instance.ReUse(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesRed, _go.transform);
@@ -62,15 +68,12 @@ public class SuppliesManager : MonoBehaviour
         }
         if (_queue == _Queue_Pool_SuppliesAd)
         {
+            _s_c._Direction = _direction;
+            _s_c._Time = 30.0f;
+            _s_c._Timer = _s_c._Time;
             if (_direction == 0) _go.transform.localScale = _s_c._Scale;
             else if (_direction == 1) _go.transform.localScale = new Vector3(-_s_c._Scale.x, _s_c._Scale.y, _s_c._Scale.z);
             QuestArrowPointerSystem._Instance.ReUse(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesAd, _go.transform);
-            StartCoroutine(Delay(30.0f)); // 30.0f
-            IEnumerator Delay(float _time)
-            {
-                yield return new WaitForSeconds(_time);
-                Recovery(_queue, _go);
-            }
             return;
         }
     }
@@ -84,17 +87,17 @@ public class SuppliesManager : MonoBehaviour
         _go.SetActive(false);
     }
 
-    public IEnumerator CallSupplies(float _time)
+    public IEnumerator _CallSupplies_Singleton;
+    private IEnumerator CallSupplies(float _time)
     {
         while (true)
         {
-            if (SuppliesControl._RecoveryAll) break;
             int _i = Random.Range(1, 101);
             if (_i > 0 && _i <= 50)
             {
                 Vector2 _origin = _Camera.ScreenToWorldPoint(Vector2.zero);
                 Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
-                Vector2 _result = new Vector2(Random.Range(_origin.x, _vertex.x), _vertex.y);
+                Vector2 _result = new Vector2(Random.Range(_origin.x, _vertex.x), _vertex.y + 5.0f);
                 ReUse(_Queue_Pool_SuppliesRed, _result, -1);
                 yield return new WaitForSeconds(_time);
                 continue;
@@ -103,40 +106,25 @@ public class SuppliesManager : MonoBehaviour
             {
                 Vector2 _origin = _Camera.ScreenToWorldPoint(Vector2.zero);
                 Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
-                Vector2 _result = new Vector2(Random.Range(_origin.x, _vertex.x), _vertex.y);
+                Vector2 _result = new Vector2(Random.Range(_origin.x, _vertex.x), _vertex.y + 5.0f);
                 ReUse(_Queue_Pool_SuppliesYellow, _result, -1);
                 yield return new WaitForSeconds(_time);
                 continue;
             }
         }
     }
-
-    public IEnumerator CallSuppliesAd(float _time)
+    public IEnumerator _CallSuppliesAd_Singleton;
+    private IEnumerator CallSuppliesAd(float _time)
     {
         while (true)
         {
-            if (SuppliesControl._RecoveryAll) break;
             yield return new WaitForSeconds(_time);
             if (Player._Instance._Slider_Health.value > 40) continue;
             if (Player._Instance._Slider_Health.value <= 40)
             {
                 Vector2 _origin = _Camera.ScreenToWorldPoint(Vector2.zero);
                 Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
-                Vector2 _result;
-                int _i = Random.Range(0, 2);
-                switch (_i)
-                {
-                    // Left point
-                    case 0:
-                        _result = new Vector2(_origin.x, Random.Range(_origin.y, _vertex.y));
-                        ReUse(_Queue_Pool_SuppliesAd, _result, 0);
-                        break;
-                    // Right point
-                    case 1:
-                        _result = new Vector2(_vertex.x, Random.Range(_origin.y, _vertex.y));
-                        ReUse(_Queue_Pool_SuppliesAd, _result, 1);
-                        break;
-                }
+                ReUse(_Queue_Pool_SuppliesAd, new Vector2(Random.Range(_origin.x, _vertex.x), _vertex.y + 5.0f), 0);
                 continue;
             }
         }
