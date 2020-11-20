@@ -42,8 +42,8 @@ public class SuppliesManager : MonoBehaviour
 
     private void Start()
     {
-        _CallSupplies_Singleton = CallSupplies(1.0f); // 120.0f
-        _CallSuppliesAd_Singleton = CallSuppliesAd(1.0f); // 60.0f
+        _CallSupplies_Singleton = CallSupplies(60.0f); // 60.0f
+        _CallSuppliesAd_Singleton = CallSuppliesAd(30.0f); // 30.0f
     }
 
     private void ReUse(Queue<GameObject> _queue, Vector2 _position, int _direction)

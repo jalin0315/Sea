@@ -388,7 +388,7 @@ MonoBehaviour:
   m_Name: Signal Emitter
   m_EditorClassIdentifier: 
   m_Time: 1.25
-  m_Retroactive: 0
+  m_Retroactive: 1
   m_EmitOnce: 0
   m_Asset: {fileID: 11400000, guid: e2922f64a3298a44396703348454b25f, type: 2}
 --- !u!114 &-7307044702623734289
@@ -1620,7 +1620,7 @@ MonoBehaviour:
   m_Name: Signal Emitter
   m_EditorClassIdentifier: 
   m_Time: 1.25
-  m_Retroactive: 0
+  m_Retroactive: 1
   m_EmitOnce: 0
   m_Asset: {fileID: 11400000, guid: e2922f64a3298a44396703348454b25f, type: 2}
 --- !u!114 &2775581662982084337

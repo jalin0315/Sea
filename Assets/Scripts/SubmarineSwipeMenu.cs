@@ -83,6 +83,7 @@ public class SubmarineSwipeMenu : MonoBehaviour
     private void ChangeSubmarine(int _index)
     {
         _AnimationPlayer.sprite = _List_Image[_index].sprite;
+        _AnimationPlayer_WaterReflect.sprite = _List_Image[_index].sprite;
         _Player.sprite = _List_Image[_index].sprite;
         MenuSystem._Instance.StateChange(MenuSystem.Status.MainMenu);
     }

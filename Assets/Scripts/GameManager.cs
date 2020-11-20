@@ -130,6 +130,7 @@ public class GameManager : MonoBehaviour
             // Disable witch.
             Timeline._Instance._FadeIn.Play();
             Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
+            EnemyManager._Instance.IEnumeratorSpawnNpc03(false);
             _ZonePoints[_index] = true;
         }
         if (_Result > 7100)
@@ -199,6 +200,7 @@ public class GameManager : MonoBehaviour
             if (_ZonePoints[_index]) return;
             Timeline._Instance._FadeIn.Play();
             Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
+            EnemyManager._Instance.IEnumeratorSpawnNpc02(false);
             _ZonePoints[_index] = true;
         }
         if (_Result > 3000)
@@ -268,7 +270,6 @@ public class GameManager : MonoBehaviour
             if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
             if (_ZonePoints[_index]) return;
             EnemyManager._Instance.IEnumeratorSpawnNpc00(true);
-            StartCoroutine(SuppliesManager._Instance._CallSupplies_Singleton);
             StartCoroutine(SuppliesManager._Instance._CallSuppliesAd_Singleton);
             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
             _ZonePoints[_index] = true;
@@ -290,22 +291,17 @@ public class GameManager : MonoBehaviour
         Timeline._Instance._Idle.Play();
         MenuSystem._Instance.StateChange(MenuSystem.Status.MainMenu);
     }
-    private List<bool> _UpdateZonePoints = new List<bool>();
     public void UpdateZone()
     {
         if (_Result > 8000)
         {
-            int _index = 1;
-            if (_UpdateZonePoints.Count - 1 < _index) _UpdateZonePoints.Add(false);
-            if (_UpdateZonePoints[_index]) return;
-            _UpdateZonePoints[_index] = true;
+            EnemyManager._Instance.IEnumeratorSpawnNpc04(true);
+            return;
         }
         if (_Result > 4000)
         {
-            int _index = 0;
-            if (_UpdateZonePoints.Count - 1 < _index) _UpdateZonePoints.Add(false);
-            if (_UpdateZonePoints[_index]) return;
-            _UpdateZonePoints[_index] = true;
+            EnemyManager._Instance.IEnumeratorSpawnNpc03(true);
+            return;
         }
     }
     private List<bool> _TransitionPoints = new List<bool>();
@@ -355,7 +351,6 @@ public class GameManager : MonoBehaviour
         _Result = 0;
         InitializeStart();
         for (int _i = 0; _i < _ZonePoints.Count; _i++) _ZonePoints[_i] = false;
-        for (int _i = 0; _i < _UpdateZonePoints.Count; _i++) _UpdateZonePoints[_i] = false;
         for (int _i = 0; _i < _TransitionPoints.Count; _i++) _TransitionPoints[_i] = false;
         Player._Instance._Transform_Player.position = Vector2.zero;
         Player._Instance.InitializeStart();

@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 7232249481727047978}
   - component: {fileID: 354465831693471038}
   - component: {fileID: 3149235484797990409}
-  - component: {fileID: 3405581019386861199}
+  - component: {fileID: 239695218495327566}
+  - component: {fileID: 239695218495327565}
   m_Layer: 0
   m_Name: EnemyFishGroup11
   m_TagString: Enemy
@@ -96,25 +97,97 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Status: -1
-  _Scale: {x: 0, y: 0, z: 0}
   _ScaleMagnification: 1
   _Speed: 1.5
   _RotateSpeed: 10
-  _Visible: 0
   _TimeOut: 5
---- !u!70 &3405581019386861199
-CapsuleCollider2D:
+  _FadeDisappear: 0
+--- !u!60 &239695218495327566
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2799251751922020159}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 2.89, y: 0.88}
-  m_Size: {x: 32.4, y: 18}
-  m_Direction: 1
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 10.24, y: 10.24}
+    newSize: {x: 10.24, y: 10.24}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.635, y: -3.915}
+      - {x: 3.135, y: -3.0349998}
+      - {x: 1.5649999, y: -1.905}
+      - {x: 0.295, y: -3.175}
+      - {x: 1.645, y: -3.7949998}
+    - - {x: -1.545, y: -2.995}
+      - {x: -0.195, y: -2.205}
+      - {x: -1.615, y: -1.185}
+      - {x: -2.7549999, y: -2.375}
+      - {x: -1.545, y: -2.945}
+    - - {x: 0.625, y: -0.53499997}
+      - {x: 1.9549999, y: 0.24499999}
+      - {x: 0.565, y: 1.245}
+      - {x: -0.555, y: 0.085}
+      - {x: 0.645, y: -0.415}
+    - - {x: -3.085, y: -0.525}
+      - {x: -2.245, y: -0.015}
+      - {x: -3.135, y: 0.625}
+      - {x: -3.855, y: -0.16499999}
+      - {x: -3.085, y: -0.515}
+    - - {x: -1.435, y: 1.475}
+      - {x: -0.085, y: 2.2649999}
+      - {x: -1.505, y: 3.2849998}
+      - {x: -2.645, y: 2.095}
+      - {x: -1.435, y: 1.525}
+    - - {x: 2.245, y: 2.2849998}
+      - {x: 3.595, y: 3.085}
+      - {x: 2.175, y: 4.105}
+      - {x: 1.035, y: 2.915}
+      - {x: 2.245, y: 2.345}
+--- !u!114 &239695218495327565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2799251751922020159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c55c83d4c4dd1145ad5fbbab3c3df36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AlphaTolerance: 80
+  DistanceThreshold: 45
+  Scale: 1
+  Decompose: 0
+  RunInPlayMode: 0
+  UseCache: 0
+  lastAlphaTolerance: 80
+  lastScale: 1
+  lastDistanceThreshold: 45
+  lastDecompose: 0
+  lastSprite: {fileID: 21300000, guid: 3c1024302db401947bbfc73463f2cdaa, type: 3}
+  lastRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1024
+    height: 1024
+  lastOffset: {x: 512, y: 512}
+  lastPixelsPerUnit: 100
+  lastFlipX: 0
+  lastFlipY: 0
+  editorCache: []

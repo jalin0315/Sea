@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
 
     public void InitializeStart()
     {
-        _Slider_MaxHealth.value = 10.0f; // 100.0f
+        _Slider_MaxHealth.value = 100.0f; // 100.0f
         _Slider_Health.value = _Slider_MaxHealth.value;
         _Slider_Power.value = _Slider_Power.maxValue;
         HealthBarColorChange();

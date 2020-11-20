@@ -18,10 +18,11 @@ public class EnemyAI : MonoBehaviour
         TargetLock
     }
     public Status _Status;
+    private SpriteRenderer _SpriteRenderer;
     public Queue<GameObject> _Pool = new Queue<GameObject>();
-    [SerializeField] private Vector3 _Scale;
-    public float _ScaleMagnification;
-    public float _Speed;
+    private Vector3 _Scale;
+    [HideInInspector] public float _ScaleMagnification;
+    [HideInInspector] public float _Speed;
     [SerializeField] private float _RotateSpeed;
     private GameObject _WaypointTarget;
     private float _PatrolTime;
@@ -37,13 +38,17 @@ public class EnemyAI : MonoBehaviour
     private float _DistanceUpdate;
     private float _TargetLockTime;
     private float _T_L_Timer;
-    [SerializeField] private bool _Visible;
-    public float _TimeOut;
+    private bool _Visible;
+    [HideInInspector] public float _TimeOut;
     private float _Visible_Timer;
+    [HideInInspector] public bool _FadeDisappear;
+    private float _FadeDisappear_Time;
+    private float _FadeDisappear_Timer;
     public static bool _RecoveryAll;
 
     private void Awake()
     {
+        _SpriteRenderer = GetComponent<SpriteRenderer>();
         _Scale = transform.localScale;
     }
 
@@ -66,6 +71,7 @@ public class EnemyAI : MonoBehaviour
     public void StateChange(Status _status)
     {
         _Status = _status;
+        _SpriteRenderer.color = new Color(_SpriteRenderer.color.r, _SpriteRenderer.color.g, _SpriteRenderer.color.b, 1.0f);
         _Visible = false;
         _Visible_Timer = _TimeOut;
         if (_Status == Status.Patrol)
@@ -173,7 +179,7 @@ public class EnemyAI : MonoBehaviour
                     else
                     {
                         transform.position = Vector2.Lerp(transform.position, _WaypointTarget.transform.position + _OutOfDistance_Position_Offset, Time.deltaTime * 0.5f);
-                        transform.right = Vector2.Lerp(transform.right, _OutOfDistance_Rotation_Offset, Time.deltaTime * 0.01f);
+                        //transform.right = Vector2.Lerp(transform.right, _OutOfDistance_Rotation_Offset, Time.deltaTime * 0.01f);
                     }
                 }
                 else if (_P_I_Timer < 0.0f)
@@ -200,8 +206,7 @@ public class EnemyAI : MonoBehaviour
                 transform.localScale = new Vector3(transform.localScale.x, -_Scale.y * _ScaleMagnification, transform.localScale.z);
             else
                 transform.localScale = new Vector3(transform.localScale.x, _Scale.y * _ScaleMagnification, transform.localScale.z);
-            if (!_Visible) _Visible_Timer -= Time.deltaTime;
-            if (_Visible_Timer < 0.0f) EnemyManager._Instance.Recovery(_Pool, gameObject);
+            Disappear();
             return;
         }
         if (_Status == Status.SwimUp)
@@ -209,8 +214,7 @@ public class EnemyAI : MonoBehaviour
             transform.position = new Vector2(Camera.main.transform.position.x, transform.position.y);
             transform.Translate(Vector2.up * Time.deltaTime * _Speed, Space.World);
             transform.right = Vector2.Lerp(transform.right, Vector2.up, Time.deltaTime * _RotateSpeed);
-            if (!_Visible) _Visible_Timer -= Time.deltaTime;
-            if (_Visible_Timer < 0.0f) EnemyManager._Instance.Recovery(_Pool, gameObject);
+            Disappear();
             return;
         }
         if (_Status == Status.SwimDown)
@@ -218,45 +222,39 @@ public class EnemyAI : MonoBehaviour
             transform.position = new Vector2(Camera.main.transform.position.x, transform.position.y);
             transform.Translate(Vector2.down * Time.deltaTime * _Speed, Space.World);
             transform.right = Vector2.Lerp(transform.right, Vector2.down, Time.deltaTime * _RotateSpeed);
-            if (!_Visible) _Visible_Timer -= Time.deltaTime;
-            if (_Visible_Timer < 0.0f) EnemyManager._Instance.Recovery(_Pool, gameObject);
+            Disappear();
             return;
         }
         if (_Status == Status.SwimLeft)
         {
             transform.Translate((Vector2.left + _TranslateOffset) * Time.deltaTime * _Speed, Space.World);
             transform.right = Vector2.Lerp(transform.right, -(Vector2.left + _TranslateOffset), Time.deltaTime * _RotateSpeed);
-            if (!_Visible) _Visible_Timer -= Time.deltaTime;
-            if (_Visible_Timer < 0.0f) EnemyManager._Instance.Recovery(_Pool, gameObject);
+            Disappear();
             return;
         }
         if (_Status == Status.SwimRight)
         {
             transform.Translate((Vector2.right + _TranslateOffset) * Time.deltaTime * _Speed, Space.World);
             transform.right = Vector2.Lerp(transform.right, Vector2.right + _TranslateOffset, Time.deltaTime * _RotateSpeed);
-            if (!_Visible) _Visible_Timer -= Time.deltaTime;
-            if (_Visible_Timer < 0.0f) EnemyManager._Instance.Recovery(_Pool, gameObject);
+            Disappear();
             return;
         }
         if (_Status == Status.SwimLeftStyle)
         {
             transform.Translate(new Vector3(1.0f, Mathf.Sin(Time.time * 2.5f)) * Time.deltaTime * _Speed, Space.World);
-            if (!_Visible) _Visible_Timer -= Time.deltaTime;
-            if (_Visible_Timer < 0.0f) EnemyManager._Instance.Recovery(_Pool, gameObject);
+            Disappear();
             return;
         }
         if (_Status == Status.SwimRightStyle)
         {
             transform.Translate(new Vector3(-1.0f, Mathf.Sin(Time.time * 2.5f)) * Time.deltaTime * _Speed, Space.World);
-            if (!_Visible) _Visible_Timer -= Time.deltaTime;
-            if (_Visible_Timer < 0.0f) EnemyManager._Instance.Recovery(_Pool, gameObject);
+            Disappear();
             return;
         }
         if (_Status == Status.Target)
         {
             transform.Translate(Vector2.right * Time.deltaTime * _Speed, Space.Self);
-            if (!_Visible) _Visible_Timer -= Time.deltaTime;
-            if (_Visible_Timer < 0.0f) EnemyManager._Instance.Recovery(_Pool, gameObject);
+            Disappear();
             return;
         }
         if (_Status == Status.TargetLock)
@@ -280,16 +278,31 @@ public class EnemyAI : MonoBehaviour
             }
             if (_delta(transform.eulerAngles.z) > 90.0f || _delta(transform.eulerAngles.z) < -90.0f) transform.localScale = new Vector3(transform.localScale.x, -_Scale.y * _ScaleMagnification, transform.localScale.z);
             else transform.localScale = new Vector3(transform.localScale.x, _Scale.y * _ScaleMagnification, transform.localScale.z);
-            if (!_Visible) _Visible_Timer -= Time.deltaTime;
-            if (_Visible_Timer < 0.0f) EnemyManager._Instance.Recovery(_Pool, gameObject);
+            Disappear();
             return;
         }
     }
 
+    private void Disappear()
+    {
+        if (!_FadeDisappear)
+        {
+            if (!_Visible)
+                _Visible_Timer -= Time.deltaTime;
+            if (_Visible_Timer < 0.0f)
+                EnemyManager._Instance.Recovery(_Pool, gameObject);
+        }
+        else if (_FadeDisappear)
+        {
+            _SpriteRenderer.color = new Color(_SpriteRenderer.color.r, _SpriteRenderer.color.g, _SpriteRenderer.color.b, _SpriteRenderer.color.a - (Time.deltaTime * 0.1f));
+            if (_SpriteRenderer.color.a <= 0.0f)
+                EnemyManager._Instance.Recovery(_Pool, gameObject);
+        }
+    }
     private void OnBecameVisible()
     {
         _Visible = true;
-        _Visible_Timer = _TimeOut;
+        //_Visible_Timer = _TimeOut;
     }
     private void OnBecameInvisible() => _Visible = false;
 }
