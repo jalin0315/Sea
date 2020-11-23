@@ -52,7 +52,6 @@ public class SubmarineSwipeMenu : MonoBehaviour
         {
             if (_ScrollPos < _List_Pos[_i] + (_Distance / 2) && _ScrollPos > _List_Pos[_i] - (_Distance / 2))
             {
-                Debug.Log("Current Selected" + " " + _i);
                 if (_List_Toggle[_i].isOn)
                 {
                     _List_Image[_i].color = Color.white;

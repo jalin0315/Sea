@@ -16,7 +16,6 @@ public class Player : MonoBehaviour
     [SerializeField] private Image _Image_Health;
     [SerializeField] private Color _HighHealthColor;
     [SerializeField] private Color _LowHealthColor;
-    public float _MaxHealthLess;
     private bool _Invincible;
     [SerializeField] private ParticleSystem _ParticleSystem_Invincible;
     [HideInInspector] public int _SkillOptions;
@@ -30,7 +29,7 @@ public class Player : MonoBehaviour
 
     public void InitializeStart()
     {
-        _Slider_MaxHealth.value = 100.0f; // 100.0f
+        _Slider_MaxHealth.value = 100.0f - (GameManager._Instance._Meter * 0.005f);
         _Slider_Health.value = _Slider_MaxHealth.value;
         _Slider_Power.value = _Slider_Power.maxValue;
         HealthBarColorChange();
@@ -48,6 +47,7 @@ public class Player : MonoBehaviour
     public void InvincibleEffectEnable() => _ParticleSystem_Invincible.Play();
     public void InvincibleEffectDisable() => _ParticleSystem_Invincible.Stop();
 
+    public void VerifyHealth(float _meter) => _Slider_MaxHealth.value = 100.0f - (_meter * 0.005f);
     private void HealthBarColorChange()
     {
         Color _color_lerp = Color.Lerp(_LowHealthColor, _HighHealthColor, _Slider_Health.value / _Slider_MaxHealth.value);

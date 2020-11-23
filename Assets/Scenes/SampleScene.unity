@@ -2371,7 +2371,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &391136519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5127,7 +5127,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &642265208
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5667,7 +5667,7 @@ PlayableDirector:
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
-  m_InitialTime: 0
+  m_InitialTime: 480
   m_SceneBindings:
   - key: {fileID: 6569664686535907225, guid: 6918fcd43d08ae44d802a052f6e873ca, type: 2}
     value: {fileID: 1336024462}
@@ -8212,14 +8212,20 @@ MonoBehaviour:
   - {fileID: 6201577833884745973, guid: c875c2b5b34a8a742b4bf7bbc58f8d67, type: 3}
   - {fileID: 2799251751922020159, guid: d1b21b385a5769f4fa3b3cf551263088, type: 3}
   - {fileID: 8820610945548809192, guid: 5c16dcc2fd570074f8ccddd6d354a4d4, type: 3}
-  _List_Prefab_SpecialFish:
-  - {fileID: 7066099196965836282, guid: 9d7cffd542c94bd42b4b715f751bb57f, type: 3}
-  - {fileID: 2104547017683126040, guid: 713d85ac8a77f44428573805dc69da6e, type: 3}
-  - {fileID: 412966769040616557, guid: 28baa2a0e57c327458d6e9c99619ce18, type: 3}
-  - {fileID: 3189904373659610180, guid: 71b0a3a7c16d67742a83abc106d3fb83, type: 3}
-  - {fileID: 4845277575564901415, guid: 159889f8d83656a46815c2862a54d5a2, type: 3}
-  - {fileID: 3038113064348256230, guid: eb7cccbd62e385746b999bcc3bfc0366, type: 3}
-  - {fileID: 624057944460187340, guid: a95a027954291d540a4193e94a090ad6, type: 3}
+  _List_Prefab_BackgroundFish:
+  - {fileID: 6153544592563819221, guid: ba38f27cab9b4454ba0529b394cad2ca, type: 3}
+  - {fileID: 4936506072078461209, guid: b521bcc1f577b594e9dfdeab6753ece0, type: 3}
+  - {fileID: 6923505395394832008, guid: 4e1f091d32d075147a796677d89866cb, type: 3}
+  - {fileID: 2330286601525687874, guid: 11d03d4ec1f96824bbe2e23861feb2a2, type: 3}
+  - {fileID: 6078362758566143005, guid: d04d7dcc60e1dbd42b5de81b7bc385d6, type: 3}
+  - {fileID: 1676241870416412301, guid: f634485463b0f704185778116388ce6a, type: 3}
+  - {fileID: 6761762582477834129, guid: a2acb8325d2f4b74aaf26fd580748829, type: 3}
+  - {fileID: 1490688945322993091, guid: 6e610d65b16be6c41ab970b07d3953a8, type: 3}
+  - {fileID: 3974349718461266472, guid: b6d6c747e6aa2ab4fb0666b2ceccc7f9, type: 3}
+  - {fileID: 2958820036026679097, guid: 01e7ba7c9389af94cb4da8b786f83824, type: 3}
+  - {fileID: 656431571860291937, guid: faec1ea6893a12844aab69803c102388, type: 3}
+  - {fileID: 2869958951239325734, guid: 81acd42dcc7d0ef488a35b22f72b0a2a, type: 3}
+  - {fileID: 8377461903495687727, guid: 4075cf7fd2ea3a842bd2ced26217ee0f, type: 3}
   _MaxCount: 0
   _SpawnOffset: 2.5
 --- !u!1 &1096886418
@@ -10174,7 +10180,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 50, y: 1}
+  m_Size: {x: 25, y: 3}
   m_EdgeRadius: 0
 --- !u!1 &1367468458
 GameObject:
@@ -10748,7 +10754,6 @@ MonoBehaviour:
   _Image_Health: {fileID: 696022147}
   _HighHealthColor: {r: 0, g: 1, b: 0, a: 1}
   _LowHealthColor: {r: 1, g: 0, b: 0, a: 1}
-  _MaxHealthLess: 5
   _ParticleSystem_Invincible: {fileID: 489205108}
   _SkillOptions: 0
   _List_SkillPay:
@@ -11259,7 +11264,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 226581919}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.30457988
+  m_Size: 0.29085666
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11786,7 +11791,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1250, y: 0}
+  m_AnchoredPosition: {x: -1249.9999, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1575668580
@@ -11954,6 +11959,8 @@ MonoBehaviour:
   _Object_Background_DeepSea: {fileID: 1734628290}
   _Object_AmbientLight: {fileID: 779698927}
   _Object_PlayerLight: {fileID: 764405488}
+  _ZoneClassPoints: 
+  _ZonePoints: 
 --- !u!4 &1588659184
 Transform:
   m_ObjectHideFlags: 0
@@ -12266,7 +12273,7 @@ PlayableDirector:
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
-  m_InitialTime: 0
+  m_InitialTime: 480
   m_SceneBindings:
   - key: {fileID: 1590150146236001796, guid: 506a920ba34ad5746a697e5084a2a6dc, type: 2}
     value: {fileID: 642265207}
@@ -15452,7 +15459,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 50, y: 1}
+  m_Size: {x: 25, y: 3}
   m_EdgeRadius: 0
 --- !u!4 &2007034840 stripped
 Transform:
