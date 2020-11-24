@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
                 switch (_ZoneClassPoints[_i])
                 {
                     case 0:
-                        //EnemyManager._Instance.IEnumeratorSpawnNpcBackground(true);
+                        EnemyManager._Instance.IEnumeratorSpawnNpcBackground(true);
                         EnemyManager._Instance.IEnumeratorSpawnNpc00(true);
                         StartCoroutine(SuppliesManager._Instance._CallSuppliesAd_Singleton);
                         BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);

@@ -33,8 +33,12 @@ public class EnemyManager : MonoBehaviour
     private Queue<GameObject> _ObstacleFish_Pool = new Queue<GameObject>();
     private Queue<GameObject> _BackgroundFish_Pool = new Queue<GameObject>();
     private int _CurrentCount;
-    public int _MaxCount;
+    private int _CurrentCount_BackgroundFish;
+    private int _MaxCount;
+    private int _MaxCount_BackgroundFish;
     [SerializeField] private float _SpawnOffset;
+    [SerializeField] private float _SpawnOffsetMedium;
+    [SerializeField] private float _SpawnOffsetLarge;
 
     private void Awake()
     {
@@ -149,23 +153,42 @@ public class EnemyManager : MonoBehaviour
             _enemy_ai._Speed = _speed;
             _enemy_ai._TimeOut = _time_out;
             _enemy_ai._FadeDisappear = _disappear_status;
-            _CurrentCount++;
-            if (GameManager._Instance._Meter >= 8000.0f) { _enemy_ai._ScaleMagnification = Random.Range(20.0f, 26.0f); }
-            else if (GameManager._Instance._Meter >= 6000.0f) { _enemy_ai._ScaleMagnification = Random.Range(10.0f, 16.0f); }
-            else if (GameManager._Instance._Meter >= 4000.0f) { _enemy_ai._ScaleMagnification = Random.Range(5.0f, 10.1f); }
-            else if (GameManager._Instance._Meter >= 2000.0f) { _enemy_ai._ScaleMagnification = Random.Range(2.0f, 4.1f); }
-            else if (GameManager._Instance._Meter >= 1000.0f) { _enemy_ai._ScaleMagnification = Random.Range(1.6f, 2.1f); }
-            else if (GameManager._Instance._Meter >= 0.0f) { _enemy_ai._ScaleMagnification = Random.Range(1.0f, 1.6f); }
+            if (_queue == _TargetFish_Pool || _queue == _ObstacleFish_Pool)
+            {
+                _enemy_ai._SpriteRenderer.color = Color.white;
+                _enemy_ai._FadeDisappear_Time = 0.05f;
+            }
+            else if (_queue == _BackgroundFish_Pool)
+            {
+                _enemy_ai._SpriteRenderer.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0.5f);
+                _enemy_ai._FadeDisappear_Time = 0.025f;
+                _CurrentCount_BackgroundFish++;
+            }
+            if (_queue != _BackgroundFish_Pool)
+            {
+                if (GameManager._Instance._Meter >= 8000.0f) { _enemy_ai._ScaleMagnification = Random.Range(20.0f, 26.0f); }
+                else if (GameManager._Instance._Meter >= 6000.0f) { _enemy_ai._ScaleMagnification = Random.Range(10.0f, 16.0f); }
+                else if (GameManager._Instance._Meter >= 4000.0f) { _enemy_ai._ScaleMagnification = Random.Range(5.0f, 10.1f); }
+                else if (GameManager._Instance._Meter >= 2000.0f) { _enemy_ai._ScaleMagnification = Random.Range(2.0f, 4.1f); }
+                else if (GameManager._Instance._Meter >= 1000.0f) { _enemy_ai._ScaleMagnification = Random.Range(1.6f, 2.1f); }
+                else if (GameManager._Instance._Meter >= 0.0f) { _enemy_ai._ScaleMagnification = Random.Range(1.0f, 1.6f); }
+                _CurrentCount++;
+            }
             _enemy_ai.StateChange(_status);
-            return;
         }
-        else Debug.LogErrorFormat("{0} is out of range!");
     }
     public void Recovery(Queue<GameObject> _queue, GameObject _go)
     {
         _queue.Enqueue(_go);
         _go.SetActive(false);
-        _CurrentCount--;
+        if (_queue != _BackgroundFish_Pool)
+        {
+            _CurrentCount--;
+        }
+        else if (_queue == _BackgroundFish_Pool)
+        {
+            _CurrentCount_BackgroundFish--;
+        }
     }
 
     private void RandomWaypointsInitialize()
@@ -409,19 +432,21 @@ public class EnemyManager : MonoBehaviour
     private IEnumerator _SpawnNpc_Background_Singleton;
     private IEnumerator _SpawnNpc_Logic_Background()
     {
+        _MaxCount_BackgroundFish = 5;
         while (true)
         {
             yield return new WaitForEndOfFrame();
-            float _speed = Random.Range(0.5f, 1.0f);
-            float _time_out = 2.0f;
+            if (_BackgroundFish_Pool.Count <= 0) continue;
+            if (_CurrentCount_BackgroundFish >= _MaxCount_BackgroundFish && _MaxCount_BackgroundFish != 0) continue;
+            float _speed = Random.Range(0.25f, 0.85f);
             int _index = Random.Range(0, 2);
             switch (_index)
             {
                 case 0:
-                    ReUse(_BackgroundFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, _time_out, true);
+                    ReUse(_BackgroundFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, -1.0f, true);
                     break;
                 case 1:
-                    ReUse(_BackgroundFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, _time_out, true);
+                    ReUse(_BackgroundFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, -1.0f, true);
                     break;
                 default:
                     break;
@@ -616,7 +641,7 @@ public class EnemyManager : MonoBehaviour
                 while (true)
                 {
                     yield return new WaitForEndOfFrame();
-                    if (_Fish_Pool.Count <= 0)
+                    if (_SingleFish_Pool.Count <= 0)
                         continue;
                     if (!_initialize)
                     {
@@ -632,7 +657,7 @@ public class EnemyManager : MonoBehaviour
                         Vector2 _origin = _Camera.ScreenToWorldPoint(Vector2.zero);
                         float _speed = Random.Range(2.5f, 3.5f); // 4.0f 4.5f
                         float _time_out = 1.5f;
-                        ReUse(_Fish_Pool, EnemyAI.Status.SwimRight, new Vector2(_origin.x + -_SpawnOffset, _points[_i]), Quaternion.identity, _speed, _time_out, false);
+                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_origin.x + -_SpawnOffset, _points[_i]), Quaternion.identity, _speed, _time_out, false);
                         yield return new WaitForSeconds(0.5f);
                     }
                 }
@@ -644,7 +669,7 @@ public class EnemyManager : MonoBehaviour
                 while (true)
                 {
                     yield return new WaitForEndOfFrame();
-                    if (_Fish_Pool.Count <= 0)
+                    if (_SingleFish_Pool.Count <= 0)
                         continue;
                     if (!_initialize)
                     {
@@ -660,7 +685,7 @@ public class EnemyManager : MonoBehaviour
                         Vector2 _origin = _Camera.ScreenToWorldPoint(Vector2.zero);
                         float _speed = Random.Range(2.5f, 3.5f); // 4.0f 4.5f
                         float _time_out = 1.5f;
-                        ReUse(_Fish_Pool, EnemyAI.Status.SwimRight, new Vector2(_origin.x + -_SpawnOffset, _points[_i]), Quaternion.identity, _speed, _time_out, false);
+                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_origin.x + -_SpawnOffset, _points[_i]), Quaternion.identity, _speed, _time_out, false);
                         yield return new WaitForSeconds(0.5f);
                     }
                 }
@@ -672,7 +697,7 @@ public class EnemyManager : MonoBehaviour
                 while (true)
                 {
                     yield return new WaitForEndOfFrame();
-                    if (_Fish_Pool.Count <= 0)
+                    if (_SingleFish_Pool.Count <= 0)
                         continue;
                     if (!_initialize)
                     {
@@ -688,7 +713,7 @@ public class EnemyManager : MonoBehaviour
                         Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
                         float _speed = Random.Range(2.5f, 3.5f); // 4.0f 4.5f
                         float _time_out = 1.5f;
-                        ReUse(_Fish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_vertex.x + _SpawnOffset, _points[_i]), Quaternion.identity, _speed, _time_out, false);
+                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_vertex.x + _SpawnOffset, _points[_i]), Quaternion.identity, _speed, _time_out, false);
                         yield return new WaitForSeconds(0.5f);
                     }
                 }
@@ -700,7 +725,7 @@ public class EnemyManager : MonoBehaviour
                 while (true)
                 {
                     yield return new WaitForEndOfFrame();
-                    if (_Fish_Pool.Count <= 0)
+                    if (_SingleFish_Pool.Count <= 0)
                         continue;
                     if (!_initialize)
                     {
@@ -716,7 +741,7 @@ public class EnemyManager : MonoBehaviour
                         Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
                         float _speed = Random.Range(2.5f, 3.5f); // 4.0f 4.5f
                         float _time_out = 1.5f;
-                        ReUse(_Fish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_vertex.x + _SpawnOffset, _points[_i]), Quaternion.identity, _speed, _time_out, false);
+                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_vertex.x + _SpawnOffset, _points[_i]), Quaternion.identity, _speed, _time_out, false);
                         yield return new WaitForSeconds(0.5f);
                     }
                 }
@@ -777,7 +802,7 @@ public class EnemyManager : MonoBehaviour
             while (true)
             {
                 yield return new WaitForEndOfFrame();
-                if (_SingleFish_Pool.Count <= 0)
+                if (_TargetFish_Pool.Count <= 0)
                     continue;
                 if (_CurrentCount >= _MaxCount && _MaxCount != 0)
                     continue;
@@ -789,15 +814,15 @@ public class EnemyManager : MonoBehaviour
                 switch (_i)
                 {
                     case 1:
-                        ReUse(_SingleFish_Pool, EnemyAI.Status.Target, new Vector2(_origin.x + -_SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed, _time_out, false);
+                        ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_origin.x + -_SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed, _time_out, false);
                         break;
                     case 2:
-                        ReUse(_SingleFish_Pool, EnemyAI.Status.Target, new Vector2(_vertex.x + _SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed, _time_out, false);
+                        ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_vertex.x + _SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed, _time_out, false);
                         break;
                     default:
                         break;
                 }
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(Random.Range(0.5f, 1.0f));
             }
         }
     }
@@ -850,24 +875,24 @@ public class EnemyManager : MonoBehaviour
                     if (_j >= _points_00.Length - 2)
                         break;
                     float _speed = 3.0f;
-                    float _time_out = 1.5f;
+                    float _time_out = 2.5f;
                     if (_j < 0)
                     {
-                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffset, _Vertex().y), Quaternion.identity, _speed, _time_out, false);
+                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffsetMedium, _Vertex().y), Quaternion.identity, _speed, _time_out, false);
                         _j++;
                     }
                     if (_j >= 0 && _j < _points_00.Length - 2)
                     {
-                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffset, _points_00[_j]), Quaternion.identity, _speed, _time_out, false);
+                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffsetMedium, _points_00[_j]), Quaternion.identity, _speed, _time_out, false);
                         _j++;
                     }
                     if (_j >= _points_00.Length - 2)
                     {
-                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffset, _Origin().y), Quaternion.identity, _speed, _time_out, false);
+                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffsetMedium, _Origin().y), Quaternion.identity, _speed, _time_out, false);
                     }
                     if (_k >= 0)
                     {
-                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffset, _points_01[_k]), Quaternion.identity, _speed, _time_out, false);
+                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffsetMedium, _points_01[_k]), Quaternion.identity, _speed, _time_out, false);
                         _k--;
                     }
                     yield return new WaitForSeconds(0.5f);
@@ -901,24 +926,24 @@ public class EnemyManager : MonoBehaviour
                     if (_j >= _points_00.Length - 2)
                         break;
                     float _speed = 3.0f;
-                    float _time_out = 1.5f;
+                    float _time_out = 2.5f;
                     if (_j < 0)
                     {
-                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffset, _Vertex().y), Quaternion.identity, _speed, _time_out, false);
+                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffsetMedium, _Vertex().y), Quaternion.identity, _speed, _time_out, false);
                         _j++;
                     }
                     if (_j >= 0 && _j < _points_00.Length - 2)
                     {
-                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffset, _points_00[_j]), Quaternion.identity, _speed, _time_out, false);
+                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffsetMedium, _points_00[_j]), Quaternion.identity, _speed, _time_out, false);
                         _j++;
                     }
                     if (_j >= _points_00.Length - 2)
                     {
-                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffset, _Origin().y), Quaternion.identity, _speed, _time_out, false);
+                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffsetMedium, _Origin().y), Quaternion.identity, _speed, _time_out, false);
                     }
                     if (_k >= 0)
                     {
-                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffset, _points_01[_k]), Quaternion.identity, _speed, _time_out, false);
+                        ReUse(_SingleFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffsetMedium, _points_01[_k]), Quaternion.identity, _speed, _time_out, false);
                         _k--;
                     }
                     yield return new WaitForSeconds(0.5f);
@@ -939,24 +964,24 @@ public class EnemyManager : MonoBehaviour
                 Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
                 int _i = Random.Range(1, 3);
                 float _speed = Random.Range(1.5f, 3.5f);
-                float _time_out = 1.0f;
+                float _time_out = 2.0f;
                 switch (_i)
                 {
                     case 1:
-                        ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_origin.x + -_SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed, _time_out, false);
+                        ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_origin.x + -_SpawnOffsetMedium, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed, _time_out, false);
                         break;
                     case 2:
-                        ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_vertex.x + _SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed, _time_out, false);
+                        ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_vertex.x + _SpawnOffsetMedium, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed, _time_out, false);
                         break;
                     default:
                         break;
                 }
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(Random.Range(0.5f,2.0f));
             }
         }
         if (_index == 3)
         {
-            _MaxCount = 10;
+            _MaxCount = 5;
             while (true)
             {
                 yield return new WaitForEndOfFrame();
@@ -966,37 +991,37 @@ public class EnemyManager : MonoBehaviour
                 Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
                 int _i = Random.Range(1, 3);
                 float _i_speed = Random.Range(2.5f, 4.5f);
-                float _i_time_out = 1.0f;
+                float _i_time_out = 2.5f;
                 switch (_i)
                 {
                     case 1:
                         if (_TargetFish_Pool.Count > 0)
-                            ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_origin.x + -_SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _i_speed, _i_time_out, false);
+                            ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_origin.x + -_SpawnOffsetMedium, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _i_speed, _i_time_out, false);
                         break;
                     case 2:
                         if (_TargetFish_Pool.Count > 0)
-                            ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_vertex.x + _SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _i_speed, _i_time_out, false);
+                            ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_vertex.x + _SpawnOffsetMedium, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _i_speed, _i_time_out, false);
                         break;
                     default:
                         break;
                 }
                 int _j = Random.Range(1, 3);
                 float _j_speed = Random.Range(1.0f, 1.5f);
-                float _j_time_out = 3.0f;
+                float _j_time_out = 2.5f;
                 switch (_j)
                 {
                     case 1:
                         if (_SingleFish_Pool.Count > 0)
-                            ReUse(_SingleFish_Pool, EnemyAI.Status.Patrol, new Vector2(_origin.x + -_SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _j_speed, _j_time_out, false);
+                            ReUse(_SingleFish_Pool, EnemyAI.Status.Patrol, new Vector2(_origin.x + -_SpawnOffsetMedium, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _j_speed, _j_time_out, false);
                         break;
                     case 2:
                         if (_SingleFish_Pool.Count > 0)
-                            ReUse(_SingleFish_Pool, EnemyAI.Status.Patrol, new Vector2(_vertex.x + _SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _j_speed, _j_time_out, false);
+                            ReUse(_SingleFish_Pool, EnemyAI.Status.Patrol, new Vector2(_vertex.x + _SpawnOffsetMedium, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _j_speed, _j_time_out, false);
                         break;
                     default:
                         break;
                 }
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(Random.Range(0.5f,1.0f));
             }
         }
     }
@@ -1024,34 +1049,33 @@ public class EnemyManager : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
             float _speed = Random.Range(1.0f, 2.5f);
-            float _time_out = 1.0f;
             if (GameManager._Instance._Result < 6000)
             {
                 _MaxCount = 3;
                 if (_CurrentCount >= _MaxCount && _MaxCount != 0)
                     continue;
                 if (_TargetFish_Pool.Count > 0)
-                    ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_Origin().x + -_SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, _time_out, true);
-                yield return new WaitForSeconds(0.5f);
+                    ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_Origin().x + -_SpawnOffsetLarge, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, -1.0f, true);
+                yield return new WaitForSeconds(Random.Range(0.5f, 2.0f));
                 if (_TargetFish_Pool.Count > 0)
-                    ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_Vertex().x + _SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, _time_out, true);
-                yield return new WaitForSeconds(0.5f);
+                    ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_Vertex().x + _SpawnOffsetLarge, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, -1.0f, true);
+                yield return new WaitForSeconds(Random.Range(0.5f, 2.0f));
                 if (_ObstacleFish_Pool.Count > 0)
                 {
                     int _index = Random.Range(0, 2);
                     switch (_index)
                     {
                         case 0:
-                            ReUse(_ObstacleFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, _time_out, true);
+                            ReUse(_ObstacleFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffsetLarge, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, -1.0f, true);
                             break;
                         case 1:
-                            ReUse(_ObstacleFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, _time_out, true);
+                            ReUse(_ObstacleFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffsetLarge, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, -1.0f, true);
                             break;
                         default:
                             break;
                     }
                 }
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(Random.Range(0.5f,2.0f));
             }
             if (GameManager._Instance._Result >= 6000)
             {
@@ -1064,10 +1088,10 @@ public class EnemyManager : MonoBehaviour
                     switch (_index)
                     {
                         case 0:
-                            ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_Origin().x + -_SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, _time_out, true);
+                            ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_Origin().x + -_SpawnOffsetLarge, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, -1.0f, true);
                             break;
                         case 1:
-                            ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_Vertex().x + _SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, _time_out, true);
+                            ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_Vertex().x + _SpawnOffsetLarge, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, -1.0f, true);
                             break;
                         default:
                             break;
@@ -1080,16 +1104,16 @@ public class EnemyManager : MonoBehaviour
                     switch (_index)
                     {
                         case 0:
-                            ReUse(_ObstacleFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, _time_out, true);
+                            ReUse(_ObstacleFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffsetLarge, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, -1.0f, true);
                             break;
                         case 1:
-                            ReUse(_ObstacleFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, _time_out, true);
+                            ReUse(_ObstacleFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffsetLarge, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, -1.0f, true);
                             break;
                         default:
                             break;
                     }
                 }
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(Random.Range(0.5f,2.0f));
             }
         }
     }
@@ -1119,15 +1143,14 @@ public class EnemyManager : MonoBehaviour
             if (_CurrentCount >= _MaxCount && _MaxCount != 0)
                 continue;
             float _speed = Random.Range(3.0f, 4.0f);
-            float _time_out = 1.0f;
             int _index = Random.Range(0, 2);
             switch (_index)
             {
                 case 0:
-                    ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_Origin().x + -_SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, _time_out, true);
+                    ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_Origin().x + -_SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, -1.0f, true);
                     break;
                 case 1:
-                    ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_Vertex().x + _SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, _time_out, true);
+                    ReUse(_TargetFish_Pool, EnemyAI.Status.Target, new Vector2(_Vertex().x + _SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, -1.0f, true);
                     break;
                 default:
                     break;

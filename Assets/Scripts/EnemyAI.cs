@@ -18,7 +18,7 @@ public class EnemyAI : MonoBehaviour
         TargetLock
     }
     public Status _Status;
-    private SpriteRenderer _SpriteRenderer;
+    public SpriteRenderer _SpriteRenderer;
     public Queue<GameObject> _Pool = new Queue<GameObject>();
     private Vector3 _Scale;
     [HideInInspector] public float _ScaleMagnification;
@@ -42,8 +42,7 @@ public class EnemyAI : MonoBehaviour
     [HideInInspector] public float _TimeOut;
     private float _Visible_Timer;
     [HideInInspector] public bool _FadeDisappear;
-    private float _FadeDisappear_Time;
-    private float _FadeDisappear_Timer;
+    public float _FadeDisappear_Time;
     public static bool _RecoveryAll;
 
     private void Awake()
@@ -71,7 +70,6 @@ public class EnemyAI : MonoBehaviour
     public void StateChange(Status _status)
     {
         _Status = _status;
-        _SpriteRenderer.color = new Color(_SpriteRenderer.color.r, _SpriteRenderer.color.g, _SpriteRenderer.color.b, 1.0f);
         _Visible = false;
         _Visible_Timer = _TimeOut;
         if (_Status == Status.Patrol)
@@ -294,7 +292,7 @@ public class EnemyAI : MonoBehaviour
         }
         else if (_FadeDisappear)
         {
-            _SpriteRenderer.color = new Color(_SpriteRenderer.color.r, _SpriteRenderer.color.g, _SpriteRenderer.color.b, _SpriteRenderer.color.a - (Time.deltaTime * 0.1f));
+            _SpriteRenderer.color = new Color(_SpriteRenderer.color.r, _SpriteRenderer.color.g, _SpriteRenderer.color.b, _SpriteRenderer.color.a - (Time.deltaTime * _FadeDisappear_Time));
             if (_SpriteRenderer.color.a <= 0.0f)
                 EnemyManager._Instance.Recovery(_Pool, gameObject);
         }
