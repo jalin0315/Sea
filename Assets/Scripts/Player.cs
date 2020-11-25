@@ -100,7 +100,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void Supplies(string _tag)
+    public void Supplies(string _tag, int _number)
     {
         if (_tag == "SuppliesRed")
         {
@@ -120,6 +120,40 @@ public class Player : MonoBehaviour
         if (_tag == "SuppliesAd")
         {
             GoogleAdMob._Instance.MaxHealthPower(true);
+            return;
+        }
+        if (_tag == "SuppliesProps")
+        {
+            switch (_number)
+            {
+                case 0:
+                    _Animator.SetTrigger("Invincible");
+                    break;
+                case 1:
+                    _Animator.SetTrigger("Invincible");
+                    break;
+                case 2:
+                    _Animator.SetTrigger("Invincible");
+                    break;
+                case 3:
+                    _Animator.SetTrigger("Invincible");
+                    break;
+                case 4:
+                    _Animator.SetTrigger("Invincible");
+                    break;
+                case 5:
+                    _Animator.SetTrigger("Invincible");
+                    break;
+                case 6:
+                    _Animator.SetTrigger("Invincible");
+                    break;
+                case 7:
+                    _Animator.SetTrigger("Invincible");
+                    break;
+                default:
+                    Debug.LogErrorFormat("SuppliesNumber Error! Number: {0}", _number);
+                    break;
+            }
             return;
         }
     }
@@ -156,7 +190,7 @@ public class Player : MonoBehaviour
     public void DeathEffectEnable() => _ParticleSystem_Death.Play();
     public void DeathEffectDisable() => _ParticleSystem_Death.Stop();
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (!GameManager._Instance._InGame) return;
         if (_Invincible) return;

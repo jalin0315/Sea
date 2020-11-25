@@ -6,7 +6,7 @@ public class CameraControl : MonoBehaviour
 {
     public static CameraControl _Instance;
     // 原始 Size 6.5 最大 10
-    [SerializeField] private Camera _Camera;
+    public Camera _Camera;
     public Transform _Transform_Camera;
     private float _MaxMeter;
     private float _OriginalCameraSize;

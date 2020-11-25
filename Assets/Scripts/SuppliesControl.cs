@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SuppliesControl : MonoBehaviour
 {
-    public Vector3 _Scale;
+    [HideInInspector] public Vector3 _Scale;
+    [SerializeField] private int _Number;
     [SerializeField] private float _Speed;
     public Queue<GameObject> _Queue = new Queue<GameObject>();
     public static bool _RecoveryAll;
@@ -13,6 +14,11 @@ public class SuppliesControl : MonoBehaviour
     public float _Timer;
     [SerializeField] private List<GameObject> _List_LightGroup = new List<GameObject>();
 
+    private void Awake()
+    {
+        _Scale = transform.localScale;
+    }
+
     private void FixedUpdate()
     {
         if (_RecoveryAll)
@@ -20,11 +26,10 @@ public class SuppliesControl : MonoBehaviour
             SuppliesManager._Instance.Recovery(_Queue, gameObject);
             return;
         }
-        if (tag == "SuppliesRed" || tag == "SuppliesYellow")
+        if (tag == "SuppliesRed" || tag == "SuppliesYellow" || tag == "SuppliesProps")
         {
             transform.Translate(Vector2.down * _Speed * Time.deltaTime, Space.Self);
-            Vector2 _origin = SuppliesManager._Instance._Camera.ScreenToWorldPoint(Vector2.zero);
-            if (transform.position.y < _origin.y) SuppliesManager._Instance.Recovery(_Queue, gameObject);
+            if (transform.position.y < SuppliesManager._Instance._Origin().y) SuppliesManager._Instance.Recovery(_Queue, gameObject);
             return;
         }
         if (tag == "SuppliesAd")
@@ -64,9 +69,8 @@ public class SuppliesControl : MonoBehaviour
             }
             else if (_Timer <= 0)
             {
-                Vector2 _vertex = SuppliesManager._Instance._Camera.ScreenToWorldPoint(new Vector2(SuppliesManager._Instance._Camera.pixelWidth, SuppliesManager._Instance._Camera.pixelHeight));
-                transform.position = Vector2.Lerp(transform.position, new Vector2(transform.position.x, _vertex.y + 10.0f), Time.deltaTime * _Speed);
-                if (transform.position.y > _vertex.y + 5.0f)
+                transform.position = Vector2.Lerp(transform.position, new Vector2(transform.position.x, SuppliesManager._Instance._Vertex().y + 10.0f), Time.deltaTime * _Speed);
+                if (transform.position.y > SuppliesManager._Instance._Vertex().y + 5.0f)
                     SuppliesManager._Instance.Recovery(_Queue, gameObject);
                 _Timer = 0;
             }
@@ -77,7 +81,7 @@ public class SuppliesControl : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            Player._Instance.Supplies(tag);
+            Player._Instance.Supplies(tag, _Number);
             SuppliesManager._Instance.Recovery(_Queue, gameObject);
         }
     }

@@ -5,17 +5,37 @@ using UnityEngine;
 public class SuppliesManager : MonoBehaviour
 {
     public static SuppliesManager _Instance;
-    public Camera _Camera;
+    [SerializeField] private Camera _Camera;
+    public Vector2 _Origin()
+    {
+        Vector2 _result = _Camera.ScreenToWorldPoint(Vector2.zero);
+        return _result;
+    }
+    public Vector2 _Vertex()
+    {
+        Vector2 _result = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
+        return _result;
+    }
     [SerializeField] private Transform _Parent;
     [SerializeField] private GameObject _Prefab_SuppliesRed;
     [SerializeField] private GameObject _Prefab_SuppliesYellow;
     [SerializeField] private GameObject _Prefab_SuppliesAd;
+    [SerializeField] private List<GameObject> _Prefab_Props = new List<GameObject>();
     private Queue<GameObject> _Queue_Pool_SuppliesRed = new Queue<GameObject>();
     private Queue<GameObject> _Queue_Pool_SuppliesYellow = new Queue<GameObject>();
     private Queue<GameObject> _Queue_Pool_SuppliesAd = new Queue<GameObject>();
+    private Queue<GameObject> _Queue_Pool_Props_00 = new Queue<GameObject>();
+    private Queue<GameObject> _Queue_Pool_Props_01 = new Queue<GameObject>();
+    private Queue<GameObject> _Queue_Pool_Props_02 = new Queue<GameObject>();
+    private Queue<GameObject> _Queue_Pool_Props_03 = new Queue<GameObject>();
+    private Queue<GameObject> _Queue_Pool_Props_04 = new Queue<GameObject>();
+    private Queue<GameObject> _Queue_Pool_Props_05 = new Queue<GameObject>();
+    private Queue<GameObject> _Queue_Pool_Props_06 = new Queue<GameObject>();
+    private Queue<GameObject> _Queue_Pool_Props_07 = new Queue<GameObject>();
     [SerializeField] private int _InitialSize_SuppliesRed;
     [SerializeField] private int _InitialSize_SuppliesYellow;
     [SerializeField] private int _InitialSize_SuppliesAd;
+    [SerializeField] private int _InitialSize_Props;
 
     private void Awake()
     {
@@ -38,12 +58,49 @@ public class SuppliesManager : MonoBehaviour
             _Queue_Pool_SuppliesAd.Enqueue(_go);
             _go.SetActive(false);
         }
-    }
-
-    private void Start()
-    {
-        _CallSupplies_Singleton = CallSupplies(60.0f); // 60.0f
-        _CallSuppliesAd_Singleton = CallSuppliesAd(30.0f); // 30.0f
+        for (int _i = 0; _i < _InitialSize_Props; _i++)
+        {
+            {
+                GameObject _go = Instantiate(_Prefab_Props[0], _Parent);
+                _Queue_Pool_Props_00.Enqueue(_go);
+                _go.SetActive(false);
+            }
+            {
+                GameObject _go = Instantiate(_Prefab_Props[1], _Parent);
+                _Queue_Pool_Props_01.Enqueue(_go);
+                _go.SetActive(false);
+            }
+            {
+                GameObject _go = Instantiate(_Prefab_Props[2], _Parent);
+                _Queue_Pool_Props_02.Enqueue(_go);
+                _go.SetActive(false);
+            }
+            {
+                GameObject _go = Instantiate(_Prefab_Props[3], _Parent);
+                _Queue_Pool_Props_03.Enqueue(_go);
+                _go.SetActive(false);
+            }
+            {
+                GameObject _go = Instantiate(_Prefab_Props[4], _Parent);
+                _Queue_Pool_Props_04.Enqueue(_go);
+                _go.SetActive(false);
+            }
+            {
+                GameObject _go = Instantiate(_Prefab_Props[5], _Parent);
+                _Queue_Pool_Props_05.Enqueue(_go);
+                _go.SetActive(false);
+            }
+            {
+                GameObject _go = Instantiate(_Prefab_Props[6], _Parent);
+                _Queue_Pool_Props_06.Enqueue(_go);
+                _go.SetActive(false);
+            }
+            {
+                GameObject _go = Instantiate(_Prefab_Props[7], _Parent);
+                _Queue_Pool_Props_07.Enqueue(_go);
+                _go.SetActive(false);
+            }
+        }
     }
 
     private void ReUse(Queue<GameObject> _queue, Vector2 _position, int _direction)
@@ -69,7 +126,7 @@ public class SuppliesManager : MonoBehaviour
         if (_queue == _Queue_Pool_SuppliesAd)
         {
             _s_c._Direction = _direction;
-            _s_c._Time = 30.0f;
+            _s_c._Time = 15.0f;
             _s_c._Timer = _s_c._Time;
             if (_direction == 0) _go.transform.localScale = _s_c._Scale;
             else if (_direction == 1) _go.transform.localScale = new Vector3(-_s_c._Scale.x, _s_c._Scale.y, _s_c._Scale.z);
@@ -87,11 +144,14 @@ public class SuppliesManager : MonoBehaviour
         _go.SetActive(false);
     }
 
-    public IEnumerator _CallSupplies_Singleton;
-    private IEnumerator CallSupplies(float _time)
+    private IEnumerator _CallSupplies_Singleton;
+    private IEnumerator _CallSupplies_Logic(float _time)
     {
         while (true)
         {
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForSeconds(_time);
+            /*
             int _i = Random.Range(1, 101);
             if (_i > 0 && _i <= 50)
             {
@@ -111,16 +171,65 @@ public class SuppliesManager : MonoBehaviour
                 yield return new WaitForSeconds(_time);
                 continue;
             }
+            */
+            int _i = Random.Range(0, 8);
+            //int _i = 1;
+            Vector2 _result = new Vector2(Random.Range(_Origin().x, _Vertex().x), _Vertex().y + 5.0f);
+            switch (_i)
+            {
+                case 0:
+                    ReUse(_Queue_Pool_Props_00, _result, -1);
+                    break;
+                case 1:
+                    ReUse(_Queue_Pool_Props_01, _result, -1);
+                    break;
+                case 2:
+                    ReUse(_Queue_Pool_Props_02, _result, -1);
+                    break;
+                case 3:
+                    ReUse(_Queue_Pool_Props_03, _result, -1);
+                    break;
+                case 4:
+                    ReUse(_Queue_Pool_Props_04, _result, -1);
+                    break;
+                case 5:
+                    ReUse(_Queue_Pool_Props_05, _result, -1);
+                    break;
+                case 6:
+                    ReUse(_Queue_Pool_Props_06, _result, -1);
+                    break;
+                case 7:
+                    ReUse(_Queue_Pool_Props_07, _result, -1);
+                    break;
+                default:
+                    Debug.LogErrorFormat("CallSupplies Error! Array: {0}", _i);
+                    break;
+            }
+            continue;
         }
     }
-    public IEnumerator _CallSuppliesAd_Singleton;
-    private IEnumerator CallSuppliesAd(float _time)
+    public void IEnumeratorCallSupplies(bool _enable)
+    {
+        if (_enable)
+        {
+            if (_CallSupplies_Singleton != null) StopCoroutine(_CallSupplies_Singleton);
+            _CallSupplies_Singleton = _CallSupplies_Logic(1.0f); // 60.0f
+            StartCoroutine(_CallSupplies_Singleton);
+        }
+        else
+        {
+            if (_CallSupplies_Singleton != null) StopCoroutine(_CallSupplies_Singleton);
+        }
+    }
+
+    private IEnumerator _CallSuppliesAd_Singleton;
+    private IEnumerator _CallSuppliesAd_Logic(float _time)
     {
         while (true)
         {
             yield return new WaitForSeconds(_time);
-            if (Player._Instance._Slider_Health.value > 40) continue;
-            if (Player._Instance._Slider_Health.value <= 40)
+            if (Player._Instance._Slider_Health.value > 20) continue;
+            if (Player._Instance._Slider_Health.value <= 20)
             {
                 Vector2 _origin = _Camera.ScreenToWorldPoint(Vector2.zero);
                 Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
@@ -129,4 +238,19 @@ public class SuppliesManager : MonoBehaviour
             }
         }
     }
+    public void IEnumeratorCallSuppliesAd(bool _enable)
+    {
+        if (_enable)
+        {
+            if (_CallSuppliesAd_Singleton != null) StopCoroutine(_CallSuppliesAd_Singleton);
+            _CallSuppliesAd_Singleton = _CallSuppliesAd_Logic(30.0f);
+            StartCoroutine(_CallSuppliesAd_Singleton);
+        }
+        else
+        {
+            if (_CallSuppliesAd_Singleton != null) StopCoroutine(_CallSuppliesAd_Singleton);
+        }
+    }
+
+    public void IEnumeratorStopAllCoroutines() => StopAllCoroutines();
 }

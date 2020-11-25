@@ -65,12 +65,6 @@ public class GameManager : MonoBehaviour
             10900,
             11000
         };
-        _ZonePoints = new bool[_ZoneClassPoints.Length];
-        for (int _i = 0; _i < _ZoneClassPoints.Length; _i++)
-        {
-            if (_Result > _ZoneClassPoints[_i] && !_ZonePoints[_i])
-                _ZonePoints[_i] = true;
-        }
     }
     private void Start() => InitializeStart();
 
@@ -104,6 +98,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void FixZoneTrigger()
+    {
+        _ZonePoints = new bool[_ZoneClassPoints.Length];
+        for (int _i = 0; _i < _ZoneClassPoints.Length; _i++)
+        {
+            if (_Result > _ZoneClassPoints[_i] && !_ZonePoints[_i])
+                _ZonePoints[_i] = true;
+        }
+    }
     private void ZoneTrigger()
     {
         for (int _i = 0; _i < _ZoneClassPoints.Length; _i++)
@@ -115,7 +118,8 @@ public class GameManager : MonoBehaviour
                     case 0:
                         EnemyManager._Instance.IEnumeratorSpawnNpcBackground(true);
                         EnemyManager._Instance.IEnumeratorSpawnNpc00(true);
-                        StartCoroutine(SuppliesManager._Instance._CallSuppliesAd_Singleton);
+                        SuppliesManager._Instance.IEnumeratorCallSupplies(true);
+                        SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
                         BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
                         break;
                     case 600:
@@ -127,7 +131,6 @@ public class GameManager : MonoBehaviour
                         break;
                     case 1000:
                         Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
-                        StartCoroutine(SuppliesManager._Instance._CallSupplies_Singleton);
                         break;
                     case 1900:
                         BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
@@ -145,7 +148,7 @@ public class GameManager : MonoBehaviour
                         break;
                     case 4000:
                         // 生態域分界
-                        Timeline._Instance._FadeIn.Play();
+                        if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
                         Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                         EnemyManager._Instance.IEnumeratorSpawnNpc02(false);
                         break;
@@ -166,6 +169,7 @@ public class GameManager : MonoBehaviour
                         break;
                     case 7000:
                         Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
+                        _Object_PlayerLight.SetActive(true);
                         break;
                     case 7100:
                         // Command
@@ -177,7 +181,7 @@ public class GameManager : MonoBehaviour
                         // 生態域分界
                         // Command
                         // Disable witch.
-                        Timeline._Instance._FadeIn.Play();
+                        if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
                         Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                         EnemyManager._Instance.IEnumeratorSpawnNpc03(false);
                         break;
@@ -191,17 +195,18 @@ public class GameManager : MonoBehaviour
                         // Command
                         // Boss
                         Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
+                        EnemyManager._Instance.IEnumeratorSpawnNpc04(false);
                         break;
                     case 10900:
                         // 生態域分界
                         // Command
                         // Boss End
-                        Timeline._Instance._FadeIn.Play();
+                        if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
                         break;
                     case 11000:
                         // Command
                         // Game End
-                        Timeline._Instance._FadeIn.Play();
+                        if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
                         break;
                     default:
                         Debug.LogWarningFormat("階層錯誤！當前層級數 {0}", _ZoneClassPoints[_i]);
@@ -229,12 +234,12 @@ public class GameManager : MonoBehaviour
     }
     public void UpdateZone()
     {
-        if (_Result > 8000)
+        if (_Result >= 8000)
         {
             EnemyManager._Instance.IEnumeratorSpawnNpc04(true);
             return;
         }
-        if (_Result > 4000)
+        if (_Result >= 4000)
         {
             EnemyManager._Instance.IEnumeratorSpawnNpc03(true);
             return;
@@ -242,19 +247,26 @@ public class GameManager : MonoBehaviour
     }
     public void Transition()
     {
+        CameraControl._Instance._Camera.orthographicSize = _Result * (3.5f / _MaxMeter) + 6.5f;
+        float _bg_r = _Color_BG_Original.r - (_Result * _Color_BG_Original.r * _Light_Result);
+        float _bg_g = _Color_BG_Original.g - (_Result * _Color_BG_Original.g * _Light_Result);
+        float _bg_b = _Color_BG_Original.b - (_Result * _Color_BG_Original.b * _Light_Result);
+        _Light_BG.color = new Color(_bg_r, _bg_g, _bg_b, 1.0f);
+        float _lm_00_r = _Color_AmbientLights_00_Original.r - (_Result * _Color_AmbientLights_00_Original.r * _Light_Result);
+        float _lm_00_g = _Color_AmbientLights_00_Original.g - (_Result * _Color_AmbientLights_00_Original.g * _Light_Result);
+        float _lm_00_b = _Color_AmbientLights_00_Original.b - (_Result * _Color_AmbientLights_00_Original.b * _Light_Result);
+        for (int _i = 0; _i < _List_AmbientLights_00.Count; _i++)
+        {
+            _List_AmbientLights_00[_i].color = new Color(_lm_00_r, _lm_00_g, _lm_00_b, 1.0f);
+        }
         EnemyAI._RecoveryAll = true;
         // 生態域分界
-        if (_Result > 8000)
+        if (_Result >= 8000)
         {
             _Object_Background_DeepSea.SetActive(true);
             _Object_AmbientLight.SetActive(false);
             _Object_PlayerLight.SetActive(true);
-            return;
         }
-    }
-    public void ResumeGame()
-    {
-        _InGame = true;
     }
     public void PauseGame()
     {
@@ -289,6 +301,7 @@ public class GameManager : MonoBehaviour
         CameraControl._Instance._Transform_Camera.position = new Vector3(Vector2.zero.x, Vector2.zero.y, CameraControl._Instance._Transform_Camera.position.z);
         EnemyManager._Instance.IEnumeratorStopAllCoroutines();
         EnemyAI._RecoveryAll = true;
+        SuppliesManager._Instance.IEnumeratorStopAllCoroutines();
         SuppliesControl._RecoveryAll = true;
         BaitControl._RecoveryAll = true;
         LightRays2DControl._Instance.InitializeStart();

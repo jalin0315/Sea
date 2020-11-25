@@ -8,6 +8,7 @@ TagManager:
   - SuppliesRed
   - SuppliesYellow
   - SuppliesAd
+  - SuppliesProps
   layers:
   - Default
   - TransparentFX

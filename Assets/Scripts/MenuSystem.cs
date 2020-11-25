@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,7 @@ public class MenuSystem : MonoBehaviour
         Achievement,
         IllustratedBook,
         Submarine,
+        Checkpoint,
         Skill,
         Animation,
         InGame,
@@ -36,10 +38,12 @@ public class MenuSystem : MonoBehaviour
     [SerializeField] private GameObject _Object_Achievement;
     [SerializeField] private GameObject _Object_IllustratedBook;
     [SerializeField] private GameObject _Object_Submarine;
+    [SerializeField] private GameObject _Object_SkipAnimation;
     [SerializeField] private GameObject _Object_InterstitialAd;
     [SerializeField] private GameObject _Object_Depth;
     [SerializeField] private GameObject _Object_Health;
     [SerializeField] private GameObject _Object_Power;
+    [SerializeField] private GameObject _Object_Checkpoint;
     [SerializeField] private GameObject _Object_Skill;
     [SerializeField] private GameObject _Object_InGameSkill;
     [SerializeField] private GameObject _Object_Death;
@@ -57,7 +61,11 @@ public class MenuSystem : MonoBehaviour
     [SerializeField] private Button _Button_ReturnMainMenu;
     [SerializeField] private Button _Button_Achievement;
     [SerializeField] private Button _Button_IllustratedBook;
+    [SerializeField] private Button _Button_SkipAnimation;
     [SerializeField] private Button _Button_InterstitialAd;
+    [SerializeField] private Button _Button_Checkpoint00;
+    [SerializeField] private Button _Button_Checkpoint01;
+    [SerializeField] private Button _Button_Checkpoint02;
     [SerializeField] private Button _Button_Skill00;
     [SerializeField] private Button _Button_Skill01;
     [SerializeField] private Button _Button_Skill02;
@@ -92,7 +100,11 @@ public class MenuSystem : MonoBehaviour
         _Button_ReturnMainMenu.onClick.AddListener(OnButtonReturnMainMenu);
         _Button_Achievement.onClick.AddListener(OnButtonAchievement);
         _Button_IllustratedBook.onClick.AddListener(OnButtonIllustratedBook);
+        _Button_SkipAnimation.onClick.AddListener(OnButtonSkipAnimation);
         _Button_InterstitialAd.onClick.AddListener(OnButtonInterstitialAd);
+        _Button_Checkpoint00.onClick.AddListener(() => OnButtonCheckpoint(0.0f));
+        _Button_Checkpoint01.onClick.AddListener(() => OnButtonCheckpoint(4000.0f));
+        _Button_Checkpoint02.onClick.AddListener(() => OnButtonCheckpoint(8000.0f));
         _Button_Skill00.onClick.AddListener(() => OnButtonSkillSelected(0));
         _Button_Skill01.onClick.AddListener(() => OnButtonSkillSelected(1));
         _Button_Skill02.onClick.AddListener(() => OnButtonSkillSelected(2));
@@ -104,7 +116,7 @@ public class MenuSystem : MonoBehaviour
 
     private void OnButtonPlay()
     {
-        StateChange(Status.Skill);
+        StateChange(Status.Checkpoint);
     }
     private void OnButtonSkillSelected(int _skill_options)
     {
@@ -154,7 +166,15 @@ public class MenuSystem : MonoBehaviour
     }
     private void OnButtonAchievement() => StateChange(Status.Achievement);
     private void OnButtonIllustratedBook() => StateChange(Status.IllustratedBook);
+    private void OnButtonSkipAnimation() => Timeline._Instance.Skip();
     private void OnButtonInterstitialAd() => GoogleAdMob._Instance.InterstitialAd();
+    private void OnButtonCheckpoint(float _meter)
+    {
+        GameManager._Instance._Meter = _meter;
+        GameManager._Instance._Result = Convert.ToInt32(GameManager._Instance._Meter);
+        GameManager._Instance.FixZoneTrigger();
+        StateChange(Status.Skill);
+    }
     private void OnButtonRestart() => OnButtonReturnMainMenu();
     private void OnButtonResurrect() => GoogleAdMob._Instance.Resurrect(true);
 
@@ -176,10 +196,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
             _Object_Submarine.SetActive(false);
+            _Object_SkipAnimation.SetActive(false);
             _Object_InterstitialAd.SetActive(true);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
+            _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
@@ -201,10 +223,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Achievement.SetActive(true);
             _Object_IllustratedBook.SetActive(true);
             _Object_Submarine.SetActive(false);
+            _Object_SkipAnimation.SetActive(false);
             _Object_InterstitialAd.SetActive(true);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
+            _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
@@ -226,10 +250,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
             _Object_Submarine.SetActive(false);
+            _Object_SkipAnimation.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
+            _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
@@ -251,10 +277,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
             _Object_Submarine.SetActive(false);
+            _Object_SkipAnimation.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
+            _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
@@ -276,10 +304,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
             _Object_Submarine.SetActive(false);
+            _Object_SkipAnimation.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
+            _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
@@ -301,10 +331,39 @@ public class MenuSystem : MonoBehaviour
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
             _Object_Submarine.SetActive(true);
+            _Object_SkipAnimation.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
+            _Object_Checkpoint.SetActive(false);
+            _Object_Skill.SetActive(false);
+            _Object_InGameSkill.SetActive(false);
+            _Object_Death.SetActive(false);
+            GoogleAdMob._Instance.ShowBanner();
+            return;
+        }
+        if (_Status == Status.Checkpoint)
+        {
+            _Object_Play.SetActive(false);
+            _Object_Prompt.SetActive(false);
+            _Object_Settings.SetActive(false);
+            _Object_InGameMenu.SetActive(false);
+            _Object_Fold.SetActive(false);
+            _Object_Cancel.SetActive(true);
+            _Object_Audio.SetActive(false);
+            _Object_Vibrate.SetActive(false);
+            _Object_HighScore.SetActive(false);
+            _Object_ReturnMainMenu.SetActive(false);
+            _Object_Achievement.SetActive(false);
+            _Object_IllustratedBook.SetActive(false);
+            _Object_Submarine.SetActive(false);
+            _Object_SkipAnimation.SetActive(false);
+            _Object_InterstitialAd.SetActive(false);
+            _Object_Depth.SetActive(false);
+            _Object_Health.SetActive(false);
+            _Object_Power.SetActive(false);
+            _Object_Checkpoint.SetActive(true);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
@@ -326,10 +385,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
             _Object_Submarine.SetActive(false);
+            _Object_SkipAnimation.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
+            _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(true);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
@@ -351,10 +412,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
             _Object_Submarine.SetActive(false);
+            _Object_SkipAnimation.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(false);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
+            _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
@@ -376,10 +439,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
             _Object_Submarine.SetActive(false);
+            _Object_SkipAnimation.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(true);
             _Object_Health.SetActive(true);
             _Object_Power.SetActive(true);
+            _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(true);
             _Object_Death.SetActive(false);
@@ -402,10 +467,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
             _Object_Submarine.SetActive(false);
+            _Object_SkipAnimation.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(true);
             _Object_Health.SetActive(true);
             _Object_Power.SetActive(true);
+            _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(false);
@@ -428,10 +495,12 @@ public class MenuSystem : MonoBehaviour
             _Object_Achievement.SetActive(false);
             _Object_IllustratedBook.SetActive(false);
             _Object_Submarine.SetActive(false);
+            _Object_SkipAnimation.SetActive(false);
             _Object_InterstitialAd.SetActive(false);
             _Object_Depth.SetActive(true);
             _Object_Health.SetActive(false);
             _Object_Power.SetActive(false);
+            _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
             _Object_Death.SetActive(true);

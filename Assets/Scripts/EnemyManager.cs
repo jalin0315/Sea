@@ -160,7 +160,11 @@ public class EnemyManager : MonoBehaviour
             }
             else if (_queue == _BackgroundFish_Pool)
             {
-                _enemy_ai._SpriteRenderer.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0.5f);
+                float _alpha = Random.Range(0.1f, 0.8f);
+                if (_alpha < 0.3f) _enemy_ai._ScaleMagnification = 0.2f;
+                else if (_alpha < 0.55f) _enemy_ai._ScaleMagnification = 0.6f;
+                else if (_alpha < 0.8f) _enemy_ai._ScaleMagnification = 1.0f;
+                _enemy_ai._SpriteRenderer.color = new Color(Color.black.r, Color.black.g, Color.black.b, _alpha);
                 _enemy_ai._FadeDisappear_Time = 0.025f;
                 _CurrentCount_BackgroundFish++;
             }
@@ -432,7 +436,7 @@ public class EnemyManager : MonoBehaviour
     private IEnumerator _SpawnNpc_Background_Singleton;
     private IEnumerator _SpawnNpc_Logic_Background()
     {
-        _MaxCount_BackgroundFish = 5;
+        _MaxCount_BackgroundFish = 8;
         while (true)
         {
             yield return new WaitForEndOfFrame();
