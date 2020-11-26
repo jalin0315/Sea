@@ -118,12 +118,12 @@ public class SuppliesManager : MonoBehaviour
             QuestArrowPointerSystem._Instance.ReUse(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesRed, _go.transform);
             return;
         }
-        if (_queue == _Queue_Pool_SuppliesYellow)
+        else if (_queue == _Queue_Pool_SuppliesYellow)
         {
             QuestArrowPointerSystem._Instance.ReUse(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesYellow, _go.transform);
             return;
         }
-        if (_queue == _Queue_Pool_SuppliesAd)
+        else if (_queue == _Queue_Pool_SuppliesAd)
         {
             _s_c._Direction = _direction;
             _s_c._Time = 15.0f;
@@ -133,6 +133,7 @@ public class SuppliesManager : MonoBehaviour
             QuestArrowPointerSystem._Instance.ReUse(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesAd, _go.transform);
             return;
         }
+        else QuestArrowPointerSystem._Instance.ReUse(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesProps, _go.transform);
     }
 
     public void Recovery(Queue<GameObject> _queue, GameObject _go)
@@ -140,6 +141,7 @@ public class SuppliesManager : MonoBehaviour
         if (_queue == _Queue_Pool_SuppliesRed) QuestArrowPointerSystem._Instance.Recovery(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesRed, _go.transform);
         else if (_queue == _Queue_Pool_SuppliesYellow) QuestArrowPointerSystem._Instance.Recovery(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesYellow, _go.transform);
         else if (_queue == _Queue_Pool_SuppliesAd) QuestArrowPointerSystem._Instance.Recovery(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesAd, _go.transform);
+        else QuestArrowPointerSystem._Instance.Recovery(QuestArrowPointerSystem._Instance._Queue_Pool_SuppliesProps, _go.transform);
         _queue.Enqueue(_go);
         _go.SetActive(false);
     }
@@ -213,7 +215,7 @@ public class SuppliesManager : MonoBehaviour
         if (_enable)
         {
             if (_CallSupplies_Singleton != null) StopCoroutine(_CallSupplies_Singleton);
-            _CallSupplies_Singleton = _CallSupplies_Logic(1.0f); // 60.0f
+            _CallSupplies_Singleton = _CallSupplies_Logic(60.0f); // 60.0f
             StartCoroutine(_CallSupplies_Singleton);
         }
         else

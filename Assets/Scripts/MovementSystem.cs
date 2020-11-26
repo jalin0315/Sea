@@ -14,6 +14,7 @@ public class MovementSystem : MonoBehaviour
     public float _Magnification;
     [SerializeField] private float _MaxVelocitySpeed;
     public Vector3 _Scale;
+    public float _Scale_Magnification;
     [SerializeField] private Vector3 _Slope;
     [SerializeField] private float _SmoothSlopeSpeed;
 
@@ -52,13 +53,13 @@ public class MovementSystem : MonoBehaviour
         Quaternion _rotation = Quaternion.Euler(_Slope);
         if (_Rigidbody2D.velocity.x > 0)
         {
-            transform.localScale = _Scale;
+            transform.localScale = _Scale * _Scale_Magnification;
             if (_Rigidbody2D.velocity.y > 0) _rotation.z = +_rotation.z;
             else if (_Rigidbody2D.velocity.y < 0) _rotation.z = -_rotation.z;
         }
         else if (_Rigidbody2D.velocity.x < 0)
         {
-            transform.localScale = new Vector3(-_Scale.x, _Scale.y, _Scale.z);
+            transform.localScale = new Vector3(-_Scale.x, _Scale.y, _Scale.z) * _Scale_Magnification;
             if (_Rigidbody2D.velocity.y > 0) _rotation.z = -_rotation.z;
             else if (_Rigidbody2D.velocity.y < 0) _rotation.z = +_rotation.z;
         }

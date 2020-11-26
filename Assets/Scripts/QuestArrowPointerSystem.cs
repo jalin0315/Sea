@@ -10,9 +10,11 @@ public class QuestArrowPointerSystem : MonoBehaviour
     [SerializeField] private GameObject _Prefab_SuppliesRed;
     [SerializeField] private GameObject _Prefab_SuppliesYellow;
     [SerializeField] private GameObject _Prefab_SuppliesAd;
+    [SerializeField] private GameObject _Prefab_SuppliesProps;
     public Queue<GameObject> _Queue_Pool_SuppliesRed = new Queue<GameObject>();
     public Queue<GameObject> _Queue_Pool_SuppliesYellow = new Queue<GameObject>();
     public Queue<GameObject> _Queue_Pool_SuppliesAd = new Queue<GameObject>();
+    public Queue<GameObject> _Queue_Pool_SuppliesProps = new Queue<GameObject>();
     [SerializeField] private int _Initialize;
     [SerializeField] private List<Transform> _TargetPosition = new List<Transform>();
     [SerializeField] private List<RectTransform> _PointerRectTransform = new List<RectTransform>();
@@ -36,6 +38,12 @@ public class QuestArrowPointerSystem : MonoBehaviour
         {
             GameObject _go = Instantiate(_Prefab_SuppliesAd, Vector2.zero, Quaternion.identity, _Parent);
             _Queue_Pool_SuppliesAd.Enqueue(_go);
+            _go.SetActive(false);
+        }
+        for (int _i = 0; _i < _Initialize; _i++)
+        {
+            GameObject _go = Instantiate(_Prefab_SuppliesProps, Vector2.zero, Quaternion.identity, _Parent);
+            _Queue_Pool_SuppliesProps.Enqueue(_go);
             _go.SetActive(false);
         }
     }

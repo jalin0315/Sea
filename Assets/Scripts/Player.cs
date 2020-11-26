@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Color _HighHealthColor;
     [SerializeField] private Color _LowHealthColor;
     private bool _Invincible;
+    private bool _Attack;
     [SerializeField] private ParticleSystem _ParticleSystem_Invincible;
     [HideInInspector] public int _SkillOptions;
     [SerializeField] private List<float> _List_SkillPay = new List<float>();
@@ -25,6 +26,8 @@ public class Player : MonoBehaviour
     public bool _EnableSkill;
     [SerializeField] private ParticleSystem _ParticleSystem_Death;
     [SerializeField] private ParticleSystem _ParticleSystem_Light;
+    [SerializeField] private ParticleSystem _ParticleSystem_Yellow;
+    [SerializeField] private ParticleSystem _ParticleSystem_Attack;
 
     private void Awake()
     {
@@ -134,24 +137,29 @@ public class Player : MonoBehaviour
                 case 0:
                     {
                         // 護盾
-                        _Animator.SetTrigger("Invincible");
+                        _Animator.SetBool("Invincible2", true);
+                        _ParticleSystem_Invincible.Play();
                         break;
                     }
                 case 1:
                     {
                         // 炸彈
                         EnemyAI._RecoveryAll = true;
+                        _ParticleSystem_Light.Play();
+                        _ParticleSystem_Death.Play();
                         break;
                     }
                 case 2:
                     {
                         // 玩家加速
-                        MovementSystem._Instance._Magnification = 2.0f;
+                        MovementSystem._Instance._Magnification = 2.5f;
+                        _ParticleSystem_Yellow.Play();
                         StartCoroutine(Delay(5.0f));
                         IEnumerator Delay(float _time)
                         {
                             yield return new WaitForSeconds(_time);
                             MovementSystem._Instance._Magnification = 1.0f;
+                            _ParticleSystem_Yellow.Stop();
                         }
                         break;
                     }
@@ -160,11 +168,13 @@ public class Player : MonoBehaviour
                         // 偽裝
                         int _i = Random.Range(0, _List_Sprite_Fishes.Count);
                         _SpriteRenderer.sprite = _List_Sprite_Fishes[_i];
+                        _Invincible = true;
                         StartCoroutine(Delay(5.0f));
                         IEnumerator Delay(float _time)
                         {
                             yield return new WaitForSeconds(_time);
                             _SpriteRenderer.sprite = _Sprite_Player;
+                            _Invincible = false;
                         }
                         break;
                     }
@@ -183,20 +193,27 @@ public class Player : MonoBehaviour
                 case 5:
                     {
                         // 撞魚
+                        _Attack = true;
+                        _ParticleSystem_Attack.Play();
+                        StartCoroutine(Delay(5.0f));
+                        IEnumerator Delay(float _time)
+                        {
+                            yield return new WaitForSeconds(_time);
+                            _Attack = false;
+                            _ParticleSystem_Attack.Stop();
+                        }
                     }
                     break;
                 case 6:
                     {
                         // 玩家縮小
-                        /*
-                        transform.localScale = MovementSystem._Instance._Scale * 0.5f;
+                        MovementSystem._Instance._Scale_Magnification = 0.5f;
                         StartCoroutine(Delay(5.0f));
                         IEnumerator Delay(float _time)
                         {
                             yield return new WaitForSeconds(_time);
-                            transform.localScale = _Scale;
+                            MovementSystem._Instance._Scale_Magnification = 1.0f;
                         }
-                        */
                     }
                     break;
                 case 7:
@@ -246,10 +263,9 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!_Attack) return;
         if (collision.tag == "Enemy")
-        {
             collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * 100.0f, ForceMode2D.Impulse);
-        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -258,6 +274,16 @@ public class Player : MonoBehaviour
         if (_Invincible) return;
         if (collision.tag == "Enemy")
         {
+            if (_Animator.GetBool("Invincible2"))
+            {
+                _Animator.SetBool("Invincible2", false);
+                _ParticleSystem_Invincible.Stop();
+                _ParticleSystem_Death.Play();
+                _Animator.SetTrigger("Invincible");
+                if (GameManager._Instance._Enable_Vibrate) Handheld.Vibrate();
+                return;
+            }
+            if (_Attack) return;
             _Slider_Health.value -= 12.5f;
             if (_Slider_Health.value <= 0.0f) _Animator.SetBool("Death", true);
             else _Animator.SetTrigger("Injured");
