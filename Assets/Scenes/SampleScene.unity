@@ -12145,7 +12145,9 @@ MonoBehaviour:
   _SpriteRenderer: {fileID: 1448925600}
   _Rigidbody2D: {fileID: 1448925604}
   _Speed: 1500
+  _Magnification: 1
   _MaxVelocitySpeed: 1
+  _Scale: {x: 0, y: 0, z: 0}
   _Slope: {x: 0, y: 0, z: 25}
   _SmoothSlopeSpeed: 5
 --- !u!58 &1448925603
@@ -12199,7 +12201,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Transform_Player: {fileID: 1448925601}
   _Animator: {fileID: 1448925606}
+  _Sprite_Player: {fileID: 0}
   _SpriteRenderer: {fileID: 1448925600}
+  _List_Sprite_Fishes:
+  - {fileID: 21300000, guid: bec7f589d227fe34d9245e19dac23353, type: 3}
+  - {fileID: 21300000, guid: d9ce4c692c1add24eaca418827aa6229, type: 3}
+  - {fileID: 21300000, guid: 321900fd67be5a14cbdececd853142b2, type: 3}
+  - {fileID: 21300000, guid: e2161a8307d6b6140be7c675cdf4adf8, type: 3}
+  - {fileID: 21300000, guid: 6ca6badec9632544e928fb8e314a31e8, type: 3}
+  - {fileID: 21300000, guid: b22cab1285e2ba34d9427cd7770a0eba, type: 3}
+  - {fileID: 21300000, guid: a2e2d9ae6448b7e4b9b346c074f7368e, type: 3}
+  - {fileID: 21300000, guid: 7e4d9ae0cb1a4c84fb1802d2b7b8de56, type: 3}
+  - {fileID: 21300000, guid: 4fde07fe38e85a64189c32c652f8e0a1, type: 3}
+  - {fileID: 21300000, guid: 939ef5c55db8095418eccf9a1310d3fb, type: 3}
+  - {fileID: 21300000, guid: af9cc5dc5f067ad4babe4c17ef88b12e, type: 3}
+  - {fileID: 21300000, guid: f1e95f962c21c1b478f184bbdc4f9bd4, type: 3}
+  - {fileID: 21300000, guid: e79924cdfdc3f134e8ba68c2d4f46998, type: 3}
+  - {fileID: 21300000, guid: c5cae9a61173c914896730b389dc51e4, type: 3}
+  - {fileID: 21300000, guid: a8c9a11da8668e144b3e64efbaeef746, type: 3}
+  - {fileID: 21300000, guid: 50d5aac17b4d5c345ab8f28c87a03d94, type: 3}
+  - {fileID: 21300000, guid: 5917bf1e9e56bde43812717f07045ba7, type: 3}
+  - {fileID: 21300000, guid: f7cba456677d55648ad4737ccbc6da7d, type: 3}
   _Slider_MaxHealth: {fileID: 457411462}
   _Slider_Health: {fileID: 1302497184}
   _Slider_Power: {fileID: 774076867}
@@ -12868,8 +12890,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 226581920}
   m_HandleRect: {fileID: 226581919}
   m_Direction: 0
-  m_Value: -0.00001154835
-  m_Size: 0.2828438
+  m_Value: -0.000024208763
+  m_Size: 0.28027228
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13396,7 +13418,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1249.9341, y: 0}
+  m_AnchoredPosition: {x: -1249.8617, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1575668580

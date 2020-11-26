@@ -174,7 +174,7 @@ public class SuppliesManager : MonoBehaviour
             */
             int _i = Random.Range(0, 8);
             //int _i = 1;
-            Vector2 _result = new Vector2(Random.Range(_Origin().x, _Vertex().x), _Vertex().y + 5.0f);
+            Vector2 _result = new Vector2(Random.Range(_Origin().x, _Vertex().x), _Vertex().y + 2.5f);
             switch (_i)
             {
                 case 0:

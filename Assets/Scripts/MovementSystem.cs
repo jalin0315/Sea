@@ -11,8 +11,9 @@ public class MovementSystem : MonoBehaviour
     [SerializeField] private SpriteRenderer _SpriteRenderer;
     public Rigidbody2D _Rigidbody2D;
     [SerializeField] private float _Speed;
+    public float _Magnification;
     [SerializeField] private float _MaxVelocitySpeed;
-    private Vector3 _Scale;
+    public Vector3 _Scale;
     [SerializeField] private Vector3 _Slope;
     [SerializeField] private float _SmoothSlopeSpeed;
 
@@ -41,7 +42,7 @@ public class MovementSystem : MonoBehaviour
     private void JoystickMovement()
     {
         Vector2 _movement = new Vector2(_FloatingJoystick.Horizontal, _FloatingJoystick.Vertical);
-        _Rigidbody2D.AddForce(_movement * Time.deltaTime * _Speed);
+        _Rigidbody2D.AddForce(_movement * Time.deltaTime * (_Speed * _Magnification));
         _Rigidbody2D.velocity = Vector2.ClampMagnitude(_Rigidbody2D.velocity, _MaxVelocitySpeed);
         PlayerObjectRotate();
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +8,9 @@ public class Player : MonoBehaviour
     public static Player _Instance;
     public Transform _Transform_Player;
     public Animator _Animator;
+    public Sprite _Sprite_Player;
     [SerializeField] private SpriteRenderer _SpriteRenderer;
+    [SerializeField] private List<Sprite> _List_Sprite_Fishes = new List<Sprite>();
     public Slider _Slider_MaxHealth;
     public Slider _Slider_Health;
     [SerializeField] private Slider _Slider_Power;
@@ -25,10 +26,14 @@ public class Player : MonoBehaviour
     [SerializeField] private ParticleSystem _ParticleSystem_Death;
     [SerializeField] private ParticleSystem _ParticleSystem_Light;
 
-    private void Awake() => _Instance = this;
+    private void Awake()
+    {
+        _Instance = this;
+    }
 
     public void InitializeStart()
     {
+        if (_Sprite_Player == null) _Sprite_Player = _SpriteRenderer.sprite;
         _Slider_MaxHealth.value = 100.0f - (GameManager._Instance._Meter * 0.005f);
         _Slider_Health.value = _Slider_MaxHealth.value;
         _Slider_Power.value = _Slider_Power.maxValue;
@@ -127,28 +132,77 @@ public class Player : MonoBehaviour
             switch (_number)
             {
                 case 0:
-                    _Animator.SetTrigger("Invincible");
-                    break;
+                    {
+                        // 護盾
+                        _Animator.SetTrigger("Invincible");
+                        break;
+                    }
                 case 1:
-                    _Animator.SetTrigger("Invincible");
-                    break;
+                    {
+                        // 炸彈
+                        EnemyAI._RecoveryAll = true;
+                        break;
+                    }
                 case 2:
-                    _Animator.SetTrigger("Invincible");
-                    break;
+                    {
+                        // 玩家加速
+                        MovementSystem._Instance._Magnification = 2.0f;
+                        StartCoroutine(Delay(5.0f));
+                        IEnumerator Delay(float _time)
+                        {
+                            yield return new WaitForSeconds(_time);
+                            MovementSystem._Instance._Magnification = 1.0f;
+                        }
+                        break;
+                    }
                 case 3:
-                    _Animator.SetTrigger("Invincible");
-                    break;
+                    {
+                        // 偽裝
+                        int _i = Random.Range(0, _List_Sprite_Fishes.Count);
+                        _SpriteRenderer.sprite = _List_Sprite_Fishes[_i];
+                        StartCoroutine(Delay(5.0f));
+                        IEnumerator Delay(float _time)
+                        {
+                            yield return new WaitForSeconds(_time);
+                            _SpriteRenderer.sprite = _Sprite_Player;
+                        }
+                        break;
+                    }
                 case 4:
-                    _Animator.SetTrigger("Invincible");
+                    {
+                        // 慢動作
+                        Time.timeScale = 0.5f;
+                        StartCoroutine(Delay(5.0f));
+                        IEnumerator Delay(float _time)
+                        {
+                            yield return new WaitForSecondsRealtime(_time);
+                            Time.timeScale = 1.0f;
+                        }
+                    }
                     break;
                 case 5:
-                    _Animator.SetTrigger("Invincible");
+                    {
+                        // 撞魚
+                    }
                     break;
                 case 6:
-                    _Animator.SetTrigger("Invincible");
+                    {
+                        // 玩家縮小
+                        /*
+                        transform.localScale = MovementSystem._Instance._Scale * 0.5f;
+                        StartCoroutine(Delay(5.0f));
+                        IEnumerator Delay(float _time)
+                        {
+                            yield return new WaitForSeconds(_time);
+                            transform.localScale = _Scale;
+                        }
+                        */
+                    }
                     break;
                 case 7:
-                    _Animator.SetTrigger("Invincible");
+                    {
+                        // 增加復活次數
+                    }
                     break;
                 default:
                     Debug.LogErrorFormat("SuppliesNumber Error! Number: {0}", _number);
@@ -189,6 +243,14 @@ public class Player : MonoBehaviour
     }
     public void DeathEffectEnable() => _ParticleSystem_Death.Play();
     public void DeathEffectDisable() => _ParticleSystem_Death.Stop();
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Enemy")
+        {
+            collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * 100.0f, ForceMode2D.Impulse);
+        }
+    }
 
     private void OnTriggerStay2D(Collider2D collision)
     {

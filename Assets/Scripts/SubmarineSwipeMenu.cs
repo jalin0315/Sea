@@ -84,6 +84,7 @@ public class SubmarineSwipeMenu : MonoBehaviour
         _AnimationPlayer.sprite = _List_Image[_index].sprite;
         _AnimationPlayer_WaterReflect.sprite = _List_Image[_index].sprite;
         _Player.sprite = _List_Image[_index].sprite;
+        Player._Instance._Sprite_Player = _List_Image[_index].sprite;
         MenuSystem._Instance.StateChange(MenuSystem.Status.MainMenu);
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5005943971315637934}
   - component: {fileID: 5005943971315637920}
   m_Layer: 0
-  m_Name: SuppliesProps02
+  m_Name: SuppliesProps04
   m_TagString: SuppliesProps
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 8dfb6561bda38734f872d86babb358f1, type: 3}
-  m_Color: {r: 0, g: 0, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Scale: {x: 1, y: 1, z: 1}
-  _Number: 0
+  _Number: 4
   _Speed: 0.5
   _Direction: 0
   _Time: 0

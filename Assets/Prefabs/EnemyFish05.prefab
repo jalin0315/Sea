@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7578434996152073656}
   - component: {fileID: 7861705014296253948}
+  - component: {fileID: -759005886923697665}
   - component: {fileID: 4305421544681812327}
   - component: {fileID: 1320099577}
   - component: {fileID: 1320099576}
@@ -84,6 +85,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &-759005886923697665
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3038113064348256230}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!114 &4305421544681812327
 MonoBehaviour:
   m_ObjectHideFlags: 0
