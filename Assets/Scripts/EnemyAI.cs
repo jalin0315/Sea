@@ -51,11 +51,6 @@ public class EnemyAI : MonoBehaviour
         _Scale = transform.localScale;
     }
 
-    private void Start()
-    {
-        _Visible = false;
-    }
-
     private void Update()
     {
         if (_RecoveryAll)

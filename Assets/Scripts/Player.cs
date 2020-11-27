@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Color _HighHealthColor;
     [SerializeField] private Color _LowHealthColor;
     private bool _Invincible;
+    private bool _Invincible_Guise;
     private bool _Attack;
     [SerializeField] private ParticleSystem _ParticleSystem_Invincible;
     [HideInInspector] public int _SkillOptions;
@@ -38,6 +39,7 @@ public class Player : MonoBehaviour
     {
         if (_Sprite_Player == null) _Sprite_Player = _SpriteRenderer.sprite;
         _Slider_MaxHealth.value = 100.0f - (GameManager._Instance._Meter * 0.005f);
+        //_Slider_MaxHealth.value = 10.0f;
         _Slider_Health.value = _Slider_MaxHealth.value;
         _Slider_Power.value = _Slider_Power.maxValue;
         HealthBarColorChange();
@@ -56,6 +58,7 @@ public class Player : MonoBehaviour
     public void InvincibleEffectDisable() => _ParticleSystem_Invincible.Stop();
 
     public void VerifyHealth(float _meter) => _Slider_MaxHealth.value = 100.0f - (_meter * 0.005f);
+    //public void VerifyHealth(float _meter) => _Slider_MaxHealth.value = 10.0f;
     private void HealthBarColorChange()
     {
         Color _color_lerp = Color.Lerp(_LowHealthColor, _HighHealthColor, _Slider_Health.value / _Slider_MaxHealth.value);
@@ -168,13 +171,13 @@ public class Player : MonoBehaviour
                         // 偽裝
                         int _i = Random.Range(0, _List_Sprite_Fishes.Count);
                         _SpriteRenderer.sprite = _List_Sprite_Fishes[_i];
-                        _Invincible = true;
+                        _Invincible_Guise = true;
                         StartCoroutine(Delay(5.0f));
                         IEnumerator Delay(float _time)
                         {
                             yield return new WaitForSeconds(_time);
                             _SpriteRenderer.sprite = _Sprite_Player;
-                            _Invincible = false;
+                            _Invincible_Guise = false;
                         }
                         break;
                     }
@@ -272,6 +275,7 @@ public class Player : MonoBehaviour
     {
         if (!GameManager._Instance._InGame) return;
         if (_Invincible) return;
+        if (_Invincible_Guise) return;
         if (collision.tag == "Enemy")
         {
             if (_Animator.GetBool("Invincible2"))
@@ -284,7 +288,7 @@ public class Player : MonoBehaviour
                 return;
             }
             if (_Attack) return;
-            _Slider_Health.value -= 12.5f;
+            _Slider_Health.value -= 10.0f; // 12.5f
             if (_Slider_Health.value <= 0.0f) _Animator.SetBool("Death", true);
             else _Animator.SetTrigger("Injured");
             HealthBarColorChange();

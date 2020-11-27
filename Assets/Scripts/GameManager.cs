@@ -151,6 +151,8 @@ public class GameManager : MonoBehaviour
                         if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
                         Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                         EnemyManager._Instance.IEnumeratorSpawnNpc02(false);
+                        SuppliesManager._Instance.IEnumeratorCallSupplies(true);
+                        SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
                         break;
                     case 4900:
                         BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
@@ -184,6 +186,8 @@ public class GameManager : MonoBehaviour
                         if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
                         Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                         EnemyManager._Instance.IEnumeratorSpawnNpc03(false);
+                        SuppliesManager._Instance.IEnumeratorCallSupplies(true);
+                        SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
                         break;
                     case 8900:
                         BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
@@ -304,7 +308,7 @@ public class GameManager : MonoBehaviour
         SuppliesManager._Instance.IEnumeratorStopAllCoroutines();
         SuppliesControl._RecoveryAll = true;
         BaitControl._RecoveryAll = true;
-        LightRays2DControl._Instance.InitializeStart();
+        //LightRays2DControl._Instance.InitializeStart();
         BackgroundControl._RecoveryAll = true;
     }
 

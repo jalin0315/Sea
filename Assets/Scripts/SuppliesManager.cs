@@ -215,7 +215,7 @@ public class SuppliesManager : MonoBehaviour
         if (_enable)
         {
             if (_CallSupplies_Singleton != null) StopCoroutine(_CallSupplies_Singleton);
-            _CallSupplies_Singleton = _CallSupplies_Logic(60.0f); // 60.0f
+            _CallSupplies_Singleton = _CallSupplies_Logic(30.0f); // 30.0f
             StartCoroutine(_CallSupplies_Singleton);
         }
         else
