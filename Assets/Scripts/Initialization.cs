@@ -10,7 +10,7 @@ public class Initialization : MonoBehaviour
     private void Awake()
     {
         _Instance = this;
-        //Application.targetFrameRate = 60;
+        Application.targetFrameRate = 60;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 }

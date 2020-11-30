@@ -28,9 +28,7 @@ public class MovementSystem : MonoBehaviour
     private void FixedUpdate()
     {
         if (GameManager._Instance._EnableJoystick)
-        {
             if (GameManager._Instance._InGame) JoystickMovement();
-        }
     }
 
     private void OnGUI()

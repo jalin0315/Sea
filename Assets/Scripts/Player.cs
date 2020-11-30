@@ -284,7 +284,7 @@ public class Player : MonoBehaviour
                 _ParticleSystem_Invincible.Stop();
                 _ParticleSystem_Death.Play();
                 _Animator.SetTrigger("Invincible");
-                if (GameManager._Instance._Enable_Vibrate) Handheld.Vibrate();
+                Vibration.Vibrate(100);
                 return;
             }
             if (_Attack) return;
@@ -292,7 +292,7 @@ public class Player : MonoBehaviour
             if (_Slider_Health.value <= 0.0f) _Animator.SetBool("Death", true);
             else _Animator.SetTrigger("Injured");
             HealthBarColorChange();
-            if (GameManager._Instance._Enable_Vibrate) Handheld.Vibrate();
+            Vibration.Vibrate(100);
         }
     }
 }

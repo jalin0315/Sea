@@ -117,6 +117,7 @@ public class MenuSystem : MonoBehaviour
     private void OnButtonPlay()
     {
         StateChange(Status.Checkpoint);
+        Vibration.Vibrate(25);
     }
     private void OnButtonSkillSelected(int _skill_options)
     {
@@ -126,27 +127,45 @@ public class MenuSystem : MonoBehaviour
         Player._Instance._SkillOptions = _skill_options;
         Timeline._Instance._Idle.Stop();
         Timeline._Instance._Opening.Play();
+        Vibration.Vibrate(25);
     }
-    private void OnButtonInGameSkill() => Player._Instance.SkillTrigger();
-    private void OnButtonSettings() => StateChange(Status.ShowSettings);
-    private void OnButtonInGameMenu() => StateChange(Status.ShowInGameMenu);
+    private void OnButtonInGameSkill()
+    {
+        Player._Instance.SkillTrigger();
+        Vibration.Vibrate(25);
+    }
+    private void OnButtonSettings()
+    {
+        StateChange(Status.ShowSettings);
+        Vibration.Vibrate(25);
+    }
+    private void OnButtonInGameMenu()
+    {
+        StateChange(Status.ShowInGameMenu);
+        Vibration.Vibrate(25);
+    }
     private void OnButtonFold()
     {
         if (_Status == Status.ShowInGameMenu) StateChange(Status.InGame);
         else StateChange(Status.MainMenu);
+        Vibration.Vibrate(25);
     }
-    private void OnButtonCancel() => StateChange(Status.MainMenu);
+    private void OnButtonCancel()
+    {
+        StateChange(Status.MainMenu);
+        Vibration.Vibrate(25);
+    }
     private void OnButtonAudio()
     {
         if (_Image_Audio.sprite == _Sprite_Audio_UnMute) _Image_Audio.sprite = _Sprite_Audio_Mute;
         else _Image_Audio.sprite = _Sprite_Audio_UnMute;
+        Vibration.Vibrate(25);
     }
     private void OnButtonVibrate()
     {
         if (_Image_Vibrate.sprite == _Sprite_UnVibrate)
         {
             GameManager._Instance._Enable_Vibrate = true;
-            Handheld.Vibrate();
             _Image_Vibrate.sprite = _Sprite_Vibrate;
         }
         else
@@ -154,8 +173,13 @@ public class MenuSystem : MonoBehaviour
             GameManager._Instance._Enable_Vibrate = false;
             _Image_Vibrate.sprite = _Sprite_UnVibrate;
         }
+        Vibration.Vibrate(25);
     }
-    private void OnButtonHighScore() => StateChange(Status.HighScore);
+    private void OnButtonHighScore()
+    {
+        StateChange(Status.HighScore);
+        Vibration.Vibrate(25);
+    }
     private void OnButtonReturnMainMenu()
     {
         StateChange(Status.Animation);
@@ -163,20 +187,46 @@ public class MenuSystem : MonoBehaviour
         GameManager._Instance._InGame = false;
         MovementSystem._Instance._FloatingJoystick.Initialize();
         Timeline._Instance._ReturnMainMenu.Play();
+        Vibration.Vibrate(25);
     }
-    private void OnButtonAchievement() => StateChange(Status.Achievement);
-    private void OnButtonIllustratedBook() => StateChange(Status.IllustratedBook);
-    private void OnButtonSkipAnimation() => Timeline._Instance.Skip();
-    private void OnButtonInterstitialAd() => GoogleAdMob._Instance.InterstitialAd();
+    private void OnButtonAchievement()
+    {
+        StateChange(Status.Achievement);
+        Vibration.Vibrate(25);
+    }
+    private void OnButtonIllustratedBook()
+    {
+        StateChange(Status.IllustratedBook);
+        Vibration.Vibrate(25);
+    }
+    private void OnButtonSkipAnimation()
+    {
+        Timeline._Instance.Skip();
+        Vibration.Vibrate(25);
+    }
+    private void OnButtonInterstitialAd()
+    {
+        GoogleAdMob._Instance.InterstitialAd();
+        Vibration.Vibrate(25);
+    }
     private void OnButtonCheckpoint(float _meter)
     {
         GameManager._Instance._Meter = _meter;
         GameManager._Instance._Result = Convert.ToInt32(GameManager._Instance._Meter);
         GameManager._Instance.FixZoneTrigger();
         StateChange(Status.Skill);
+        Vibration.Vibrate(25);
     }
-    private void OnButtonRestart() => OnButtonReturnMainMenu();
-    private void OnButtonResurrect() => GoogleAdMob._Instance.Resurrect(true);
+    private void OnButtonRestart()
+    {
+        OnButtonReturnMainMenu();
+        Vibration.Vibrate(25);
+    }
+    private void OnButtonResurrect()
+    {
+        GoogleAdMob._Instance.Resurrect(true);
+        Vibration.Vibrate(25);
+    }
 
     public void StateChange(Status _status)
     {
