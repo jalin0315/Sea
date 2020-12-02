@@ -155,6 +155,7 @@ public class GameManager : MonoBehaviour
                         // 生態域分界
                         if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
                         Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
+                        EnemyManager._Instance.IEnumeratorSpawnNpcBackground(true);
                         EnemyManager._Instance.IEnumeratorSpawnNpc02(false);
                         SuppliesManager._Instance.IEnumeratorCallSupplies(true);
                         SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
@@ -190,6 +191,7 @@ public class GameManager : MonoBehaviour
                         // Disable witch.
                         if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
                         Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
+                        EnemyManager._Instance.IEnumeratorSpawnNpcBackground(true);
                         EnemyManager._Instance.IEnumeratorSpawnNpc03(false);
                         SuppliesManager._Instance.IEnumeratorCallSupplies(true);
                         SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
