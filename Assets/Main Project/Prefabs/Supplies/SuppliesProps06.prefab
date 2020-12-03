@@ -122,6 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Scale: {x: 1, y: 1, z: 1}
+  _SpriteRenderer: {fileID: 5005943971315637921}
   _Number: 6
   _Speed: 0.5
   _Direction: 0

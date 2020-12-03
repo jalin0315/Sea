@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     public static Player _Instance;
-    public Transform _Transform_Player;
+    public Transform _Transform;
     public Animator _Animator;
-    public Sprite _Sprite_Player;
     [SerializeField] private SpriteRenderer _SpriteRenderer;
+    public Sprite _Sprite_Player;
     [SerializeField] private List<Sprite> _List_Sprite_Fishes = new List<Sprite>();
     public Slider _Slider_MaxHealth;
     public Slider _Slider_Health;
@@ -25,6 +25,10 @@ public class Player : MonoBehaviour
     [SerializeField] private List<float> _List_SkillPay = new List<float>();
     public List<float> _List_SkillTime = new List<float>();
     public bool _EnableSkill;
+    [SerializeField] private GameObject _Object_PropTime;
+    [SerializeField] private Image _Image_PropTimeBackground;
+    [SerializeField] private Image _Image_PropTime;
+    [SerializeField] private float _PropTimer;
     [SerializeField] private ParticleSystem _ParticleSystem_Death;
     [SerializeField] private ParticleSystem _ParticleSystem_Light;
     [SerializeField] private ParticleSystem _ParticleSystem_Yellow;
@@ -43,6 +47,9 @@ public class Player : MonoBehaviour
         _Slider_Health.value = _Slider_MaxHealth.value;
         _Slider_Power.value = _Slider_Power.maxValue;
         HealthBarColorChange();
+        _Animator.SetBool("Invincible2", false);
+        _Image_PropTime.fillAmount = 1.0f;
+        _PropTimer = 0.0f;
     }
     private void Start() => InitializeStart();
 
@@ -50,6 +57,7 @@ public class Player : MonoBehaviour
     {
         if (!GameManager._Instance._InGame) return;
         SkillUpdate();
+        PropTime();
     }
 
     public void InvincibleEnable() => _Invincible = true;
@@ -111,7 +119,18 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void Supplies(string _tag, int _number)
+    private void PropTime()
+    {
+        if (_PropTimer <= 0.0f) return;
+        _Image_PropTime.fillAmount -= 1.0f / _PropTimer * Time.deltaTime;
+        if (_Image_PropTime.fillAmount <= 0.0f)
+        {
+            _Object_PropTime.SetActive(false);
+            _Image_PropTime.fillAmount = 1.0f;
+            _PropTimer = 0.0f;
+        }
+    }
+    public void Supplies(string _tag, int _number, Sprite _sprite)
     {
         if (_tag == "SuppliesRed")
         {
@@ -157,6 +176,11 @@ public class Player : MonoBehaviour
                         // 玩家加速
                         MovementSystem._Instance._Magnification = 2.5f;
                         _ParticleSystem_Yellow.Play();
+                        _Image_PropTimeBackground.sprite = _sprite;
+                        _Image_PropTime.sprite = _sprite;
+                        _Image_PropTime.fillAmount = 1.0f;
+                        _PropTimer = 5.0f;
+                        _Object_PropTime.SetActive(true);
                         StartCoroutine(Delay(5.0f));
                         IEnumerator Delay(float _time)
                         {
@@ -172,6 +196,11 @@ public class Player : MonoBehaviour
                         int _i = Random.Range(0, _List_Sprite_Fishes.Count);
                         _SpriteRenderer.sprite = _List_Sprite_Fishes[_i];
                         _Invincible_Guise = true;
+                        _Image_PropTimeBackground.sprite = _sprite;
+                        _Image_PropTime.sprite = _sprite;
+                        _Image_PropTime.fillAmount = 1.0f;
+                        _PropTimer = 5.0f;
+                        _Object_PropTime.SetActive(true);
                         StartCoroutine(Delay(5.0f));
                         IEnumerator Delay(float _time)
                         {
@@ -185,10 +214,15 @@ public class Player : MonoBehaviour
                     {
                         // 慢動作
                         Time.timeScale = 0.5f;
-                        StartCoroutine(Delay(5.0f));
+                        _Image_PropTimeBackground.sprite = _sprite;
+                        _Image_PropTime.sprite = _sprite;
+                        _Image_PropTime.fillAmount = 1.0f;
+                        _PropTimer = 2.0f;
+                        _Object_PropTime.SetActive(true);
+                        StartCoroutine(Delay(2.0f));
                         IEnumerator Delay(float _time)
                         {
-                            yield return new WaitForSecondsRealtime(_time);
+                            yield return new WaitForSeconds(_time);
                             Time.timeScale = 1.0f;
                         }
                     }
@@ -198,6 +232,11 @@ public class Player : MonoBehaviour
                         // 撞魚
                         _Attack = true;
                         _ParticleSystem_Attack.Play();
+                        _Image_PropTimeBackground.sprite = _sprite;
+                        _Image_PropTime.sprite = _sprite;
+                        _Image_PropTime.fillAmount = 1.0f;
+                        _PropTimer = 5.0f;
+                        _Object_PropTime.SetActive(true);
                         StartCoroutine(Delay(5.0f));
                         IEnumerator Delay(float _time)
                         {
@@ -211,6 +250,11 @@ public class Player : MonoBehaviour
                     {
                         // 玩家縮小
                         MovementSystem._Instance._Scale_Magnification = 0.5f;
+                        _Image_PropTimeBackground.sprite = _sprite;
+                        _Image_PropTime.sprite = _sprite;
+                        _Image_PropTime.fillAmount = 1.0f;
+                        _PropTimer = 5.0f;
+                        _Object_PropTime.SetActive(true);
                         StartCoroutine(Delay(5.0f));
                         IEnumerator Delay(float _time)
                         {
@@ -237,33 +281,33 @@ public class Player : MonoBehaviour
         _Slider_Health.value = _Slider_MaxHealth.value;
         _Slider_Power.value = _Slider_Power.maxValue;
         HealthBarColorChange();
+        InvincibleEnable();
         _Animator.SetTrigger("Invincible");
     }
 
     public void DeathEnable()
     {
         GameManager._Instance._InGame = false;
-        MovementSystem._Instance._FloatingJoystick.Initialize();
         MenuSystem._Instance.StateChange(MenuSystem.Status.Animation);
+        MovementSystem._Instance._FloatingJoystick.Initialize();
+        _ParticleSystem_Death.Play();
     }
     public void DeathDisable()
     {
         Time.timeScale = 1.0f;
         GameManager._Instance._InGame = true;
-        MovementSystem._Instance._FloatingJoystick.Initialize();
         MenuSystem._Instance.StateChange(MenuSystem.Status.InGame);
         _Slider_Health.value = _Slider_MaxHealth.value;
         _Slider_Power.value = _Slider_Power.maxValue;
         HealthBarColorChange();
         _Animator.SetBool("Death", false);
+        _ParticleSystem_Death.Stop();
     }
     public void DeathMenu()
     {
         Time.timeScale = 0.0f;
         MenuSystem._Instance.StateChange(MenuSystem.Status.DeathMenu);
     }
-    public void DeathEffectEnable() => _ParticleSystem_Death.Play();
-    public void DeathEffectDisable() => _ParticleSystem_Death.Stop();
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -276,25 +320,26 @@ public class Player : MonoBehaviour
     {
         if (!GameManager._Instance._InGame) return;
         if (_Invincible) return;
+        if (_Attack) return;
         if (_Invincible_Guise) return;
         if (collision.tag == "Enemy")
         {
             if (_Animator.GetBool("Invincible2"))
             {
                 _Animator.SetBool("Invincible2", false);
+                InvincibleEnable();
+                _Animator.SetTrigger("Invincible");
                 _ParticleSystem_Invincible.Stop();
                 _ParticleSystem_Death.Play();
-                _Animator.SetTrigger("Invincible");
                 Vibration.Vibrate(2);
                 return;
             }
-            if (_Attack) return;
             _Slider_Health.value -= 10.0f; // 12.5f
             if (_Slider_Health.value <= 0.0f) _Animator.SetBool("Death", true);
             else
             {
-                _Animator.SetTrigger("Injured");
                 InvincibleEnable();
+                _Animator.SetTrigger("Injured");
             }
             HealthBarColorChange();
             Vibration.Vibrate(2);

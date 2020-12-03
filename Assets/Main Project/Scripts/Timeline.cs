@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 public class Timeline : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class Timeline : MonoBehaviour
     public PlayableDirector _FadeOut;
     public PlayableDirector _ReturnMainMenu;
     public bool _SkipEnable;
+    [SerializeField] private List<AudioSource> _AudioSource = new List<AudioSource>();
 
     private void Awake()
     {
@@ -25,4 +27,19 @@ public class Timeline : MonoBehaviour
         else if (_Opening.state == PlayState.Playing) _Opening.time = 8.0d;
     }
     public void SkipEnable(bool _enable) => _SkipEnable = _enable;
+    public void AudioEnable(bool _enable)
+    {
+        if (_enable)
+        {
+            foreach (var _var in _AudioSource)
+                _var.volume = 1.0f;
+            return;
+        }
+        if (!_enable)
+        {
+            foreach (var _var in _AudioSource)
+                _var.volume = 0.0f;
+            return;
+        }
+    }
 }

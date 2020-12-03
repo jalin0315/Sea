@@ -112,6 +112,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Scale: {x: 0.2, y: 0.2, z: 1}
+  _SpriteRenderer: {fileID: 4961833591325763449}
+  _Number: 0
   _Speed: 0.25
   _Direction: 0
+  _Time: 0
+  _Timer: 0
   _List_LightGroup: []

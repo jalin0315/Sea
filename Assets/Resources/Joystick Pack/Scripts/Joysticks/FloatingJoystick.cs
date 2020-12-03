@@ -20,20 +20,16 @@ public class FloatingJoystick : Joystick
 
     public override void OnPointerDown(PointerEventData eventData)
     {
-        if (GameManager._Instance._InGame)
-        {
-            background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
-            background.gameObject.SetActive(true);
-            base.OnPointerDown(eventData);
-        }
+        if (!GameManager._Instance._InGame) return;
+        background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
+        background.gameObject.SetActive(true);
+        base.OnPointerDown(eventData);
     }
 
     public override void OnPointerUp(PointerEventData eventData)
     {
-        if (GameManager._Instance._InGame)
-        {
-            background.gameObject.SetActive(false);
-            base.OnPointerUp(eventData);
-        }
+        if (!GameManager._Instance._InGame) return;
+        background.gameObject.SetActive(false);
+        base.OnPointerUp(eventData);
     }
 }

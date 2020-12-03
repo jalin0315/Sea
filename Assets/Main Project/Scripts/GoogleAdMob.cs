@@ -184,6 +184,7 @@ public class GoogleAdMob : MonoBehaviour
     private void HandleRewardedAdOpening(object sender, EventArgs args)
     {
         print("HandleRewardedAdOpening event received");
+        Time.timeScale = 0.0f;
     }
     private void HandleRewardedAdFailedToShow(object sender, AdErrorEventArgs args)
     {
@@ -195,6 +196,7 @@ public class GoogleAdMob : MonoBehaviour
         print("HandleRewardedAdClosed event received");
         _Resurrect = false;
         _MaxHealthPower = false;
+        if (MenuSystem._Instance._Status == MenuSystem.Status.InGame) Time.timeScale = 1.0f;
         RequestRewardedAd();
     }
     private void HandleUserEarnedReward(object sender, Reward args)

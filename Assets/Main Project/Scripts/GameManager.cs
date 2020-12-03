@@ -311,7 +311,7 @@ public class GameManager : MonoBehaviour
         _Meter = 0.0f;
         _Result = 0;
         InitializeStart();
-        Player._Instance._Transform_Player.position = Vector2.zero;
+        Player._Instance._Transform.position = Vector2.zero;
         Player._Instance.InitializeStart();
         Player._Instance._Animator.SetBool("Death", false);
         Player._Instance._EnableSkill = false;

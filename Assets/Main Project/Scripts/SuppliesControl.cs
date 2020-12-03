@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SuppliesControl : MonoBehaviour
 {
     [HideInInspector] public Vector3 _Scale;
+    [SerializeField] private SpriteRenderer _SpriteRenderer;
     [SerializeField] private int _Number;
     [SerializeField] private float _Speed;
     public Queue<GameObject> _Queue = new Queue<GameObject>();
@@ -79,9 +81,10 @@ public class SuppliesControl : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!GameManager._Instance._InGame) return;
         if (collision.tag == "Player")
         {
-            Player._Instance.Supplies(tag, _Number);
+            Player._Instance.Supplies(tag, _Number, _SpriteRenderer.sprite);
             SuppliesManager._Instance.Recovery(_Queue, gameObject);
         }
     }

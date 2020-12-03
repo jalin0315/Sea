@@ -47,6 +47,7 @@ public class MenuSystem : MonoBehaviour
     [SerializeField] private GameObject _Object_Checkpoint;
     [SerializeField] private GameObject _Object_Skill;
     [SerializeField] private GameObject _Object_InGameSkill;
+    [SerializeField] private GameObject _Object_PropTime;
     [SerializeField] private GameObject _Object_Death;
     [Space(20)]
     [SerializeField] private Image _Image_InGameSkill;
@@ -161,8 +162,16 @@ public class MenuSystem : MonoBehaviour
     }
     private void OnButtonAudio()
     {
-        if (_Image_Audio.sprite == _Sprite_Audio_UnMute) _Image_Audio.sprite = _Sprite_Audio_Mute;
-        else _Image_Audio.sprite = _Sprite_Audio_UnMute;
+        if (_Image_Audio.sprite == _Sprite_Audio_UnMute)
+        {
+            _Image_Audio.sprite = _Sprite_Audio_Mute;
+            Timeline._Instance.AudioEnable(false);
+        }
+        else
+        {
+            _Image_Audio.sprite = _Sprite_Audio_UnMute;
+            Timeline._Instance.AudioEnable(true);
+        }
         Vibration.Vibrate(1);
     }
     private void OnButtonVibrate()
@@ -189,7 +198,6 @@ public class MenuSystem : MonoBehaviour
         StateChange(Status.Animation);
         Time.timeScale = 1.0f;
         GameManager._Instance._InGame = false;
-        MovementSystem._Instance._FloatingJoystick.Initialize();
         Timeline._Instance._ReturnMainMenu.Play();
         Vibration.Vibrate(1);
     }
@@ -220,7 +228,6 @@ public class MenuSystem : MonoBehaviour
         GameManager._Instance._Meter = _meter;
         GameManager._Instance._Result = Convert.ToInt32(GameManager._Instance._Meter);
         GameManager._Instance.FixZoneTrigger();
-        MovementSystem._Instance._FloatingJoystick.Initialize();
         Timeline._Instance._Idle.Stop();
         Timeline._Instance._Opening.Play();
         Vibration.Vibrate(1);
@@ -263,6 +270,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
             GoogleAdMob._Instance.HideBanner();
             return;
@@ -291,6 +299,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
             GoogleAdMob._Instance.ShowBanner();
             return;
@@ -319,6 +328,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
             GoogleAdMob._Instance.ShowBanner();
             return;
@@ -347,6 +357,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
             GoogleAdMob._Instance.ShowBanner();
             return;
@@ -375,6 +386,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
             GoogleAdMob._Instance.ShowBanner();
             return;
@@ -403,6 +415,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
             GoogleAdMob._Instance.ShowBanner();
             return;
@@ -431,6 +444,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Checkpoint.SetActive(true);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
             GoogleAdMob._Instance.ShowBanner();
             return;
@@ -459,6 +473,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(true);
             _Object_InGameSkill.SetActive(false);
+            _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
             GoogleAdMob._Instance.ShowBanner();
             return;
@@ -487,6 +502,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
             GoogleAdMob._Instance.HideBanner();
             return;
@@ -515,6 +531,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            //_Object_PropTime.SetActive(true);
             _Object_Death.SetActive(false);
             GoogleAdMob._Instance.HideBanner();
             GameManager._Instance.GameState(true);
@@ -544,6 +561,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            //_Object_PropTime.SetActive(true);
             _Object_Death.SetActive(false);
             GoogleAdMob._Instance.ShowBanner();
             GameManager._Instance.GameState(false);
@@ -573,6 +591,7 @@ public class MenuSystem : MonoBehaviour
             _Object_Checkpoint.SetActive(false);
             _Object_Skill.SetActive(false);
             _Object_InGameSkill.SetActive(false);
+            _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(true);
             GoogleAdMob._Instance.ShowBanner();
             if (GameManager._Instance._ResurrectTotal <= 0) _Button_Resurrect.interactable = false;
