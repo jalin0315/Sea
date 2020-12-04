@@ -30,14 +30,12 @@ public class UnityAds: MonoBehaviour, IUnityAdsListener
         //StartCoroutine(ShowBanner());
     }
 
-    /*
     public void ShowInterstitialVideo()
     {
         // 調用插頁式廣告之前 確認廣告是否載入成功
         if (Advertisement.IsReady(_PlacementID_Video)) Advertisement.Show(_PlacementID_Video);
         else Debug.LogWarning("Interstitial ad not ready at the moment! Please try again later!");
     }
-    */
     public void ShowRewardedVideo()
     {
         // 調用獎勵廣告之前 確認廣告是否載入成功

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyMobile;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -74,7 +75,17 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            // Ask if user wants to exit
+            NativeUI.AlertPopup _alert = NativeUI.ShowTwoButtonAlert
+                ("離開應用程式","是否要離開應用程式？","是","否");
+            if (_alert != null)
+                _alert.OnComplete += delegate (int _button)
+                {
+                    if (_button == 0) Application.Quit();
+                };
+        }
         if (_InGame)
         {
             Diving();

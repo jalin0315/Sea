@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyMobile;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -218,7 +219,8 @@ public class MenuSystem : MonoBehaviour
     }
     private void OnButtonInterstitialAd()
     {
-        GoogleAdMob._Instance.InterstitialAd();
+        if (Advertising.IsInterstitialAdReady(InterstitialAdNetwork.AdMob, AdPlacement.Default))
+            Advertising.ShowInterstitialAd(InterstitialAdNetwork.AdMob, AdPlacement.Default);
         Vibration.Vibrate(1);
     }
     private void OnButtonCheckpoint(float _meter)
@@ -239,7 +241,11 @@ public class MenuSystem : MonoBehaviour
     }
     private void OnButtonResurrect()
     {
-        GoogleAdMob._Instance.Resurrect(true);
+        if (Advertising.IsRewardedAdReady(RewardedAdNetwork.UnityAds, AdPlacement.Default))
+        {
+            Advertising.ShowRewardedAd(RewardedAdNetwork.UnityAds, AdPlacement.Default);
+            AdvertisingEvent._Reward_Resurrect = true;
+        }
         Vibration.Vibrate(1);
     }
 
@@ -272,7 +278,7 @@ public class MenuSystem : MonoBehaviour
             _Object_InGameSkill.SetActive(false);
             _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
-            GoogleAdMob._Instance.HideBanner();
+            Advertising.HideBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default);
             return;
         }
         if (_Status == Status.ShowSettings)
@@ -301,7 +307,7 @@ public class MenuSystem : MonoBehaviour
             _Object_InGameSkill.SetActive(false);
             _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
-            GoogleAdMob._Instance.ShowBanner();
+            Advertising.ShowBannerAd(BannerAdNetwork.AdMob, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
             return;
         }
         if (_Status == Status.HighScore)
@@ -330,7 +336,7 @@ public class MenuSystem : MonoBehaviour
             _Object_InGameSkill.SetActive(false);
             _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
-            GoogleAdMob._Instance.ShowBanner();
+            Advertising.ShowBannerAd(BannerAdNetwork.AdMob, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
             return;
         }
         if (_Status == Status.Achievement)
@@ -359,7 +365,7 @@ public class MenuSystem : MonoBehaviour
             _Object_InGameSkill.SetActive(false);
             _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
-            GoogleAdMob._Instance.ShowBanner();
+            Advertising.ShowBannerAd(BannerAdNetwork.AdMob, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
             return;
         }
         if (_Status == Status.IllustratedBook)
@@ -388,7 +394,7 @@ public class MenuSystem : MonoBehaviour
             _Object_InGameSkill.SetActive(false);
             _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
-            GoogleAdMob._Instance.ShowBanner();
+            Advertising.ShowBannerAd(BannerAdNetwork.AdMob, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
             return;
         }
         if (_Status == Status.Submarine)
@@ -417,7 +423,7 @@ public class MenuSystem : MonoBehaviour
             _Object_InGameSkill.SetActive(false);
             _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
-            GoogleAdMob._Instance.ShowBanner();
+            Advertising.ShowBannerAd(BannerAdNetwork.AdMob, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
             return;
         }
         if (_Status == Status.Checkpoint)
@@ -446,7 +452,7 @@ public class MenuSystem : MonoBehaviour
             _Object_InGameSkill.SetActive(false);
             _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
-            GoogleAdMob._Instance.ShowBanner();
+            Advertising.ShowBannerAd(BannerAdNetwork.AdMob, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
             return;
         }
         if (_Status == Status.Skill)
@@ -475,7 +481,7 @@ public class MenuSystem : MonoBehaviour
             _Object_InGameSkill.SetActive(false);
             _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
-            GoogleAdMob._Instance.ShowBanner();
+            Advertising.ShowBannerAd(BannerAdNetwork.AdMob, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
             return;
         }
         if (_Status == Status.Animation)
@@ -504,7 +510,7 @@ public class MenuSystem : MonoBehaviour
             _Object_InGameSkill.SetActive(false);
             _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(false);
-            GoogleAdMob._Instance.HideBanner();
+            Advertising.HideBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default);
             return;
         }
         if (_Status == Status.InGame)
@@ -533,7 +539,7 @@ public class MenuSystem : MonoBehaviour
             _Object_InGameSkill.SetActive(false);
             //_Object_PropTime.SetActive(true);
             _Object_Death.SetActive(false);
-            GoogleAdMob._Instance.HideBanner();
+            Advertising.HideBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default);
             GameManager._Instance.GameState(true);
             return;
         }
@@ -563,7 +569,7 @@ public class MenuSystem : MonoBehaviour
             _Object_InGameSkill.SetActive(false);
             //_Object_PropTime.SetActive(true);
             _Object_Death.SetActive(false);
-            GoogleAdMob._Instance.ShowBanner();
+            Advertising.ShowBannerAd(BannerAdNetwork.AdMob, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
             GameManager._Instance.GameState(false);
             return;
         }
@@ -593,7 +599,7 @@ public class MenuSystem : MonoBehaviour
             _Object_InGameSkill.SetActive(false);
             _Object_PropTime.SetActive(false);
             _Object_Death.SetActive(true);
-            GoogleAdMob._Instance.ShowBanner();
+            Advertising.ShowBannerAd(BannerAdNetwork.AdMob, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
             if (GameManager._Instance._ResurrectTotal <= 0) _Button_Resurrect.interactable = false;
             else _Button_Resurrect.interactable = true;
             return;

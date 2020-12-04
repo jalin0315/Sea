@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using EasyMobile;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -149,7 +150,11 @@ public class Player : MonoBehaviour
         }
         if (_tag == "SuppliesAd")
         {
-            GoogleAdMob._Instance.MaxHealthPower(true);
+            if (Advertising.IsRewardedAdReady(RewardedAdNetwork.AdMob, AdPlacement.Default))
+            {
+                Advertising.ShowRewardedAd(RewardedAdNetwork.AdMob, AdPlacement.Default);
+                AdvertisingEvent._Reward_MaxHealth = true;
+            }
             return;
         }
         if (_tag == "SuppliesProps")
