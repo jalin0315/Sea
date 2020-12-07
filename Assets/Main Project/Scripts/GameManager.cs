@@ -1,5 +1,4 @@
 ﻿using EasyMobile;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -38,7 +37,7 @@ public class GameManager : MonoBehaviour
     private void InitializeStart()
     {
         _InGame = false;
-        _Result = Convert.ToInt32(_Meter);
+        _Result = System.Convert.ToInt32(_Meter);
         _ResurrectTotal = 1;
         MenuSystem._Instance._Text_ResurrectTotal.text = "x" + " " + _ResurrectTotal.ToString();
         _Light_Result = 1 / _Light_MaxMeter;
@@ -78,13 +77,14 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Escape))
         {
             // Ask if user wants to exit
-            NativeUI.AlertPopup _alert = NativeUI.ShowTwoButtonAlert
-                ("離開應用程式","是否要離開應用程式？","是","否");
+            NativeUI.AlertPopup _alert = NativeUI.ShowTwoButtonAlert("離開應用程式", "是否要離開應用程式？", "是", "否");
             if (_alert != null)
+            {
                 _alert.OnComplete += delegate (int _button)
                 {
                     if (_button == 0) Application.Quit();
                 };
+            }
         }
         if (_InGame)
         {
@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
         //_Text_Depth.text = _Result.ToString("###,###") + " " + "Metres";
         _Slider_Depth.value = _Result;
         _Meter += _Time * Time.deltaTime;
-        _Result = Convert.ToInt32(_Meter);
+        _Result = System.Convert.ToInt32(_Meter);
         if (_Result > _Light_MaxMeter) return;
         float _bg_r = _Color_BG_Original.r - (_Result * _Color_BG_Original.r * _Light_Result);
         float _bg_g = _Color_BG_Original.g - (_Result * _Color_BG_Original.g * _Light_Result);
@@ -132,6 +132,28 @@ public class GameManager : MonoBehaviour
                 switch (_ZoneClassPoints[_i])
                 {
                     case 0:
+                        int _index = Random.Range(0, 5);
+                        switch (_index)
+                        {
+                            case 0:
+                                AudioSystem._Instance.Play("00");
+                                break;
+                            case 1:
+                                AudioSystem._Instance.Play("01");
+                                break;
+                            case 2:
+                                AudioSystem._Instance.Play("02");
+                                break;
+                            case 3:
+                                AudioSystem._Instance.Play("03");
+                                break;
+                            case 4:
+                                AudioSystem._Instance.Play("04");
+                                break;
+                            default:
+                                break;
+                        }
+                        EnemyManager._Instance._MaxCount_BackgroundFish = 8;
                         EnemyManager._Instance.IEnumeratorSpawnNpcBackground(true);
                         EnemyManager._Instance.IEnumeratorSpawnNpc00(true);
                         SuppliesManager._Instance.IEnumeratorCallSupplies(true);
@@ -165,7 +187,9 @@ public class GameManager : MonoBehaviour
                     case 4000:
                         // 生態域分界
                         if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
+                        _Object_PlayerLight.SetActive(true);
                         Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
+                        EnemyManager._Instance._MaxCount_BackgroundFish = 1;
                         EnemyManager._Instance.IEnumeratorSpawnNpcBackground(true);
                         EnemyManager._Instance.IEnumeratorSpawnNpc02(false);
                         SuppliesManager._Instance.IEnumeratorCallSupplies(true);
@@ -182,7 +206,6 @@ public class GameManager : MonoBehaviour
                         break;
                     case 6000:
                         Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
-                        _Object_PlayerLight.SetActive(true);
                         break;
                     case 6900:
                         BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
@@ -202,6 +225,7 @@ public class GameManager : MonoBehaviour
                         // Disable witch.
                         if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
                         Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
+                        EnemyManager._Instance._MaxCount_BackgroundFish = 1;
                         EnemyManager._Instance.IEnumeratorSpawnNpcBackground(true);
                         EnemyManager._Instance.IEnumeratorSpawnNpc03(false);
                         SuppliesManager._Instance.IEnumeratorCallSupplies(true);
@@ -334,6 +358,7 @@ public class GameManager : MonoBehaviour
         BaitControl._RecoveryAll = true;
         //LightRays2DControl._Instance.InitializeStart();
         BackgroundControl._RecoveryAll = true;
+        AudioSystem._Instance.StopAll();
     }
 
     private void OnApplicationQuit() => print("OnApplicationQuit()");

@@ -305,6 +305,7 @@ public class Player : MonoBehaviour
         _Slider_Health.value = _Slider_MaxHealth.value;
         _Slider_Power.value = _Slider_Power.maxValue;
         HealthBarColorChange();
+        InvincibleEnable();
         _Animator.SetBool("Death", false);
         _ParticleSystem_Death.Stop();
     }
