@@ -31,14 +31,12 @@ public class Timeline : MonoBehaviour
     {
         if (_enable)
         {
-            foreach (var _var in _AudioSource)
-                _var.volume = 1.0f;
+            foreach (var _var in _AudioSource) _var.volume = 1.0f;
             return;
         }
         if (!_enable)
         {
-            foreach (var _var in _AudioSource)
-                _var.volume = 0.0f;
+            foreach (var _var in _AudioSource) _var.volume = 0.0f;
             return;
         }
     }

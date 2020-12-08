@@ -8,6 +8,10 @@ public class CameraControl : MonoBehaviour
     // 原始 Size 6.5 最大 10
     public Camera _Camera;
     public Transform _Transform_Camera;
+    [HideInInspector] public Vector2 _Origin() { return _Camera.ScreenToWorldPoint(Vector2.zero); }
+    [HideInInspector] public Vector2 _Vertex() { return _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight)); }
+    private Vector2 _UpperCenter() { return new Vector2((_Origin().x + _Vertex().x) / 2, _Vertex().y); }
+    private Vector2 _LowerCenter() { return new Vector2((_Origin().x + _Vertex().x) / 2, _Origin().y); }
     private float _MaxMeter;
     private float _OriginalCameraSize;
     [SerializeField] private Transform _Target;
@@ -27,19 +31,11 @@ public class CameraControl : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager._Instance._InGame)
-        {
-            Vector2 _origin = _Camera.ScreenToWorldPoint(Vector2.zero);
-            Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
-            Vector2 _upper_center = new Vector2((_origin.x + _vertex.x) / 2, _vertex.y);
-            Vector2 _lower_center = new Vector2((_origin.x + _vertex.x) / 2, _origin.y);
-            _UpperBoundary.position = _upper_center;
-            _LowerBoundary.position = _lower_center;
-            if (GameManager._Instance._Result <= GameManager._Instance._MaxMeter)
-            {
-                _Camera.orthographicSize = GameManager._Instance._Result * _MaxMeter + 6.5f;
-            }
-        }
+        if (!GameManager._Instance._InGame) return;
+        _UpperBoundary.position = _UpperCenter();
+        _LowerBoundary.position = _LowerCenter();
+        if (GameManager._Instance._Result <= GameManager._Instance._MaxMeter)
+            _Camera.orthographicSize = GameManager._Instance._Result * _MaxMeter + 6.5f;
     }
 
     private void FixedUpdate()

@@ -9,10 +9,12 @@ public class MovementSystem : MonoBehaviour
     public static MovementSystem _Instance;
     public FloatingJoystick _FloatingJoystick;
     [SerializeField] private SpriteRenderer _SpriteRenderer;
-    public Rigidbody2D _Rigidbody2D;
+    [SerializeField] private Rigidbody2D _Rigidbody2D;
+    [HideInInspector] public float _VelocityX() { return _Rigidbody2D.velocity.x; }
     [SerializeField] private float _Speed;
     public float _Magnification;
     [SerializeField] private float _MaxVelocitySpeed;
+    public Vector3 _Scale_Original;
     public Vector3 _Scale;
     public float _Scale_Magnification;
     [SerializeField] private Vector3 _Slope;
@@ -22,7 +24,8 @@ public class MovementSystem : MonoBehaviour
 
     private void Start()
     {
-        _Scale = transform.localScale;
+        _Scale_Original = transform.localScale;
+        _Scale = _Scale_Original;
     }
 
     private void FixedUpdate()

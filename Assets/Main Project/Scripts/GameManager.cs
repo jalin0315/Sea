@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
             5000,
             5900,
             6000,
+            6500,
             6900,
             7000,
             7100,
@@ -207,6 +208,14 @@ public class GameManager : MonoBehaviour
                     case 6000:
                         Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                         break;
+                    case 6500:
+                        if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
+                        _Object_PlayerLight.SetActive(true);
+                        Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
+                        EnemyManager._Instance.IEnumeratorSpawnNpc03(false);
+                        SuppliesManager._Instance.IEnumeratorCallSupplies(true);
+                        SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
+                        break;
                     case 6900:
                         BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
                         break;
@@ -228,6 +237,7 @@ public class GameManager : MonoBehaviour
                         EnemyManager._Instance._MaxCount_BackgroundFish = 1;
                         EnemyManager._Instance.IEnumeratorSpawnNpcBackground(true);
                         EnemyManager._Instance.IEnumeratorSpawnNpc03(false);
+                        EnemyManager._Instance.IEnumeratorSpawnNpcJellyFish(false);
                         SuppliesManager._Instance.IEnumeratorCallSupplies(true);
                         SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
                         break;
@@ -286,6 +296,11 @@ public class GameManager : MonoBehaviour
             EnemyManager._Instance.IEnumeratorSpawnNpc04(true);
             return;
         }
+        if (_Result >= 6500)
+        {
+            EnemyManager._Instance.IEnumeratorSpawnNpcJellyFish(true);
+            return;
+        }
         if (_Result >= 4000)
         {
             EnemyManager._Instance.IEnumeratorSpawnNpc03(true);
@@ -313,6 +328,13 @@ public class GameManager : MonoBehaviour
             _Object_Background_DeepSea.SetActive(true);
             _Object_AmbientLight.SetActive(false);
             _Object_PlayerLight.SetActive(true);
+            return;
+        }
+        if (_Result >= 4000) return;
+        if (_Result >= 0)
+        {
+            LightRays2DControl._Instance.Initialization(true);
+            return;
         }
     }
     public void PauseGame()
@@ -353,11 +375,12 @@ public class GameManager : MonoBehaviour
         CameraControl._Instance._Transform_Camera.position = new Vector3(Vector2.zero.x, Vector2.zero.y, CameraControl._Instance._Transform_Camera.position.z);
         EnemyManager._Instance.IEnumeratorStopAllCoroutines();
         EnemyAI._RecoveryAll = true;
+        JellyFishEnemyAI._RecoveryAll = true;
         SuppliesManager._Instance.IEnumeratorStopAllCoroutines();
         SuppliesControl._RecoveryAll = true;
         BaitControl._RecoveryAll = true;
-        //LightRays2DControl._Instance.InitializeStart();
         BackgroundControl._RecoveryAll = true;
+        LightRays2DControl._Instance.Initialization(false);
         AudioSystem._Instance.StopAll();
     }
 

@@ -172,6 +172,7 @@ public class Player : MonoBehaviour
                     {
                         // 炸彈
                         EnemyAI._RecoveryAll = true;
+                        JellyFishEnemyAI._RecoveryAll = true;
                         _ParticleSystem_Light.Play();
                         _ParticleSystem_Death.Play();
                         break;
@@ -198,6 +199,7 @@ public class Player : MonoBehaviour
                 case 3:
                     {
                         // 偽裝
+                        MovementSystem._Instance._Scale = Vector3.one * 0.25f;
                         int _i = Random.Range(0, _List_Sprite_Fishes.Count);
                         _SpriteRenderer.sprite = _List_Sprite_Fishes[_i];
                         _Invincible_Guise = true;
@@ -210,6 +212,7 @@ public class Player : MonoBehaviour
                         IEnumerator Delay(float _time)
                         {
                             yield return new WaitForSeconds(_time);
+                            MovementSystem._Instance._Scale = MovementSystem._Instance._Scale_Original;
                             _SpriteRenderer.sprite = _Sprite_Player;
                             _Invincible_Guise = false;
                         }

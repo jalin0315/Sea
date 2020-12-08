@@ -223,7 +223,7 @@ public class MenuSystem : MonoBehaviour
             Advertising.ShowInterstitialAd(InterstitialAdNetwork.AdMob, AdPlacement.Default);
         Vibration.Vibrate(1);
     }
-    private void OnButtonCheckpoint(float _meter)
+    public void OnButtonCheckpoint(float _meter)
     {
         //StateChange(Status.Skill);
         StateChange(Status.Animation);
