@@ -10,8 +10,11 @@ public class MenuSystem : MonoBehaviour
     public static MenuSystem _Instance;
     public enum Status
     {
-        Null = -1,
+        Animation,
         MainMenu,
+        Index,
+        Settings,
+
         ShowSettings,
         HighScore,
         Achievement,
@@ -19,7 +22,6 @@ public class MenuSystem : MonoBehaviour
         Submarine,
         Checkpoint,
         Skill,
-        Animation,
         InGame,
         ShowInGameMenu,
         DeathMenu
@@ -28,7 +30,13 @@ public class MenuSystem : MonoBehaviour
     [Space(20)]
     [SerializeField] private GameObject _Object_Play;
     [SerializeField] private GameObject _Object_Prompt;
+    [SerializeField] private GameObject _Object_Menu;
+    [SerializeField] private GameObject _Object_MenuGroup;
+    [SerializeField] private GameObject _Object_Return;
+    [SerializeField] private GameObject _Object_Close;
+    [SerializeField] private GameObject _Object_Index;
     [SerializeField] private GameObject _Object_Settings;
+
     [SerializeField] private GameObject _Object_InGameMenu;
     [SerializeField] private GameObject _Object_Fold;
     [SerializeField] private GameObject _Object_Cancel;
@@ -54,7 +62,11 @@ public class MenuSystem : MonoBehaviour
     [SerializeField] private Image _Image_InGameSkill;
     [Space(20)]
     [SerializeField] private Button _Button_Play;
+    [SerializeField] private Button _Button_Index;
     [SerializeField] private Button _Button_Settings;
+    [SerializeField] private Button _Button_Return;
+    [SerializeField] private Button _Button_Close;
+
     [SerializeField] private Button _Button_InGameMenu;
     [SerializeField] private Button _Button_Fold;
     [SerializeField] private Button _Button_Cancel;
@@ -94,7 +106,11 @@ public class MenuSystem : MonoBehaviour
     {
         StateChange(Status.Animation);
         _Button_Play.onClick.AddListener(OnButtonPlay);
+        _Button_Index.onClick.AddListener(OnButtonIndex);
         _Button_Settings.onClick.AddListener(OnButtonSettings);
+        _Button_Return.onClick.AddListener(OnButtonReturn);
+        _Button_Close.onClick.AddListener(OnButtonClose);
+
         _Button_InGameMenu.onClick.AddListener(OnButtonInGameMenu);
         _Button_Fold.onClick.AddListener(OnButtonFold);
         _Button_Cancel.onClick.AddListener(OnButtonCancel);
@@ -121,8 +137,24 @@ public class MenuSystem : MonoBehaviour
     private void OnButtonPlay()
     {
         StateChange(Status.Checkpoint);
-        Vibration.Vibrate(1);
     }
+    private void OnButtonIndex()
+    {
+        StateChange(Status.Index);
+    }
+    private void OnButtonSettings()
+    {
+        StateChange(Status.Settings);
+    }
+    private void OnButtonReturn()
+    {
+        StateChange(Status.Index);
+    }
+    private void OnButtonClose()
+    {
+        StateChange(Status.MainMenu);
+    }
+
     private void OnButtonSkillSelected(int _skill_options)
     {
         /*
@@ -138,28 +170,19 @@ public class MenuSystem : MonoBehaviour
     private void OnButtonInGameSkill()
     {
         Player._Instance.SkillTrigger();
-        Vibration.Vibrate(1);
-    }
-    private void OnButtonSettings()
-    {
-        StateChange(Status.ShowSettings);
-        Vibration.Vibrate(1);
     }
     private void OnButtonInGameMenu()
     {
         StateChange(Status.ShowInGameMenu);
-        Vibration.Vibrate(1);
     }
     private void OnButtonFold()
     {
         if (_Status == Status.ShowInGameMenu) StateChange(Status.InGame);
         else StateChange(Status.MainMenu);
-        Vibration.Vibrate(1);
     }
     private void OnButtonCancel()
     {
         StateChange(Status.MainMenu);
-        Vibration.Vibrate(1);
     }
     private void OnButtonAudio()
     {
@@ -173,7 +196,6 @@ public class MenuSystem : MonoBehaviour
             _Image_Audio.sprite = _Sprite_Audio_UnMute;
             Timeline._Instance.AudioEnable(true);
         }
-        Vibration.Vibrate(1);
     }
     private void OnButtonVibrate()
     {
@@ -187,41 +209,34 @@ public class MenuSystem : MonoBehaviour
             GameManager._Instance._Enable_Vibrate = false;
             _Image_Vibrate.sprite = _Sprite_UnVibrate;
         }
-        Vibration.Vibrate(1);
     }
     private void OnButtonHighScore()
     {
         StateChange(Status.HighScore);
-        Vibration.Vibrate(1);
     }
     private void OnButtonReturnMainMenu()
     {
         StateChange(Status.Animation);
-        Time.timeScale = 1.0f;
+        CTJ.TimeSystem.TimeScale(1.0f);
         GameManager._Instance._InGame = false;
         Timeline._Instance._ReturnMainMenu.Play();
-        Vibration.Vibrate(1);
     }
     private void OnButtonAchievement()
     {
         StateChange(Status.Achievement);
-        Vibration.Vibrate(1);
     }
     private void OnButtonIllustratedBook()
     {
         StateChange(Status.IllustratedBook);
-        Vibration.Vibrate(1);
     }
     private void OnButtonSkipAnimation()
     {
         Timeline._Instance.Skip();
-        Vibration.Vibrate(1);
     }
     private void OnButtonInterstitialAd()
     {
         if (Advertising.IsInterstitialAdReady(InterstitialAdNetwork.AdMob, AdPlacement.Default))
             Advertising.ShowInterstitialAd(InterstitialAdNetwork.AdMob, AdPlacement.Default);
-        Vibration.Vibrate(1);
     }
     public void OnButtonCheckpoint(float _meter)
     {
@@ -232,12 +247,10 @@ public class MenuSystem : MonoBehaviour
         GameManager._Instance.FixZoneTrigger();
         Timeline._Instance._Idle.Stop();
         Timeline._Instance._Opening.Play();
-        Vibration.Vibrate(1);
     }
     private void OnButtonRestart()
     {
         OnButtonReturnMainMenu();
-        Vibration.Vibrate(1);
     }
     private void OnButtonResurrect()
     {
@@ -246,46 +259,75 @@ public class MenuSystem : MonoBehaviour
             Advertising.ShowRewardedAd(RewardedAdNetwork.UnityAds, AdPlacement.Default);
             AdvertisingEvent._Reward_Resurrect = true;
         }
-        Vibration.Vibrate(1);
     }
 
     public void StateChange(Status _status)
     {
         _Status = _status;
-        if (_Status == Status.MainMenu)
+        switch (_Status)
         {
-            _Object_Play.SetActive(true);
-            _Object_Prompt.SetActive(true);
-            _Object_Settings.SetActive(true);
-            _Object_InGameMenu.SetActive(false);
-            _Object_Fold.SetActive(false);
-            _Object_Cancel.SetActive(false);
-            _Object_Audio.SetActive(false);
-            _Object_Vibrate.SetActive(false);
-            _Object_HighScore.SetActive(false);
-            _Object_ReturnMainMenu.SetActive(false);
-            _Object_Achievement.SetActive(false);
-            _Object_IllustratedBook.SetActive(false);
-            _Object_Submarine.SetActive(false);
-            _Object_SkipAnimation.SetActive(false);
-            _Object_InterstitialAd.SetActive(true);
-            _Object_Depth.SetActive(false);
-            _Object_Health.SetActive(false);
-            _Object_ResurrectTotal.SetActive(false);
-            _Object_Power.SetActive(false);
-            _Object_Checkpoint.SetActive(false);
-            _Object_Skill.SetActive(false);
-            _Object_InGameSkill.SetActive(false);
-            _Object_PropTime.SetActive(false);
-            _Object_Death.SetActive(false);
-            Advertising.HideBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default);
-            return;
+            case Status.Animation:
+                {
+                    _Object_Play.SetActive(false);
+                    _Object_Prompt.SetActive(false);
+                    _Object_Menu.SetActive(false);
+                    _Object_MenuGroup.SetActive(false);
+                    _Object_Return.SetActive(false);
+                    _Object_Close.SetActive(false);
+                    _Object_Index.SetActive(false);
+                    _Object_Settings.SetActive(false);
+                    Advertising.HideBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default);
+                    Advertising.HideBannerAd(BannerAdNetwork.UnityAds, AdPlacement.Default);
+                }
+                break;
+            case Status.MainMenu:
+                {
+                    _Object_Play.SetActive(true);
+                    _Object_Prompt.SetActive(true);
+                    _Object_Menu.SetActive(true);
+                    _Object_MenuGroup.SetActive(false);
+                    _Object_Return.SetActive(false);
+                    _Object_Close.SetActive(false);
+                    _Object_Index.SetActive(false);
+                    _Object_Settings.SetActive(false);
+                    Advertising.HideBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default);
+                    Advertising.HideBannerAd(BannerAdNetwork.UnityAds, AdPlacement.Default);
+                }
+                break;
+            case Status.Index:
+                {
+                    _Object_Play.SetActive(false);
+                    _Object_Prompt.SetActive(false);
+                    _Object_Menu.SetActive(false);
+                    _Object_MenuGroup.SetActive(true);
+                    _Object_Return.SetActive(false);
+                    _Object_Close.SetActive(true);
+                    _Object_Index.SetActive(true);
+                    _Object_Settings.SetActive(false);
+                    Advertising.ShowBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
+                    Advertising.ShowBannerAd(BannerAdNetwork.UnityAds, AdPlacement.Default, BannerAdPosition.Top, BannerAdSize.SmartBanner);
+                }
+                break;
+            case Status.Settings:
+                {
+                    _Object_Play.SetActive(false);
+                    _Object_Prompt.SetActive(false);
+                    _Object_Menu.SetActive(false);
+                    _Object_MenuGroup.SetActive(true);
+                    _Object_Return.SetActive(true);
+                    _Object_Close.SetActive(false);
+                    _Object_Index.SetActive(false);
+                    _Object_Settings.SetActive(true);
+                    Advertising.ShowBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
+                    Advertising.ShowBannerAd(BannerAdNetwork.UnityAds, AdPlacement.Default, BannerAdPosition.Top, BannerAdSize.SmartBanner);
+                }
+                break;
         }
+
         if (_Status == Status.ShowSettings)
         {
             _Object_Play.SetActive(false);
             _Object_Prompt.SetActive(false);
-            _Object_Settings.SetActive(false);
             _Object_InGameMenu.SetActive(false);
             _Object_Fold.SetActive(true);
             _Object_Cancel.SetActive(false);
@@ -314,7 +356,6 @@ public class MenuSystem : MonoBehaviour
         {
             _Object_Play.SetActive(false);
             _Object_Prompt.SetActive(false);
-            _Object_Settings.SetActive(false);
             _Object_InGameMenu.SetActive(false);
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(true);
@@ -343,7 +384,6 @@ public class MenuSystem : MonoBehaviour
         {
             _Object_Play.SetActive(false);
             _Object_Prompt.SetActive(false);
-            _Object_Settings.SetActive(false);
             _Object_InGameMenu.SetActive(false);
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(true);
@@ -372,7 +412,6 @@ public class MenuSystem : MonoBehaviour
         {
             _Object_Play.SetActive(false);
             _Object_Prompt.SetActive(false);
-            _Object_Settings.SetActive(false);
             _Object_InGameMenu.SetActive(false);
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(true);
@@ -401,7 +440,6 @@ public class MenuSystem : MonoBehaviour
         {
             _Object_Play.SetActive(false);
             _Object_Prompt.SetActive(false);
-            _Object_Settings.SetActive(false);
             _Object_InGameMenu.SetActive(false);
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(true);
@@ -430,7 +468,6 @@ public class MenuSystem : MonoBehaviour
         {
             _Object_Play.SetActive(false);
             _Object_Prompt.SetActive(false);
-            _Object_Settings.SetActive(false);
             _Object_InGameMenu.SetActive(false);
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(true);
@@ -459,7 +496,6 @@ public class MenuSystem : MonoBehaviour
         {
             _Object_Play.SetActive(false);
             _Object_Prompt.SetActive(false);
-            _Object_Settings.SetActive(false);
             _Object_InGameMenu.SetActive(false);
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(true);
@@ -484,40 +520,10 @@ public class MenuSystem : MonoBehaviour
             Advertising.ShowBannerAd(BannerAdNetwork.AdMob, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
             return;
         }
-        if (_Status == Status.Animation)
-        {
-            _Object_Play.SetActive(false);
-            _Object_Prompt.SetActive(false);
-            _Object_Settings.SetActive(false);
-            _Object_InGameMenu.SetActive(false);
-            _Object_Fold.SetActive(false);
-            _Object_Cancel.SetActive(false);
-            _Object_Audio.SetActive(false);
-            _Object_Vibrate.SetActive(false);
-            _Object_HighScore.SetActive(false);
-            _Object_ReturnMainMenu.SetActive(false);
-            _Object_Achievement.SetActive(false);
-            _Object_IllustratedBook.SetActive(false);
-            _Object_Submarine.SetActive(false);
-            _Object_SkipAnimation.SetActive(false);
-            _Object_InterstitialAd.SetActive(false);
-            _Object_Depth.SetActive(false);
-            _Object_Health.SetActive(false);
-            _Object_ResurrectTotal.SetActive(false);
-            _Object_Power.SetActive(false);
-            _Object_Checkpoint.SetActive(false);
-            _Object_Skill.SetActive(false);
-            _Object_InGameSkill.SetActive(false);
-            _Object_PropTime.SetActive(false);
-            _Object_Death.SetActive(false);
-            Advertising.HideBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default);
-            return;
-        }
         if (_Status == Status.InGame)
         {
             _Object_Play.SetActive(false);
             _Object_Prompt.SetActive(false);
-            _Object_Settings.SetActive(false);
             _Object_InGameMenu.SetActive(true);
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(false);
@@ -547,7 +553,6 @@ public class MenuSystem : MonoBehaviour
         {
             _Object_Play.SetActive(false);
             _Object_Prompt.SetActive(false);
-            _Object_Settings.SetActive(false);
             _Object_InGameMenu.SetActive(false);
             _Object_Fold.SetActive(true);
             _Object_Cancel.SetActive(false);
@@ -577,7 +582,6 @@ public class MenuSystem : MonoBehaviour
         {
             _Object_Play.SetActive(false);
             _Object_Prompt.SetActive(false);
-            _Object_Settings.SetActive(false);
             _Object_InGameMenu.SetActive(false);
             _Object_Fold.SetActive(false);
             _Object_Cancel.SetActive(false);

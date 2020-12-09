@@ -11,22 +11,22 @@ public class AudioSystem : MonoBehaviour
     private void Awake()
     {
         _Instance = this;
-        foreach (var _var in _Audio)
+        for (int _i = 0; _i < _Audio.Length; _i++)
         {
-            _var._AudioSource = gameObject.AddComponent<AudioSource>();
-            _var._AudioSource.enabled = false;
-            _var._AudioSource.clip = _var._AudioClip;
-            _var._AudioSource.volume = _var._Volume;
-            _var._AudioSource.pitch = 1.0f;
-            _var._AudioSource.playOnAwake = _var._PlayOnAwake;
-            _var._AudioSource.loop = _var._Loop;
-            _var._AudioSource.enabled = true;
+            _Audio[_i]._AudioSource = gameObject.AddComponent<AudioSource>();
+            _Audio[_i]._AudioSource.enabled = false;
+            _Audio[_i]._AudioSource.clip = _Audio[_i]._AudioClip;
+            _Audio[_i]._AudioSource.volume = _Audio[_i]._Volume;
+            _Audio[_i]._AudioSource.pitch = 1.0f;
+            _Audio[_i]._AudioSource.playOnAwake = _Audio[_i]._PlayOnAwake;
+            _Audio[_i]._AudioSource.loop = _Audio[_i]._Loop;
+            _Audio[_i]._AudioSource.enabled = true;
         }
     }
 
     public void Play(string _name)
     {
-        var _var = Array.Find(_Audio, _Audio => _Audio._Name == _name);
+        var _var = Array.Find(_Audio, _x => _x._Name == _name);
         if (_var == null)
         {
             Debug.LogWarningFormat("Play({0}) not find.", _name);
@@ -36,7 +36,7 @@ public class AudioSystem : MonoBehaviour
     }
     public void PlayOneShot(string _name)
     {
-        var _var = Array.Find(_Audio, _Audio => _Audio._Name == _name);
+        var _var = Array.Find(_Audio, _x => _x._Name == _name);
         if (_var == null)
         {
             Debug.LogWarningFormat("PlayOneShot({0}) not find.", _name);
@@ -46,7 +46,7 @@ public class AudioSystem : MonoBehaviour
     }
     public void Pause(string _name)
     {
-        var _var = Array.Find(_Audio, _Audio => _Audio._Name == _name);
+        var _var = Array.Find(_Audio, _x => _x._Name == _name);
         if (_var == null)
         {
             Debug.LogWarningFormat("Pause({0}) not find.", _name);
@@ -56,19 +56,19 @@ public class AudioSystem : MonoBehaviour
     }
     public void PauseAll()
     {
-        foreach (var _var in _Audio)
+        for (int _i = 0; _i < _Audio.Length; _i++)
         {
-            if (_var._AudioClip == null)
+            if (_Audio[_i]._AudioClip == null)
             {
-                Debug.LogWarningFormat("PauseAll(Audio name: {0} is null.)", _var._Name);
+                Debug.LogWarningFormat("PauseAll(Audio name: {0} is null.)", _Audio[_i]._Name);
                 continue;
             }
-            _var._AudioSource.Pause();
+            _Audio[_i]._AudioSource.Pause();
         }
     }
     public void UnPause(string _name)
     {
-        var _var = Array.Find(_Audio, _Audio => _Audio._Name == _name);
+        var _var = Array.Find(_Audio, _x => _x._Name == _name);
         if (_var == null)
         {
             Debug.LogWarningFormat("UnPause({0}) not find.", _name);
@@ -78,19 +78,19 @@ public class AudioSystem : MonoBehaviour
     }
     public void UnPauseAll()
     {
-        foreach (var _var in _Audio)
+        for (int _i = 0; _i < _Audio.Length; _i++)
         {
-            if (_var._AudioClip == null)
+            if (_Audio[_i]._AudioClip == null)
             {
-                Debug.LogWarningFormat("UnPauseAll(Audio name: {0} is null.)", _var._Name);
+                Debug.LogWarningFormat("UnPauseAll(Audio name: {0} is null.)", _Audio[_i]._Name);
                 continue;
             }
-            _var._AudioSource.UnPause();
+            _Audio[_i]._AudioSource.UnPause();
         }
     }
     public void Stop(string _name)
     {
-        var _var = Array.Find(_Audio, _Audio => _Audio._Name == _name);
+        var _var = Array.Find(_Audio, _x => _x._Name == _name);
         if (_var == null)
         {
             Debug.LogWarningFormat("Stop({0}) not find.", _name);
@@ -100,14 +100,14 @@ public class AudioSystem : MonoBehaviour
     }
     public void StopAll()
     {
-        foreach (var _var in _Audio)
+        for (int _i = 0; _i < _Audio.Length; _i++)
         {
-            if (_var._AudioClip == null)
+            if (_Audio[_i]._AudioClip == null)
             {
-                Debug.LogWarningFormat("StopAll(Audio name: {0} is null.)", _var._Name);
+                Debug.LogWarningFormat("StopAll(Audio name: {0} is null.)", _Audio[_i]._Name);
                 continue;
             }
-            _var._AudioSource.Stop();
+            _Audio[_i]._AudioSource.Stop();
         }
     }
 }

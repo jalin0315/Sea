@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
         if (_Result > _MaxMeter) return;
         //_Text_Depth.text = _Result.ToString("###,###") + " " + "Metres";
         _Slider_Depth.value = _Result;
-        _Meter += _Time * Time.deltaTime;
+        _Meter += _Time * CTJ.TimeSystem._DeltaTime();
         _Result = System.Convert.ToInt32(_Meter);
         if (_Result > _Light_MaxMeter) return;
         float _bg_r = _Color_BG_Original.r - (_Result * _Color_BG_Original.r * _Light_Result);
@@ -347,13 +347,13 @@ public class GameManager : MonoBehaviour
         if (_in_game)
         {
             _InGame = _in_game;
-            Time.timeScale = 1.0f;
+            CTJ.TimeSystem.TimeScale(1.0f);
             return;
         }
         if (!_in_game)
         {
             _InGame = _in_game;
-            Time.timeScale = 0.0f;
+            CTJ.TimeSystem.TimeScale(0.0f);
             MovementSystem._Instance._FloatingJoystick.Initialize();
             return;
         }
@@ -394,36 +394,6 @@ public class GameManager : MonoBehaviour
     string fileName, LoadData;
     List<int> save_GameObjectID = new List<int>();
     List<int> load_GameObjectID = new List<int>();
-    public void Skill()    //每個技能都要有energy消耗
-    {
-        if (isSkill_Time)    //時間控制
-        {
-            Time.timeScale = 0.5f;
-        }
-        else
-        {
-            Time.timeScale = 1f;
-        }
-
-        if (isSkill_Light)    //燈光範圍增加
-        {
-
-        }
-
-        if (isSkill_Camera)    //周圍生物拍照收錄圖鑑
-        {
-
-        }
-
-        if (energy < 100)    //能量回復
-        {
-            energy += 1 * Time.deltaTime;
-        }
-        else
-        {
-            energy = 100;
-        }
-    }
     public void Save()
     {
         save_GameObjectID.Clear();

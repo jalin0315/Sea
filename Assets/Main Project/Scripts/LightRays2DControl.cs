@@ -43,7 +43,7 @@ public class LightRays2DControl : MonoBehaviour
             _Enable = false;
             return;
         }
-        _Y += Time.deltaTime * _Speed * _SpeedRate;
+        _Y += CTJ.TimeSystem._DeltaTime() * _Speed * _SpeedRate;
         _RectTransform.position = new Vector3(_RectTransform.position.x, _Y, _RectTransform.position.z);
     }
 

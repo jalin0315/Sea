@@ -81,7 +81,7 @@ public class BackgroundControl : MonoBehaviour
         Vector2 _i_temp = BackgroundManager._Instance._Transform_Camera.position * (1.0f - _List_ParallaxEffect[_i]);
         Vector2 _i_dist = BackgroundManager._Instance._Transform_Camera.position * _List_ParallaxEffect[_i];
         //_List_Y[_i] += Time.deltaTime * _List_Speed[_i];
-        _List_Y[_i] += Time.deltaTime * _List_Speed[_i] * _List_SpeedRate[_i];
+        _List_Y[_i] += CTJ.TimeSystem._DeltaTime() * _List_Speed[_i] * _List_SpeedRate[_i];
         _List_Background[_i].position = new Vector3(_List_StartPos[_i].x + _i_dist.x, _List_Y[_i], _List_Background[_i].position.z);
         if (_i_temp.x > _List_StartPos[_i].x + _List_Length[_i].x)
         {

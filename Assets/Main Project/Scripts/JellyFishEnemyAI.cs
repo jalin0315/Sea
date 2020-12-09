@@ -45,7 +45,7 @@ public class JellyFishEnemyAI : MonoBehaviour
     private void Update()
     {
         if (_RecoveryAll) EnemyManager._Instance.RecoveryJellyFish(gameObject);
-        if (!_Visible) _Timer -= Time.deltaTime;
+        if (!_Visible) _Timer -= CTJ.TimeSystem._DeltaTime();
         if (_Timer <= 0.0f)
         {
             _Timer = 0.0f;
@@ -55,7 +55,7 @@ public class JellyFishEnemyAI : MonoBehaviour
 
     public void Movement()
     {
-        _Rigidbody2D.AddForce(Vector2.up * Time.fixedDeltaTime * _Speed, ForceMode2D.Impulse);
+        _Rigidbody2D.AddForce(Vector2.up * CTJ.TimeSystem._FixedDeltaTime() * _Speed, ForceMode2D.Impulse);
     }
 
     private void OnBecameVisible()

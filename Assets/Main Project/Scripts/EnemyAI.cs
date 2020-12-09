@@ -160,18 +160,18 @@ public class EnemyAI : MonoBehaviour
             */
             if (_P_Timer > 0.0f)
             {
-                _P_Timer -= Time.deltaTime;
+                _P_Timer -= CTJ.TimeSystem._DeltaTime();
                 if (_P_I_Timer > 0.0f)
                 {
-                    _P_I_Timer -= Time.deltaTime;
+                    _P_I_Timer -= CTJ.TimeSystem._DeltaTime();
                     if (Vector2.Distance(transform.position, _WaypointTarget.transform.position) > 1.0f)
                     {
-                        transform.position = Vector2.MoveTowards(transform.position, _WaypointTarget.transform.position, Time.deltaTime * _Speed);
-                        transform.right = Vector2.Lerp(transform.right, (_WaypointTarget.transform.position - transform.position).normalized, Time.deltaTime * _RotateSpeed);
+                        transform.position = Vector2.MoveTowards(transform.position, _WaypointTarget.transform.position, CTJ.TimeSystem._DeltaTime() * _Speed);
+                        transform.right = Vector2.Lerp(transform.right, (_WaypointTarget.transform.position - transform.position).normalized, CTJ.TimeSystem._DeltaTime() * _RotateSpeed);
                     }
                     else
                     {
-                        transform.position = Vector2.Lerp(transform.position, _WaypointTarget.transform.position + _OutOfDistance_Position_Offset, Time.deltaTime * 0.5f);
+                        transform.position = Vector2.Lerp(transform.position, _WaypointTarget.transform.position + _OutOfDistance_Position_Offset, CTJ.TimeSystem._DeltaTime() * 0.5f);
                         //transform.right = Vector2.Lerp(transform.right, _OutOfDistance_Rotation_Offset, Time.deltaTime * 0.01f);
                     }
                 }
@@ -188,7 +188,7 @@ public class EnemyAI : MonoBehaviour
             else if (_P_Timer < 0.0f)
             {
                 _Speed = 4.0f;
-                transform.Translate(Vector2.right * Time.deltaTime * _Speed, Space.Self);
+                transform.Translate(Vector2.right * CTJ.TimeSystem._DeltaTime() * _Speed, Space.Self);
             }
             float _delta(float _value)
             {
@@ -205,48 +205,48 @@ public class EnemyAI : MonoBehaviour
         if (_Status == Status.SwimUp)
         {
             transform.position = new Vector2(Camera.main.transform.position.x, transform.position.y);
-            transform.Translate(Vector2.up * Time.deltaTime * _Speed, Space.World);
-            transform.right = Vector2.Lerp(transform.right, Vector2.up, Time.deltaTime * _RotateSpeed);
+            transform.Translate(Vector2.up * CTJ.TimeSystem._DeltaTime() * _Speed, Space.World);
+            transform.right = Vector2.Lerp(transform.right, Vector2.up, CTJ.TimeSystem._DeltaTime() * _RotateSpeed);
             Disappear();
             return;
         }
         if (_Status == Status.SwimDown)
         {
             transform.position = new Vector2(Camera.main.transform.position.x, transform.position.y);
-            transform.Translate(Vector2.down * Time.deltaTime * _Speed, Space.World);
-            transform.right = Vector2.Lerp(transform.right, Vector2.down, Time.deltaTime * _RotateSpeed);
+            transform.Translate(Vector2.down * CTJ.TimeSystem._DeltaTime() * _Speed, Space.World);
+            transform.right = Vector2.Lerp(transform.right, Vector2.down, CTJ.TimeSystem._DeltaTime() * _RotateSpeed);
             Disappear();
             return;
         }
         if (_Status == Status.SwimLeft)
         {
-            transform.Translate((Vector2.left + _TranslateOffset) * Time.deltaTime * _Speed, Space.World);
-            transform.right = Vector2.Lerp(transform.right, -(Vector2.left + _TranslateOffset), Time.deltaTime * _RotateSpeed);
+            transform.Translate((Vector2.left + _TranslateOffset) * CTJ.TimeSystem._DeltaTime() * _Speed, Space.World);
+            transform.right = Vector2.Lerp(transform.right, -(Vector2.left + _TranslateOffset), CTJ.TimeSystem._DeltaTime() * _RotateSpeed);
             Disappear();
             return;
         }
         if (_Status == Status.SwimRight)
         {
-            transform.Translate((Vector2.right + _TranslateOffset) * Time.deltaTime * _Speed, Space.World);
-            transform.right = Vector2.Lerp(transform.right, Vector2.right + _TranslateOffset, Time.deltaTime * _RotateSpeed);
+            transform.Translate((Vector2.right + _TranslateOffset) * CTJ.TimeSystem._DeltaTime() * _Speed, Space.World);
+            transform.right = Vector2.Lerp(transform.right, Vector2.right + _TranslateOffset, CTJ.TimeSystem._DeltaTime() * _RotateSpeed);
             Disappear();
             return;
         }
         if (_Status == Status.SwimLeftStyle)
         {
-            transform.Translate(new Vector3(1.0f, Mathf.Sin(Time.time * 2.5f)) * Time.deltaTime * _Speed, Space.World);
+            transform.Translate(new Vector3(1.0f, Mathf.Sin(CTJ.TimeSystem._Time() * 2.5f)) * CTJ.TimeSystem._DeltaTime() * _Speed, Space.World);
             Disappear();
             return;
         }
         if (_Status == Status.SwimRightStyle)
         {
-            transform.Translate(new Vector3(-1.0f, Mathf.Sin(Time.time * 2.5f)) * Time.deltaTime * _Speed, Space.World);
+            transform.Translate(new Vector3(-1.0f, Mathf.Sin(CTJ.TimeSystem._Time() * 2.5f)) * CTJ.TimeSystem._DeltaTime() * _Speed, Space.World);
             Disappear();
             return;
         }
         if (_Status == Status.Target)
         {
-            transform.Translate(Vector2.right * Time.deltaTime * _Speed, Space.Self);
+            transform.Translate(Vector2.right * CTJ.TimeSystem._DeltaTime() * _Speed, Space.Self);
             Disappear();
             return;
         }
@@ -254,16 +254,16 @@ public class EnemyAI : MonoBehaviour
         {
             if (_T_L_Timer > 0.0f)
             {
-                _T_L_Timer -= Time.deltaTime;
-                transform.position = Vector2.MoveTowards(transform.position, _CurrentPlayerPosition, Time.deltaTime * _Speed);
-                transform.right = Vector2.Lerp(transform.right, (_CurrentPlayerPosition - transform.position).normalized, Time.deltaTime * _RotateSpeed);
+                _T_L_Timer -= CTJ.TimeSystem._DeltaTime();
+                transform.position = Vector2.MoveTowards(transform.position, _CurrentPlayerPosition, CTJ.TimeSystem._DeltaTime() * _Speed);
+                transform.right = Vector2.Lerp(transform.right, (_CurrentPlayerPosition - transform.position).normalized, CTJ.TimeSystem._DeltaTime() * _RotateSpeed);
                 if (Vector2.Distance(transform.position, _CurrentPlayerPosition) < _DistanceUpdate)
                 {
                     _CurrentPlayerPosition = _Player.position;
                     _DistanceUpdate = Random.Range(1.0f, 5.0f);
                 }
             }
-            else if (_T_L_Timer < 0.0f) transform.Translate(Vector2.right * Time.deltaTime * _Speed, Space.Self);
+            else if (_T_L_Timer < 0.0f) transform.Translate(Vector2.right * CTJ.TimeSystem._DeltaTime() * _Speed, Space.Self);
             float _delta(float _value)
             {
                 float _result = Mathf.DeltaAngle(0, _value);
@@ -281,13 +281,13 @@ public class EnemyAI : MonoBehaviour
         if (!_FadeDisappear)
         {
             if (!_Visible)
-                _Visible_Timer -= Time.deltaTime;
+                _Visible_Timer -= CTJ.TimeSystem._DeltaTime();
             if (_Visible_Timer < 0.0f)
                 EnemyManager._Instance.Recovery(_Pool, gameObject);
         }
         else if (_FadeDisappear)
         {
-            _SpriteRenderer.color = new Color(_SpriteRenderer.color.r, _SpriteRenderer.color.g, _SpriteRenderer.color.b, _SpriteRenderer.color.a - (Time.deltaTime * _FadeDisappear_Time));
+            _SpriteRenderer.color = new Color(_SpriteRenderer.color.r, _SpriteRenderer.color.g, _SpriteRenderer.color.b, _SpriteRenderer.color.a - (CTJ.TimeSystem._DeltaTime() * _FadeDisappear_Time));
             if (_SpriteRenderer.color.a <= 0.0f)
                 EnemyManager._Instance.Recovery(_Pool, gameObject);
         }

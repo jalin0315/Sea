@@ -30,21 +30,13 @@ public class MovementSystem : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (GameManager._Instance._EnableJoystick)
-            if (GameManager._Instance._InGame) JoystickMovement();
+        if (GameManager._Instance._EnableJoystick) if (GameManager._Instance._InGame) JoystickMovement();
     }
 
-    private void OnGUI()
-    {
-        //GUI.Label(new Rect(100, 90, 100, 100), "X: "+_Rigidbody2D.velocity.x.ToString());
-        //GUI.Label(new Rect(100, 100, 100, 100), "Y: " + _Rigidbody2D.velocity.y.ToString());
-        //GUI.Label(new Rect(100, 110, 100, 100), "M: " + _Rigidbody2D.velocity.magnitude.ToString());
-    }
-
+    private Vector2 _movement() { return new Vector2(_FloatingJoystick.Horizontal, _FloatingJoystick.Vertical); }
     private void JoystickMovement()
     {
-        Vector2 _movement = new Vector2(_FloatingJoystick.Horizontal, _FloatingJoystick.Vertical);
-        _Rigidbody2D.AddForce(_movement * (_Speed * _Magnification));
+        _Rigidbody2D.AddForce(_movement() * (_Speed * _Magnification));
         _Rigidbody2D.velocity = Vector2.ClampMagnitude(_Rigidbody2D.velocity, _MaxVelocitySpeed);
         PlayerObjectRotate();
     }
@@ -66,6 +58,6 @@ public class MovementSystem : MonoBehaviour
         }
         float _result_z = Mathf.Lerp(0.0f, _rotation.z, _Rigidbody2D.velocity.magnitude);
         Quaternion _rotation_result = new Quaternion(_rotation.x, _rotation.y, _result_z, _rotation.w);
-        transform.rotation = Quaternion.Slerp(transform.rotation, _rotation_result, Time.deltaTime * _SmoothSlopeSpeed);
+        transform.rotation = Quaternion.Slerp(transform.rotation, _rotation_result, CTJ.TimeSystem._DeltaTime() * _SmoothSlopeSpeed);
     }
 }

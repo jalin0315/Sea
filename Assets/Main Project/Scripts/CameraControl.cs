@@ -10,13 +10,12 @@ public class CameraControl : MonoBehaviour
     public Transform _Transform_Camera;
     [HideInInspector] public Vector2 _Origin() { return _Camera.ScreenToWorldPoint(Vector2.zero); }
     [HideInInspector] public Vector2 _Vertex() { return _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight)); }
-    private Vector2 _UpperCenter() { return new Vector2((_Origin().x + _Vertex().x) / 2, _Vertex().y); }
-    private Vector2 _LowerCenter() { return new Vector2((_Origin().x + _Vertex().x) / 2, _Origin().y); }
-    private float _MaxMeter;
-    private float _OriginalCameraSize;
     [SerializeField] private Transform _Target;
     [SerializeField] private Transform _UpperBoundary;
     [SerializeField] private Transform _LowerBoundary;
+    private Vector2 _UpperCenter() { return new Vector2((_Origin().x + _Vertex().x) / 2, _Vertex().y); }
+    private Vector2 _LowerCenter() { return new Vector2((_Origin().x + _Vertex().x) / 2, _Origin().y); }
+    private float _MaxMeter;
 
     private void Awake()
     {
@@ -26,16 +25,14 @@ public class CameraControl : MonoBehaviour
     private void Start()
     {
         _MaxMeter = 3.5f / GameManager._Instance._MaxMeter;
-        _OriginalCameraSize = _Camera.orthographicSize;
     }
 
     private void Update()
     {
         if (!GameManager._Instance._InGame) return;
+        if (GameManager._Instance._Result <= GameManager._Instance._MaxMeter) _Camera.orthographicSize = GameManager._Instance._Result * _MaxMeter + 6.5f;
         _UpperBoundary.position = _UpperCenter();
         _LowerBoundary.position = _LowerCenter();
-        if (GameManager._Instance._Result <= GameManager._Instance._MaxMeter)
-            _Camera.orthographicSize = GameManager._Instance._Result * _MaxMeter + 6.5f;
     }
 
     private void FixedUpdate()

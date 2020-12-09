@@ -30,7 +30,7 @@ public class SuppliesControl : MonoBehaviour
         }
         if (tag == "SuppliesRed" || tag == "SuppliesYellow" || tag == "SuppliesProps")
         {
-            transform.Translate(Vector2.down * _Speed * Time.deltaTime, Space.Self);
+            transform.Translate(Vector2.down * _Speed * CTJ.TimeSystem._DeltaTime(), Space.Self);
             if (transform.position.y < SuppliesManager._Instance._Origin().y) SuppliesManager._Instance.Recovery(_Queue, gameObject);
             return;
         }
@@ -66,12 +66,12 @@ public class SuppliesControl : MonoBehaviour
             */
             if (_Timer > 0)
             {
-                _Timer -= Time.deltaTime;
-                transform.position = Vector2.Lerp(transform.position, new Vector2(transform.position.x, 0.0f), Time.deltaTime * _Speed);
+                _Timer -= CTJ.TimeSystem._DeltaTime();
+                transform.position = Vector2.Lerp(transform.position, new Vector2(transform.position.x, 0.0f), CTJ.TimeSystem._DeltaTime() * _Speed);
             }
             else if (_Timer <= 0)
             {
-                transform.position = Vector2.Lerp(transform.position, new Vector2(transform.position.x, SuppliesManager._Instance._Vertex().y + 10.0f), Time.deltaTime * _Speed);
+                transform.position = Vector2.Lerp(transform.position, new Vector2(transform.position.x, SuppliesManager._Instance._Vertex().y + 10.0f), CTJ.TimeSystem._DeltaTime() * _Speed);
                 if (transform.position.y > SuppliesManager._Instance._Vertex().y + 5.0f)
                     SuppliesManager._Instance.Recovery(_Queue, gameObject);
                 _Timer = 0;

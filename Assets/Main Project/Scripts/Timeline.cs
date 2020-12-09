@@ -14,7 +14,7 @@ public class Timeline : MonoBehaviour
     public PlayableDirector _FadeOut;
     public PlayableDirector _ReturnMainMenu;
     public bool _SkipEnable;
-    [SerializeField] private List<AudioSource> _AudioSource = new List<AudioSource>();
+    [SerializeField] private AudioSource[] _AudioSource;
 
     private void Awake()
     {
@@ -31,12 +31,12 @@ public class Timeline : MonoBehaviour
     {
         if (_enable)
         {
-            foreach (var _var in _AudioSource) _var.volume = 1.0f;
+            for (int _i = 0; _i < _AudioSource.Length; _i++) _AudioSource[_i].volume = 1.0f;
             return;
         }
         if (!_enable)
         {
-            foreach (var _var in _AudioSource) _var.volume = 0.0f;
+            for (int _i = 0; _i < _AudioSource.Length; _i++) _AudioSource[_i].volume = 0.0f;
             return;
         }
     }

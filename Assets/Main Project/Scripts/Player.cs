@@ -123,7 +123,7 @@ public class Player : MonoBehaviour
     private void PropTime()
     {
         if (_PropTimer <= 0.0f) return;
-        _Image_PropTime.fillAmount -= 1.0f / _PropTimer * Time.deltaTime;
+        _Image_PropTime.fillAmount -= 1.0f / _PropTimer * CTJ.TimeSystem._DeltaTime();
         if (_Image_PropTime.fillAmount <= 0.0f)
         {
             _Object_PropTime.SetActive(false);
@@ -221,7 +221,7 @@ public class Player : MonoBehaviour
                 case 4:
                     {
                         // 慢動作
-                        Time.timeScale = 0.5f;
+                        CTJ.TimeSystem.TimeScale(0.5f);
                         _Image_PropTimeBackground.sprite = _sprite;
                         _Image_PropTime.sprite = _sprite;
                         _Image_PropTime.fillAmount = 1.0f;
@@ -231,7 +231,7 @@ public class Player : MonoBehaviour
                         IEnumerator Delay(float _time)
                         {
                             yield return new WaitForSeconds(_time);
-                            Time.timeScale = 1.0f;
+                            CTJ.TimeSystem.TimeScale(1.0f);
                         }
                     }
                     break;
@@ -302,7 +302,7 @@ public class Player : MonoBehaviour
     }
     public void DeathDisable()
     {
-        Time.timeScale = 1.0f;
+        CTJ.TimeSystem.TimeScale(1.0f);
         GameManager._Instance._InGame = true;
         MenuSystem._Instance.StateChange(MenuSystem.Status.InGame);
         _Slider_Health.value = _Slider_MaxHealth.value;
@@ -314,7 +314,7 @@ public class Player : MonoBehaviour
     }
     public void DeathMenu()
     {
-        Time.timeScale = 0.0f;
+        CTJ.TimeSystem.TimeScale(0.0f);
         MenuSystem._Instance.StateChange(MenuSystem.Status.DeathMenu);
     }
 

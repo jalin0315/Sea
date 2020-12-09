@@ -62,7 +62,7 @@ public class SubmarineSwipeMenu : MonoBehaviour
                     _List_Image[_i].color = Color.black;
                     _List_Button[_i].interactable = false;
                 }
-                _List_Child[_i].localScale = Vector2.Lerp(_List_Child[_i].localScale, new Vector2(1.0f, 1.0f), Time.deltaTime * 10.0f);
+                _List_Child[_i].localScale = Vector2.Lerp(_List_Child[_i].localScale, new Vector2(1.0f, 1.0f), CTJ.TimeSystem._DeltaTime() * 10.0f);
                 for (int _j = 0; _j < _List_Pos.Count; _j++)
                 {
                     if (_j != _i)
@@ -72,7 +72,7 @@ public class SubmarineSwipeMenu : MonoBehaviour
                             _List_Image[_j].color = Color.gray;
                         else
                             _List_Image[_j].color = Color.black;
-                        _List_Child[_j].localScale = Vector2.Lerp(_List_Child[_j].localScale, new Vector2(0.5f, 0.5f), Time.deltaTime * 10.0f);
+                        _List_Child[_j].localScale = Vector2.Lerp(_List_Child[_j].localScale, new Vector2(0.5f, 0.5f), CTJ.TimeSystem._DeltaTime() * 10.0f);
                     }
                 }
             }
