@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Slider _Slider_Depth;
     [HideInInspector] public bool _InGame;
     [SerializeField] private Joystick _Joystick;
-    public bool _EnableJoystick;
+    public bool _Enable_Joystick;
     public bool _Enable_Vibrate;
     public float _Time;
     public float _Meter;
@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Escape))
         {
             // Ask if user wants to exit
-            NativeUI.AlertPopup _alert = NativeUI.ShowTwoButtonAlert("離開應用程式", "是否要離開應用程式？", "是", "否");
+            NativeUI.AlertPopup _alert = NativeUI.ShowTwoButtonAlert("離開應用程式", "是否離開應用程式？", "確定", "取消");
             if (_alert != null)
             {
                 _alert.OnComplete += delegate (int _button)
@@ -137,19 +137,19 @@ public class GameManager : MonoBehaviour
                         switch (_index)
                         {
                             case 0:
-                                AudioSystem._Instance.Play("00");
+                                AudioSystem._Instance.PlayMusic("00");
                                 break;
                             case 1:
-                                AudioSystem._Instance.Play("01");
+                                AudioSystem._Instance.PlayMusic("01");
                                 break;
                             case 2:
-                                AudioSystem._Instance.Play("02");
+                                AudioSystem._Instance.PlayMusic("02");
                                 break;
                             case 3:
-                                AudioSystem._Instance.Play("03");
+                                AudioSystem._Instance.PlayMusic("03");
                                 break;
                             case 4:
-                                AudioSystem._Instance.Play("04");
+                                AudioSystem._Instance.PlayMusic("04");
                                 break;
                             default:
                                 break;

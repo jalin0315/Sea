@@ -14,7 +14,6 @@ public class Player : MonoBehaviour
     [SerializeField] private List<Sprite> _List_Sprite_Fishes = new List<Sprite>();
     public Slider _Slider_MaxHealth;
     public Slider _Slider_Health;
-    [SerializeField] private Slider _Slider_Power;
     [SerializeField] private Image _Image_Health;
     [SerializeField] private Color _HighHealthColor;
     [SerializeField] private Color _LowHealthColor;
@@ -46,7 +45,6 @@ public class Player : MonoBehaviour
         _Slider_MaxHealth.value = 100.0f - (GameManager._Instance._Meter * 0.005f);
         //_Slider_MaxHealth.value = 10.0f;
         _Slider_Health.value = _Slider_MaxHealth.value;
-        _Slider_Power.value = _Slider_Power.maxValue;
         HealthBarColorChange();
         _Animator.SetBool("Invincible2", false);
         _Image_PropTime.fillAmount = 1.0f;
@@ -57,7 +55,6 @@ public class Player : MonoBehaviour
     private void Update()
     {
         if (!GameManager._Instance._InGame) return;
-        SkillUpdate();
         PropTime();
     }
 
@@ -72,52 +69,6 @@ public class Player : MonoBehaviour
     {
         Color _color_lerp = Color.Lerp(_LowHealthColor, _HighHealthColor, _Slider_Health.value / _Slider_MaxHealth.value);
         _Image_Health.color = _color_lerp;
-    }
-
-    public void SkillTrigger()
-    {
-        _EnableSkill = true;
-        _Slider_Power.value -= _List_SkillPay[_SkillOptions];
-        switch (_SkillOptions)
-        {
-            case 0:
-                _ParticleSystem_Light.Play();
-                break;
-            case 1:
-                BaitManager._Instance.Bait();
-                break;
-            case 2:
-                _Animator.SetTrigger("Invincible");
-                break;
-            default:
-                break;
-        }
-        StartCoroutine(Delay(_List_SkillTime[_SkillOptions]));
-        IEnumerator Delay(float _time)
-        {
-            yield return new WaitForSeconds(_time);
-            _EnableSkill = false;
-        }
-    }
-    public void SkillUpdate()
-    {
-        if (_EnableSkill) MenuSystem._Instance._Button_InGameSkill.interactable = false;
-        else
-        {
-            if (_Slider_Power.value < _List_SkillPay[_SkillOptions]) MenuSystem._Instance._Button_InGameSkill.interactable = false;
-            else MenuSystem._Instance._Button_InGameSkill.interactable = true;
-        }
-        switch (_SkillOptions)
-        {
-            case 0:
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
-            default:
-                break;
-        }
     }
 
     private void PropTime()
@@ -143,11 +94,7 @@ public class Player : MonoBehaviour
             }
             return;
         }
-        if (_tag == "SuppliesYellow")
-        {
-            _Slider_Power.value = _Slider_Power.maxValue;
-            return;
-        }
+        if (_tag == "SuppliesYellow") return;
         if (_tag == "SuppliesAd")
         {
             if (Advertising.IsRewardedAdReady(RewardedAdNetwork.AdMob, AdPlacement.Default))
@@ -284,10 +231,9 @@ public class Player : MonoBehaviour
             return;
         }
     }
-    public void MaxHealthPower()
+    public void MaxHealth()
     {
         _Slider_Health.value = _Slider_MaxHealth.value;
-        _Slider_Power.value = _Slider_Power.maxValue;
         HealthBarColorChange();
         InvincibleEnable();
         _Animator.SetTrigger("Invincible");
@@ -306,7 +252,6 @@ public class Player : MonoBehaviour
         GameManager._Instance._InGame = true;
         MenuSystem._Instance.StateChange(MenuSystem.Status.InGame);
         _Slider_Health.value = _Slider_MaxHealth.value;
-        _Slider_Power.value = _Slider_Power.maxValue;
         HealthBarColorChange();
         InvincibleEnable();
         _Animator.SetBool("Death", false);
@@ -314,7 +259,6 @@ public class Player : MonoBehaviour
     }
     public void DeathMenu()
     {
-        CTJ.TimeSystem.TimeScale(0.0f);
         MenuSystem._Instance.StateChange(MenuSystem.Status.DeathMenu);
     }
 

@@ -213,7 +213,7 @@ public class GoogleAdMob : MonoBehaviour
         }
         if (_MaxHealthPower)
         {
-            Player._Instance.MaxHealthPower();
+            Player._Instance.MaxHealth();
             _MaxHealthPower = false;
             return;
         }

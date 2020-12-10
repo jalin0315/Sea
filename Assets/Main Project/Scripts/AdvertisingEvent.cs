@@ -44,7 +44,7 @@ public class AdvertisingEvent : MonoBehaviour
         }
         if (_Reward_MaxHealth)
         {
-            Player._Instance.MaxHealthPower();
+            Player._Instance.MaxHealth();
             _Reward_MaxHealth = false;
         }
     }

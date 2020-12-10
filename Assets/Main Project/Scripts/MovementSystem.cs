@@ -30,7 +30,7 @@ public class MovementSystem : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (GameManager._Instance._EnableJoystick) if (GameManager._Instance._InGame) JoystickMovement();
+        if (GameManager._Instance._Enable_Joystick) if (GameManager._Instance._InGame) JoystickMovement();
     }
 
     private Vector2 _movement() { return new Vector2(_FloatingJoystick.Horizontal, _FloatingJoystick.Vertical); }

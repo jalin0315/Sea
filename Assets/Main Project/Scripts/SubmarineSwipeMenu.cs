@@ -86,6 +86,5 @@ public class SubmarineSwipeMenu : MonoBehaviour
         _Player.sprite = _List_Image[_index].sprite;
         Player._Instance._Sprite_Player = _List_Image[_index].sprite;
         MenuSystem._Instance.StateChange(MenuSystem.Status.MainMenu);
-        Vibration.Vibrate(1);
     }
 }
