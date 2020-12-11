@@ -29,17 +29,15 @@ public class SubmarineSwipeMenu : MonoBehaviour
             _List_Toggle.Add(_Transform_Parent.GetChild(_i).GetComponent<Toggle>());
             _List_Button.Add(_Transform_Parent.GetChild(_i).GetChild(1).GetComponent<Button>());
             // Closure Problem
-            int _j = _i;
-            _List_Button[_i].onClick.AddListener(() => ChangeSubmarine(_j));
+            _List_Button[_i].onClick.AddListener(() => ChangeSubmarine(_i));
         }
     }
 
     private void Update()
     {
-        if (MenuSystem._Instance._Status != MenuSystem.Status.Submarine)
-            return;
-        if (Input.GetMouseButton(0))
-            _ScrollPos = _Scrollbar.value;
+        if (GameManager._Instance._InGame) return;
+        if (MenuSystem._Instance._Status != MenuSystem.Status.Submarine) return;
+        if (Input.GetMouseButton(0)) _ScrollPos = _Scrollbar.value;
         else
         {
             for (int _i = 0; _i < _List_Pos.Count; _i++)

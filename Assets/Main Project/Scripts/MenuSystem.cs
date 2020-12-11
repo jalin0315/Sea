@@ -332,6 +332,15 @@ public class MenuSystem : MonoBehaviour
         _IsVibration = false;
     }
 
+    public void ShowAchievementsUI()
+    {
+        GameServices.ShowAchievementsUI();
+    }
+    public void UnlockAchievement()
+    {
+        GameServices.UnlockAchievement(EM_GameServicesConstants.Achievement_test);
+    }
+
     public void StateChange(Status _status)
     {
         _Status = _status;

@@ -7,21 +7,19 @@ using UnityEngine;
 /// </summary>
 public class Water2DScript : MonoBehaviour
 {
-    public Vector2 speed = new Vector2(0.01f, 0f);
+    [SerializeField] private Vector2 _Speed;
+    [SerializeField] private Renderer _Renderer;
+    private Material _Material;
+    private Vector2 _Scroll;
 
-    private Renderer rend;
-    private Material mat;
-
-    void Awake()
+    private void Start()
     {
-        rend = GetComponent<Renderer>();
-        mat = rend.material;
+        _Material = _Renderer.material;
     }
 
-    void LateUpdate()
+    private void Update()
     {
-        Vector2 scroll = Time.deltaTime * speed;
-
-        mat.mainTextureOffset += scroll;
+        _Scroll = CTJ.TimeSystem._DeltaTime() * _Speed;
+        _Material.mainTextureOffset += _Scroll;
     }
 }

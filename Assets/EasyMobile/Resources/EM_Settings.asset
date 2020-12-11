@@ -234,8 +234,17 @@ MonoBehaviour:
     mGpgsForceRefreshServerAuthCode: 0
     mGpgsOauthScopes: []
     mLeaderboards: []
-    mAchievements: []
-    mAndroidXmlResources: 
+    mAchievements:
+    - _name: test
+      _iosId: 
+      _androidId: CgkI77fu3dEFEAIQAQ
+    mAndroidXmlResources: "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<!--Google
+      Play game services IDs. Save this file as res/values/games-ids.xml in your
+      project.-->\r\n<resources>\r\n  <!--app_id-->\r\n  <string name=\"app_id\"
+      translatable=\"false\">193738808303</string>\r\n  <!--package_name-->\r\n 
+      <string name=\"package_name\" translatable=\"false\">com.WolfCub.ProjectS</string>\r\n 
+      <!--achievement TestAchievement-->\r\n  <string name=\"achievement_testachievement\"
+      translatable=\"false\">CgkI77fu3dEFEAIQAQ</string>\r\n</resources>"
     mEnableMultiplayer: 0
     mEnableSavedGames: 0
     mAutoConflictResolutionStrategy: 0
@@ -350,8 +359,8 @@ MonoBehaviour:
   mRuntimeAutoInitialization: 1
   mIsAdModuleEnable: 1
   mIsIAPModuleEnable: 0
-  mIsGameServiceModuleEnable: 0
+  mIsGameServiceModuleEnable: 1
   mIsNotificationModuleEnable: 1
   mIsSharingModuleEnable: 1
-  mActiveModuleIndex: 8
-  mIsSelectingModule: 0
+  mActiveModuleIndex: 6
+  mIsSelectingModule: 1

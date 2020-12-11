@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5292006792360744084}
   - component: {fileID: 5292006792360744085}
   m_Layer: 0
-  m_Name: EnemyFishZoneTwo01
+  m_Name: EnemyFishZoneTwo08
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 3134276554564493555}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: 49733ac898119694f859b97e7084bb55, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fb3a9329de2b7d8468087f4505cc5217, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -143,7 +143,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 18.18, y: 5.27291}
+    oldSize: {x: 38.16, y: 11.999532}
     newSize: {x: 40.722057, y: 23.960001}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -151,28 +151,23 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -8.832568, y: -2.627578}
-      - {x: -7.9271193, y: -2.1837304}
-      - {x: -6.5955763, y: -0.9054492}
-      - {x: -4.766924, y: -1.3848047}
-      - {x: -3.417627, y: -1.2782813}
-      - {x: -1.5534668, y: -1.7576368}
-      - {x: 7.5542874, y: -1.3848047}
-      - {x: 8.726045, y: -0.6568945}
-      - {x: 9.06337, y: 1.5445899}
-      - {x: 8.655029, y: 2.094961}
-      - {x: 7.785088, y: 2.3257618}
-      - {x: -0.48823243, y: 2.2902539}
-      - {x: -1.713252, y: 2.627578}
-      - {x: -2.3168848, y: 1.9351759}
-      - {x: -5.6723733, y: 1.13625}
-      - {x: -6.7198534, y: 0.15978517}
-      - {x: -7.9448733, y: 0.6568945}
-      - {x: -7.7318263, y: -0.31957033}
-      - {x: -8.140166, y: -0.568125}
-      - {x: -8.317705, y: -1.2605274}
-      - {x: -9.081123, y: -2.467793}
-      - {x: -8.939092, y: -2.5920703}
+    - - {x: 12.018167, y: -5.981133}
+      - {x: 15.856525, y: -4.9376955}
+      - {x: 18.763245, y: -3.4098046}
+      - {x: 19.024103, y: -2.4408987}
+      - {x: 17.68254, y: 3.5216017}
+      - {x: 17.123556, y: 3.8942578}
+      - {x: 16.974495, y: 0.20496094}
+      - {x: 14.589495, y: 4.080586}
+      - {x: 11.943635, y: 5.981133}
+      - {x: 13.546057, y: -0.4285547}
+      - {x: -9.894023, y: -1.1366016}
+      - {x: -19.061367, y: -3.0744143}
+      - {x: 16.266447, y: -3.9315238}
+      - {x: 11.198322, y: -5.0494924}
+      - {x: 11.943635, y: -5.124024}
+      - {x: 16.93723, y: -3.9315238}
+      - {x: 12.614416, y: -5.869336}
 --- !u!114 &5292006792360744085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,25 +180,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c55c83d4c4dd1145ad5fbbab3c3df36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AlphaTolerance: 80
-  DistanceThreshold: 8
+  AlphaTolerance: 12
+  DistanceThreshold: 16
   Scale: 1
   Decompose: 0
   RunInPlayMode: 0
   UseCache: 0
-  lastAlphaTolerance: 80
+  lastAlphaTolerance: 12
   lastScale: 1
-  lastDistanceThreshold: 8
+  lastDistanceThreshold: 16
   lastDecompose: 0
-  lastSprite: {fileID: 21300000, guid: 49733ac898119694f859b97e7084bb55, type: 3}
+  lastSprite: {fileID: 21300000, guid: fb3a9329de2b7d8468087f4505cc5217, type: 3}
   lastRect:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1024
-    height: 297
-  lastOffset: {x: 512, y: 148.5}
-  lastPixelsPerUnit: 56.325634
+    width: 1023.99994
+    height: 322
+  lastOffset: {x: 511.99997, y: 161}
+  lastPixelsPerUnit: 26.834381
   lastFlipX: 0
   lastFlipY: 0
   editorCache: []

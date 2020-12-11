@@ -1204,7 +1204,7 @@ public class EnemyManager : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
             ReUseJellyFish();
-            yield return new WaitForSeconds(Random.Range(0.0f, 1.0f));
+            yield return new WaitForSeconds(Random.Range(0.0f, 0.5f));
         }
     }
     public void IEnumeratorSpawnNpcJellyFish(bool _enable)

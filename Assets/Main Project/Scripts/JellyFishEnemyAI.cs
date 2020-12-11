@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class JellyFishEnemyAI : MonoBehaviour
 {
+    [SerializeField] private Animator _Animator;
     [SerializeField] private Rigidbody2D _Rigidbody2D;
     [SerializeField] private Light _Light;
-    [SerializeField] private float _Speed;
+    private float _Speed;
     private bool _Visible;
     [SerializeField] private float _Time;
     private float _Timer;
     public static bool _RecoveryAll;
+
+    private void Awake()
+    {
+        gameObject.SetActive(false);
+    }
 
     private void OnEnable()
     {
@@ -36,6 +42,10 @@ public class JellyFishEnemyAI : MonoBehaviour
 
         float _scale = Random.Range(0.05f, 0.1f);
         transform.localScale = new Vector3(_scale, _scale, 1.0f);
+
+        _Animator.speed = Random.Range(0.5f, 2.0f);
+
+        _Speed = Random.Range(50.0f, 200.0f);
 
         _Timer = _Time;
 
