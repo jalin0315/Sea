@@ -21,9 +21,9 @@ MonoBehaviour:
       interstitialAdNetwork: 0
       rewardedAdNetwork: 0
     mAndroidDefaultAdNetworks:
-      bannerAdNetwork: 0
-      interstitialAdNetwork: 0
-      rewardedAdNetwork: 0
+      bannerAdNetwork: 2
+      interstitialAdNetwork: 2
+      rewardedAdNetwork: 2
     mAdColony:
       mEnable: 0
       mAppId:
@@ -63,13 +63,13 @@ MonoBehaviour:
         mAndroidId: 
       mDefaultBannerAdId:
         mIosId: 
-        mAndroidId: 'ca-app-pub-3940256099942544/2934735716 '
+        mAndroidId: ca-app-pub-3940256099942544/6300978111
       mDefaultInterstitialAdId:
         mIosId: 
-        mAndroidId: 'ca-app-pub-3940256099942544/4411468910 '
+        mAndroidId: ca-app-pub-3940256099942544/1033173712
       mDefaultRewardedAdId:
         mIosId: 
-        mAndroidId: 'ca-app-pub-3940256099942544/1712485313 '
+        mAndroidId: ca-app-pub-3940256099942544/5224354917
       mCustomBannerAdIds:
         keys: []
         values: []
@@ -201,7 +201,7 @@ MonoBehaviour:
         keys: []
         values: []
     mUnityAds:
-      mEnable: 1
+      mEnable: 0
       mAppId:
         mIosId: 
         mAndroidId: 3870441
@@ -228,25 +228,20 @@ MonoBehaviour:
     mAutoInit: 1
     mAutoInitDelay: 0
     mAndroidMaxLoginRequests: 0
-    mGpgsDebugLogEnabled: 0
+    mGpgsDebugLogEnabled: 1
     mGpgsPopupGravity: 0
     mGpgsShouldRequestServerAuthCode: 0
     mGpgsForceRefreshServerAuthCode: 0
     mGpgsOauthScopes: []
     mLeaderboards: []
-    mAchievements:
-    - _name: test
-      _iosId: 
-      _androidId: CgkI77fu3dEFEAIQAQ
+    mAchievements: []
     mAndroidXmlResources: "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<!--Google
       Play game services IDs. Save this file as res/values/games-ids.xml in your
       project.-->\r\n<resources>\r\n  <!--app_id-->\r\n  <string name=\"app_id\"
       translatable=\"false\">193738808303</string>\r\n  <!--package_name-->\r\n 
-      <string name=\"package_name\" translatable=\"false\">com.WolfCub.ProjectS</string>\r\n 
-      <!--achievement TestAchievement-->\r\n  <string name=\"achievement_testachievement\"
-      translatable=\"false\">CgkI77fu3dEFEAIQAQ</string>\r\n</resources>"
+      <string name=\"package_name\" translatable=\"false\">com.WolfCub.ProjectS</string>\r\n</resources>"
     mEnableMultiplayer: 0
-    mEnableSavedGames: 0
+    mEnableSavedGames: 1
     mAutoConflictResolutionStrategy: 0
     mGpgsDataSource: 0
   mInAppPurchaseSettings:
@@ -346,7 +341,7 @@ MonoBehaviour:
         mValue: '[Your usage description]'
       - mKey: NSMicrophoneUsageDescription
         mValue: '[Your usage description]'
-    mIsContactsEnabled: 1
+    mIsContactsEnabled: 0
     mContactsSettings:
       mAndroidPermissions:
       - mElementName: uses-permission
@@ -360,7 +355,7 @@ MonoBehaviour:
   mIsAdModuleEnable: 1
   mIsIAPModuleEnable: 0
   mIsGameServiceModuleEnable: 1
-  mIsNotificationModuleEnable: 1
+  mIsNotificationModuleEnable: 0
   mIsSharingModuleEnable: 1
-  mActiveModuleIndex: 6
-  mIsSelectingModule: 1
+  mActiveModuleIndex: 0
+  mIsSelectingModule: 0

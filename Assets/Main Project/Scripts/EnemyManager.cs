@@ -228,6 +228,78 @@ public class EnemyManager : MonoBehaviour
             _enemy_ai.StateChange(_status);
         }
     }
+    // 背景魚
+    private void ReUse(Queue<GameObject> _queue_background)
+    {
+        EnemyAI._RecoveryAll = false;
+        if (_CurrentCount_BackgroundFish > _MaxCount_BackgroundFish) { Debug.LogWarningFormat("{0} current count: {1}.", nameof(_CurrentCount_BackgroundFish), _CurrentCount_BackgroundFish); return; }
+        if (_queue_background.Count <= 0) { Debug.LogWarningFormat("{0} pool count: {1}.", nameof(_queue_background), _queue_background.Count); return; }
+        GameObject _go = _queue_background.Dequeue();
+        _go.SetActive(true);
+        EnemyAI _enemy_ai = _go.GetComponent<EnemyAI>();
+        _enemy_ai._Pool = _queue_background;
+        {
+            int _r = Random.Range(0, 3);
+            switch (_r)
+            {
+                case 0:
+                    _enemy_ai._ScaleMagnification = 1.0f;
+                    _enemy_ai._Speed = 0.6f;
+                    _enemy_ai._SpriteRenderer.color = new Color(0.0f, 0.0f, 0.0f, 0.8f);
+                    break;
+                case 1:
+                    _enemy_ai._ScaleMagnification = 0.6f;
+                    _enemy_ai._Speed = 0.4f;
+                    _enemy_ai._SpriteRenderer.color = new Color(0.0f, 0.0f, 0.0f, 0.6f);
+                    break;
+                case 2:
+                    _enemy_ai._ScaleMagnification = 0.4f;
+                    _enemy_ai._Speed = 0.2f;
+                    _enemy_ai._SpriteRenderer.color = new Color(0.0f, 0.0f, 0.0f, 0.4f);
+                    break;
+            }
+        }
+        _enemy_ai._FadeDisappear = true;
+        _enemy_ai._FadeDisappear_Time = 0.025f;
+        {
+            int _r = Random.Range(0, 2);
+            switch (_r)
+            {
+                case 0:
+                    _go.transform.position = new Vector2(_Vertex().x + _SpawnOffsetMedium, Random.Range(_Origin().y, _Vertex().y));
+                    _enemy_ai.StateChange(EnemyAI.Status.SwimLeft);
+                    break;
+                case 1:
+                    _go.transform.position = new Vector2(_Origin().x + -_SpawnOffset, Random.Range(_Origin().y, _Vertex().y));
+                    _enemy_ai.StateChange(EnemyAI.Status.SwimRight);
+                    break;
+            }
+        }
+        _CurrentCount_BackgroundFish++;
+    }
+    // 螢幕外倒數消失
+    private void ReUse(Queue<GameObject> _queue, EnemyAI.Status _status, Vector3 _position, float _speed, float _time_out)
+    {
+        EnemyAI._RecoveryAll = false;
+        if (_queue.Count <= 0) { Debug.LogWarningFormat("{0} pool count: {1}", nameof(_queue), _queue.Count); return; }
+        GameObject _go = _queue.Dequeue();
+        _go.SetActive(true);
+        _go.transform.position = _position;
+        EnemyAI _enemy_ai = _go.GetComponent<EnemyAI>();
+        _enemy_ai._Pool = _queue;
+        _enemy_ai._ScaleMagnification = 1.0f;
+        _enemy_ai._Speed = _speed;
+        _enemy_ai._TimeOut = _time_out;
+        _enemy_ai._FadeDisappear = false;
+        _enemy_ai._SpriteRenderer.color = Color.white;
+    }
+    // 逐漸消失
+    private void ReUse(Queue<GameObject> _queue, EnemyAI.Status _status, Vector3 _position, float _speed, bool _enable_disappear, float _disappear_time)
+    {
+        EnemyAI._RecoveryAll = false;
+        if (_queue.Count <= 0) { Debug.LogWarningFormat("{0} pool count: {1}", nameof(_queue), _queue.Count); return; }
+    }
+
     public void Recovery(Queue<GameObject> _queue, GameObject _go)
     {
         _queue.Enqueue(_go);
@@ -493,28 +565,21 @@ public class EnemyManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForEndOfFrame();
-            if (_BackgroundFish_Pool.Count <= 0) continue;
-            if (_CurrentCount_BackgroundFish >= _MaxCount_BackgroundFish) continue;
-            float _speed = Random.Range(0.25f, 0.85f);
-            int _index = Random.Range(0, 2);
-            switch (_index)
+            float _interval = Random.Range(1.0f, 2.0f);
+            if (GameManager._Instance._Meter >= 4000.0f)
             {
-                case 0:
-                    if (GameManager._Instance._Meter >= 4000.0f)
-                        ReUse(_BackgroundFishZoneTwo_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffsetMedium, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, -1.0f, true);
-                    else if (GameManager._Instance._Meter >= 0.0f)
-                        ReUse(_BackgroundFish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, -1.0f, true);
-                    break;
-                case 1:
-                    if (GameManager._Instance._Meter >= 4000.0f)
-                        ReUse(_BackgroundFishZoneTwo_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffsetMedium, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, -1.0f, true);
-                    else if (GameManager._Instance._Meter >= 0.0f)
-                        ReUse(_BackgroundFish_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, -1.0f, true);
-                    break;
-                default:
-                    break;
+                _MaxCount_BackgroundFish = 3;
+                ReUse(_BackgroundFishZoneTwo_Pool);
+                yield return new WaitForSeconds(_interval);
+                continue;
             }
-            yield return new WaitForSeconds(Random.Range(1.0f, 2.0f));
+            if (GameManager._Instance._Meter >= 0.0f)
+            {
+                _MaxCount_BackgroundFish = 10;
+                ReUse(_BackgroundFish_Pool);
+                yield return new WaitForSeconds(_interval);
+                continue;
+            }
         }
     }
     public void IEnumeratorSpawnNpcBackground(bool _enable)
@@ -536,16 +601,29 @@ public class EnemyManager : MonoBehaviour
     private IEnumerator _SpawnNpc_00_Singleton;
     private IEnumerator _SpawnNpc_Logic_00()
     {
-        _MaxCount = 5; // 10
+        _MaxCount = 5;
         while (true)
         {
             yield return new WaitForEndOfFrame();
             if (_Fish_Pool.Count <= 0) continue;
             if (_CurrentCount >= _MaxCount) continue;
-            float _speed = Random.Range(1.5f, 2.5f); // 2.5f 3.5f
+            float _speed = Random.Range(1.5f, 2.5f);
             float _time_out = 2.0f;
-            int _i = Random.Range(0, 2);
-            switch (_i)
+            float _interval = Random.Range(0.1f, 0.5f);
+            if (MovementSystem._Instance._VelocityX() > 2.0f)
+            {
+                ReUse(_Fish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, _time_out, false);
+                yield return new WaitForSeconds(_interval);
+                continue;
+            }
+            if (MovementSystem._Instance._VelocityX() < -2.0f)
+            {
+                ReUse(_Fish_Pool, EnemyAI.Status.SwimRight, new Vector2(_Origin().x + -_SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, _time_out, false);
+                yield return new WaitForSeconds(_interval);
+                continue;
+            }
+            int _r = Random.Range(0, 2);
+            switch (_r)
             {
                 case 0:
                     ReUse(_Fish_Pool, EnemyAI.Status.SwimLeft, new Vector2(_Vertex().x + _SpawnOffset, Random.Range(_Origin().y, _Vertex().y)), Quaternion.identity, _speed, _time_out, false);
@@ -556,7 +634,7 @@ public class EnemyManager : MonoBehaviour
                 default:
                     break;
             }
-            yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
+            yield return new WaitForSeconds(_interval);
         }
     }
     public void IEnumeratorSpawnNpc00(bool _enable)
@@ -878,7 +956,6 @@ public class EnemyManager : MonoBehaviour
     {
         IEnumeratorDuration(true);
         int _index = Random.Range(0, 4);
-        //int _index = 3;
         if (_index == 0)
         {
             bool _initialize = false;

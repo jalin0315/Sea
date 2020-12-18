@@ -1,9 +1,12 @@
 ﻿using EasyMobile;
+using GoogleMobileAdsMediationTestSuite.Api;
+using Lean.Localization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 public class MenuSystem : MonoBehaviour
@@ -80,6 +83,7 @@ public class MenuSystem : MonoBehaviour
     [Space(20)]
     [SerializeField] private Text _Text_Prompt;
     [SerializeField] private Text _Text_TitleBar;
+    [SerializeField] private LeanLocalizedText _LLT_TitleBar;
     public Text _Text_ResurrectTotal;
 
     private void Awake() => _Instance = this;
@@ -227,9 +231,9 @@ public class MenuSystem : MonoBehaviour
     }
     private void OnButtonResurrect()
     {
-        if (Advertising.IsRewardedAdReady(RewardedAdNetwork.UnityAds, AdPlacement.Default))
+        if (Advertising.IsRewardedAdReady(RewardedAdNetwork.AdMob, AdPlacement.Default))
         {
-            Advertising.ShowRewardedAd(RewardedAdNetwork.UnityAds, AdPlacement.Default);
+            Advertising.ShowRewardedAd(RewardedAdNetwork.AdMob, AdPlacement.Default);
             AdvertisingEvent._Reward_Resurrect = true;
         }
     }
@@ -332,13 +336,9 @@ public class MenuSystem : MonoBehaviour
         _IsVibration = false;
     }
 
-    public void ShowAchievementsUI()
+    public void Test()
     {
-        GameServices.ShowAchievementsUI();
-    }
-    public void UnlockAchievement()
-    {
-        GameServices.UnlockAchievement(EM_GameServicesConstants.Achievement_test);
+        MediationTestSuite.Show();
     }
 
     public void StateChange(Status _status)
@@ -366,8 +366,7 @@ public class MenuSystem : MonoBehaviour
                     _Object_ResurrectTotal.SetActive(false);
                     _Object_PropTime.SetActive(false);
                     _Object_Death.SetActive(false);
-                    Advertising.HideBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default);
-                    Advertising.HideBannerAd(BannerAdNetwork.UnityAds, AdPlacement.Default);
+                    Advertising.DestroyBannerAd();
                 }
                 break;
             case Status.MainMenu:
@@ -390,8 +389,7 @@ public class MenuSystem : MonoBehaviour
                     _Object_ResurrectTotal.SetActive(false);
                     _Object_PropTime.SetActive(false);
                     _Object_Death.SetActive(false);
-                    Advertising.HideBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default);
-                    Advertising.HideBannerAd(BannerAdNetwork.UnityAds, AdPlacement.Default);
+                    Advertising.DestroyBannerAd();
                 }
                 break;
             case Status.Index:
@@ -414,9 +412,8 @@ public class MenuSystem : MonoBehaviour
                     _Object_ResurrectTotal.SetActive(false);
                     _Object_PropTime.SetActive(false);
                     _Object_Death.SetActive(false);
-                    _Text_TitleBar.text = "選單";
-                    Advertising.ShowBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
-                    Advertising.ShowBannerAd(BannerAdNetwork.UnityAds, AdPlacement.Default, BannerAdPosition.Top, BannerAdSize.Banner);
+                    _LLT_TitleBar.TranslationName = "_Index/Title/Index";
+                    Advertising.ShowBannerAd(BannerAdPosition.Bottom);
                 }
                 break;
             case Status.Submarine:
@@ -439,8 +436,7 @@ public class MenuSystem : MonoBehaviour
                     _Object_ResurrectTotal.SetActive(false);
                     _Object_PropTime.SetActive(false);
                     _Object_Death.SetActive(false);
-                    Advertising.ShowBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
-                    Advertising.ShowBannerAd(BannerAdNetwork.UnityAds, AdPlacement.Default, BannerAdPosition.Top, BannerAdSize.Banner);
+                    Advertising.ShowBannerAd(BannerAdPosition.Bottom);
                 }
                 break;
             case Status.Settings:
@@ -463,9 +459,8 @@ public class MenuSystem : MonoBehaviour
                     _Object_ResurrectTotal.SetActive(false);
                     _Object_PropTime.SetActive(false);
                     _Object_Death.SetActive(false);
-                    _Text_TitleBar.text = "設定";
-                    Advertising.ShowBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
-                    Advertising.ShowBannerAd(BannerAdNetwork.UnityAds, AdPlacement.Default, BannerAdPosition.Top, BannerAdSize.Banner);
+                    _LLT_TitleBar.TranslationName = "_Index/Title/Settings";
+                    Advertising.ShowBannerAd(BannerAdPosition.Bottom);
                 }
                 break;
             case Status.Checkpoint:
@@ -488,8 +483,7 @@ public class MenuSystem : MonoBehaviour
                     _Object_ResurrectTotal.SetActive(false);
                     _Object_PropTime.SetActive(false);
                     _Object_Death.SetActive(false);
-                    Advertising.ShowBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
-                    Advertising.ShowBannerAd(BannerAdNetwork.UnityAds, AdPlacement.Default, BannerAdPosition.Top, BannerAdSize.Banner);
+                    Advertising.ShowBannerAd(BannerAdPosition.Bottom);
                 }
                 break;
             case Status.InGame:
@@ -513,8 +507,7 @@ public class MenuSystem : MonoBehaviour
                     //_Object_PropTime.SetActive(null);
                     _Object_Death.SetActive(false);
                     GameManager._Instance.GameState(true);
-                    Advertising.HideBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default);
-                    Advertising.HideBannerAd(BannerAdNetwork.UnityAds, AdPlacement.Default);
+                    Advertising.DestroyBannerAd();
                 }
                 break;
             case Status.InGameMenu:
@@ -538,8 +531,7 @@ public class MenuSystem : MonoBehaviour
                     //_Object_PropTime.SetActive(null);
                     _Object_Death.SetActive(false);
                     GameManager._Instance.GameState(false);
-                    Advertising.ShowBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
-                    Advertising.ShowBannerAd(BannerAdNetwork.UnityAds, AdPlacement.Default, BannerAdPosition.Top, BannerAdSize.Banner);
+                    Advertising.ShowBannerAd(BannerAdPosition.Bottom);
                 }
                 break;
             case Status.DeathMenu:
@@ -565,8 +557,7 @@ public class MenuSystem : MonoBehaviour
                     GameManager._Instance.GameState(false);
                     if (GameManager._Instance._ResurrectTotal <= 0) _Button_Resurrect.interactable = false;
                     else _Button_Resurrect.interactable = true;
-                    Advertising.ShowBannerAd(BannerAdNetwork.AdMob, AdPlacement.Default, BannerAdPosition.Bottom, BannerAdSize.SmartBanner);
-                    Advertising.ShowBannerAd(BannerAdNetwork.UnityAds, AdPlacement.Default, BannerAdPosition.Top, BannerAdSize.Banner);
+                    Advertising.ShowBannerAd(BannerAdPosition.Bottom);
                 }
                 break;
             default:

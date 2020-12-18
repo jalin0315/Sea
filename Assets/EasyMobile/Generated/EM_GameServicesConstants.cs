@@ -8,7 +8,9 @@ namespace EasyMobile
 {
 	public static class EM_GameServicesConstants
 	{
-		public const string Achievement_test = "test";
+		public const string Achievement_ConsecutiveInjuries = "ConsecutiveInjuries";
+		public const string Achievement_ContinuousDiving = "ContinuousDiving";
+		public const string Leaderboard_TotalDepth = "TotalDepth";
 
 	}
 }

@@ -25,6 +25,7 @@ public class AdvertisingEvent : MonoBehaviour
     private void OnDisable()
     {
         Advertising.InterstitialAdCompleted -= InterstitialAdCompletedHandler;
+        Advertising.RewardedAdCompleted -= RewardedAdCompletedHandler;
         Advertising.RewardedAdSkipped -= RewardedAdSkippedHandler;
     }
 
@@ -54,6 +55,7 @@ public class AdvertisingEvent : MonoBehaviour
         Debug.Log("Rewarded ad was skipped. The user should NOT be rewarded.");
         _Reward_Resurrect = false;
         _Reward_MaxHealth = false;
+        Advertising.LoadRewardedAd();
     }
 
     private void AdsRemovedHandler()

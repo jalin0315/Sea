@@ -1,0 +1,9 @@
+_Index/Title/Index = 選單 // Null
+_Index/Title/Settings = 設定 // Null
+_Index/Vehicle = 載具 // Null
+_Index/Notes = 筆記 // Null
+_Index/Description = 說明 // Null
+_Index/Settings = 設定 // Null
+_Settings/Music = 音樂 // Null
+_Settings/SoundEffect = 音效 // Null
+_Settings/Vibrator = 震動 // Null

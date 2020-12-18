@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
@@ -75,3 +76,4 @@ public class UnityAds: MonoBehaviour, IUnityAdsListener
     // When the object that subscribes to ad events is destroyed, remove the listener:
     public void OnDestroy() => Advertisement.RemoveListener(this);
 }
+*/

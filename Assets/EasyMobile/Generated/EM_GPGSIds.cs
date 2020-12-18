@@ -24,7 +24,9 @@
 
 public static class EM_GPGSIds
 {
-        public const string achievement_testachievement = "CgkI77fu3dEFEAIQAQ"; // <GPGSID>
+        public const string achievement_dive_to_1000_meters = "CgkI77fu3dEFEAIQAw"; // <GPGSID>
+        public const string achievement_injured_more_than_20_times = "CgkI77fu3dEFEAIQBA"; // <GPGSID>
+        public const string leaderboard_total_depth = "CgkI77fu3dEFEAIQAg"; // <GPGSID>
 
 }
 
