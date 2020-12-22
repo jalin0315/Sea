@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaitControl : MonoBehaviour
+namespace CTJ
 {
-    public Rigidbody2D _Rigidbody2D;
-    public Queue<GameObject> _Queue = new Queue<GameObject>();
-    public static bool _RecoveryAll;
-
-    private void Update()
+    public class BaitControl : MonoBehaviour
     {
-        if (_RecoveryAll)
-            BaitManager._Instance.Recovery(_Queue, gameObject);
+        public Rigidbody2D _Rigidbody2D;
+        public Queue<GameObject> _Queue = new Queue<GameObject>();
+        public static bool _RecoveryAll;
+
+        private void Update()
+        {
+            if (_RecoveryAll) BaitManager._Instance.Recovery(_Queue, gameObject);
+        }
     }
 }

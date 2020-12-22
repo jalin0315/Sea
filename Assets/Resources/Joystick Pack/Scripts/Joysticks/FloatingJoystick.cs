@@ -20,7 +20,7 @@ public class FloatingJoystick : Joystick
 
     public override void OnPointerDown(PointerEventData eventData)
     {
-        if (!GameManager._Instance._InGame) return;
+        if (!CTJ.GameManager._Instance._InGame) return;
         background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
         background.gameObject.SetActive(true);
         base.OnPointerDown(eventData);
@@ -28,7 +28,7 @@ public class FloatingJoystick : Joystick
 
     public override void OnPointerUp(PointerEventData eventData)
     {
-        if (!GameManager._Instance._InGame) return;
+        if (!CTJ.GameManager._Instance._InGame) return;
         background.gameObject.SetActive(false);
         base.OnPointerUp(eventData);
     }

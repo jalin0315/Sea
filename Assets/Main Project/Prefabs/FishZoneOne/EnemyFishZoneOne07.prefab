@@ -11,11 +11,10 @@ GameObject:
   - component: {fileID: 4130994301614455757}
   - component: {fileID: 7801964139892930430}
   - component: {fileID: 6667861085821250640}
+  - component: {fileID: 6684791563793234870}
   - component: {fileID: 7782373853165367191}
-  - component: {fileID: 874110114}
-  - component: {fileID: 874110113}
   m_Layer: 0
-  m_Name: EnemyFish07
+  m_Name: EnemyFishZoneOne07
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,27 +105,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &7782373853165367191
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 624057944460187340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f7b7ef11b651334898ff677e842e147, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Status: -1
-  _SpriteRenderer: {fileID: 0}
-  _ScaleMagnification: 1
-  _Speed: 1.5
-  _RotateSpeed: 10
-  _TimeOut: 5
-  _FadeDisappear: 0
-  _FadeDisappear_Time: 0
---- !u!60 &874110114
+--- !u!60 &6684791563793234870
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,7 +122,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 15.282569, y: 28.9}
+    oldSize: {x: 15.2966795, y: 28.9}
     newSize: {x: 2.43, y: 2.43}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -151,37 +130,15 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.7337891, y: -14.442945}
-      - {x: 3.0621583, y: -13.624487}
-      - {x: 3.9652832, y: -11.437231}
-      - {x: 1.6369141, y: -9.969653}
-      - {x: 0.9172364, y: -11.832349}
-      - {x: 2.483594, y: -10.802221}
-      - {x: 2.7799318, y: -12.015796}
-      - {x: 0.64912117, y: -12.848364}
-      - {x: -1.3687989, y: -9.701538}
-      - {x: 2.8645997, y: -2.3777587}
-      - {x: 1.7639161, y: 3.7042236}
-      - {x: -1.3970215, y: 8.177514}
-      - {x: 2.6529298, y: 7.8247313}
-      - {x: 7.1121097, y: 4.7766843}
-      - {x: 7.634229, y: 5.6939206}
-      - {x: 4.162842, y: 8.149292}
-      - {x: 4.24751, y: 11.028003}
-      - {x: 2.8222656, y: 11.479566}
-      - {x: 3.6407228, y: 12.721362}
-      - {x: 2.4977052, y: 11.846459}
-      - {x: 0.5362305, y: 14.442945}
-      - {x: -4.6285157, y: 11.126782}
-      - {x: -5.5316405, y: 4.452124}
-      - {x: -6.0960937, y: 5.5528073}
-      - {x: -7.634229, y: 1.9261962}
-      - {x: -7.479004, y: -0.34572753}
-      - {x: -4.600293, y: -3.548999}
-      - {x: -6.0255375, y: -8.629077}
-      - {x: -5.1647463, y: -10.731665}
-      - {x: 0.71967775, y: -14.428833}
---- !u!114 &874110113
+    - - {x: -1.2213721, y: 8.446333}
+      - {x: 6.888856, y: 5.5933304}
+      - {x: 0.60573006, y: 13.940745}
+      - {x: -4.349, y: 10.677864}
+      - {x: -7.0348673, y: 1.4519336}
+      - {x: -4.575882, y: -10.057682}
+      - {x: 0.7068095, y: -14.362223}
+      - {x: 2.465395, y: -0.08780813}
+--- !u!114 &7782373853165367191
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -190,28 +147,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 624057944460187340}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c55c83d4c4dd1145ad5fbbab3c3df36, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f7b7ef11b651334898ff677e842e147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AlphaTolerance: 60
-  DistanceThreshold: 64
-  Scale: 1
-  Decompose: 0
-  RunInPlayMode: 0
-  UseCache: 0
-  lastAlphaTolerance: 60
-  lastScale: 1
-  lastDistanceThreshold: 64
-  lastDecompose: 0
-  lastSprite: {fileID: 21300000, guid: d9ce4c692c1add24eaca418827aa6229, type: 3}
-  lastRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1083
-    height: 2048
-  lastOffset: {x: 541.5, y: 1024}
-  lastPixelsPerUnit: 70.86505
-  lastFlipX: 0
-  lastFlipY: 0
-  editorCache: []
+  _Status: -1
+  _SpriteRenderer: {fileID: 7801964139892930430}
+  _ScaleMagnification: 1
+  _Speed: 1.5
+  _RotateSpeed: 10
+  _TimeOut: 5
+  _FadeDisappear: 0
+  _FadeDisappear_Time: 0

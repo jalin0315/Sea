@@ -11,11 +11,10 @@ GameObject:
   - component: {fileID: 425705919783975665}
   - component: {fileID: 1307117583413248784}
   - component: {fileID: -4628515280869059887}
+  - component: {fileID: 4452853232428290269}
   - component: {fileID: 101182449223437449}
-  - component: {fileID: 8230988123234502819}
-  - component: {fileID: 8230988123234502818}
   m_Layer: 0
-  m_Name: EnemyFishGroup03
+  m_Name: EnemyFishGroupZoneOne03
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,27 +105,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &101182449223437449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2873107555269645412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f7b7ef11b651334898ff677e842e147, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Status: -1
-  _SpriteRenderer: {fileID: 0}
-  _ScaleMagnification: 1
-  _Speed: 1.5
-  _RotateSpeed: 10
-  _TimeOut: 5
-  _FadeDisappear: 0
-  _FadeDisappear_Time: 0
---- !u!60 &8230988123234502819
+--- !u!60 &4452853232428290269
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,46 +130,15 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 1.0649999, y: -2.585}
-      - {x: 1.9649999, y: -2.2649999}
-      - {x: 1.615, y: -1.5949999}
-      - {x: -0.315, y: -1.735}
-      - {x: -0.325, y: -2.2849998}
-      - {x: 1.0749999, y: -2.565}
-    - - {x: -2.065, y: -2.425}
-      - {x: -0.745, y: -1.9549999}
-      - {x: -1.275, y: -0.97499996}
-      - {x: -4.075, y: -1.1949999}
-      - {x: -4.085, y: -1.985}
-      - {x: -2.0249999, y: -2.395}
-    - - {x: 2.375, y: -1.605}
-      - {x: 3.8249998, y: -1.0849999}
-      - {x: 3.235, y: -0.015}
-      - {x: 0.185, y: -0.265}
-      - {x: 0.185, y: -1.125}
-      - {x: 2.415, y: -1.5849999}
-    - - {x: -0.775, y: -0.375}
-      - {x: 0.33499998, y: 0.024999999}
-      - {x: -0.114999995, y: 0.85499996}
-      - {x: -2.485, y: 0.66499996}
-      - {x: -2.495, y: -0.005}
-      - {x: -0.755, y: -0.355}
-    - - {x: 2.7849998, y: 0.66499996}
-      - {x: 3.7749999, y: 1.015}
-      - {x: 3.585, y: 1.5849999}
-      - {x: 1.645, y: 1.485}
-      - {x: 1.985, y: 1.9449999}
-      - {x: 1.265, y: 2.855}
-      - {x: -1.555, y: 2.5549998}
-      - {x: -1.555, y: 1.7149999}
-      - {x: 2.8049998, y: 0.685}
-    - - {x: -2.655, y: 0.875}
-      - {x: -1.5649999, y: 1.265}
-      - {x: -2.0049999, y: 2.085}
-      - {x: -4.335, y: 1.905}
-      - {x: -4.335, y: 1.235}
-      - {x: -2.635, y: 0.895}
---- !u!114 &8230988123234502818
+    - - {x: 3.725039, y: -1.0736074}
+      - {x: 3.0329137, y: 0.3464728}
+      - {x: 3.6787274, y: 1.1994681}
+      - {x: 1.0203403, y: 2.886085}
+      - {x: -3.7801836, y: 1.592173}
+      - {x: -2.031327, y: -0.014175102}
+      - {x: -3.1764512, y: -2.0669777}
+      - {x: 1.6847923, y: -2.4013672}
+--- !u!114 &101182449223437449
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -199,28 +147,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2873107555269645412}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c55c83d4c4dd1145ad5fbbab3c3df36, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f7b7ef11b651334898ff677e842e147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AlphaTolerance: 80
-  DistanceThreshold: 45
-  Scale: 1
-  Decompose: 0
-  RunInPlayMode: 0
-  UseCache: 0
-  lastAlphaTolerance: 80
-  lastScale: 1
-  lastDistanceThreshold: 45
-  lastDecompose: 0
-  lastSprite: {fileID: 21300000, guid: 4a45d7a9f20e3394182e1fd6fdaf3ba0, type: 3}
-  lastRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1024
-    height: 1024
-  lastOffset: {x: 512, y: 512}
-  lastPixelsPerUnit: 100
-  lastFlipX: 0
-  lastFlipY: 0
-  editorCache: []
+  _Status: -1
+  _SpriteRenderer: {fileID: 1307117583413248784}
+  _ScaleMagnification: 1
+  _Speed: 1.5
+  _RotateSpeed: 10
+  _TimeOut: 5
+  _FadeDisappear: 0
+  _FadeDisappear_Time: 0

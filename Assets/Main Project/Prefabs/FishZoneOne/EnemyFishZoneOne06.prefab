@@ -11,11 +11,10 @@ GameObject:
   - component: {fileID: 4130994301614455757}
   - component: {fileID: 7801964139892930430}
   - component: {fileID: 3170594275520687065}
+  - component: {fileID: 8330119710963938422}
   - component: {fileID: 7782373853165367191}
-  - component: {fileID: 874110114}
-  - component: {fileID: 874110113}
   m_Layer: 0
-  m_Name: EnemyFish06
+  m_Name: EnemyFishZoneOne06
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,27 +105,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &7782373853165367191
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 624057944460187340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f7b7ef11b651334898ff677e842e147, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Status: -1
-  _SpriteRenderer: {fileID: 0}
-  _ScaleMagnification: 1
-  _Speed: 1.5
-  _RotateSpeed: 10
-  _TimeOut: 5
-  _FadeDisappear: 0
-  _FadeDisappear_Time: 0
---- !u!60 &874110114
+--- !u!60 &8330119710963938422
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,7 +122,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 35.079998, y: 25.52207}
+    oldSize: {x: 35.1243, y: 25.52}
     newSize: {x: 2.43, y: 2.43}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -151,50 +130,11 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 3.6570213, y: -9.275302}
-      - {x: 7.459638, y: -4.7875295}
-      - {x: 13.180693, y: -3.7769237}
-      - {x: 15.86993, y: -1.1390723}
-      - {x: 12.855244, y: 3.913955}
-      - {x: 12.649696, y: 1.8070996}
-      - {x: 9.789169, y: 2.9718652}
-      - {x: 10.097489, y: 6.80874}
-      - {x: 9.0868845, y: 3.3829587}
-      - {x: 9.206786, y: 8.590146}
-      - {x: 8.7614355, y: 3.5028613}
-      - {x: 7.202705, y: 9.32669}
-      - {x: 7.0999312, y: 3.8968263}
-      - {x: 4.958818, y: 9.241045}
-      - {x: 3.51999, y: 9.189658}
-      - {x: 5.0273337, y: 3.9653418}
-      - {x: 1.8584862, y: 9.566494}
-      - {x: 3.8283103, y: 3.759795}
-      - {x: -0.5395605, y: 9.00124}
-      - {x: 2.5607712, y: 3.4000878}
-      - {x: -2.595029, y: 8.059151}
-      - {x: 1.0362988, y: 3.0917675}
-      - {x: -3.4514744, y: 7.082803}
-      - {x: 0.111337885, y: 2.8348339}
-      - {x: -4.958818, y: 6.2434864}
-      - {x: -0.60807616, y: 2.4237401}
-      - {x: -5.147236, y: 4.7704}
-      - {x: -2.4751267, y: 2.612158}
-      - {x: -6.6545796, y: 3.7255373}
-      - {x: -8.789983, y: 2.5779004}
-      - {x: -2.4237401, y: 2.5779004}
-      - {x: -9.172529, y: 1.738584}
-      - {x: -5.4212985, y: -0.12846678}
-      - {x: -12.289989, y: 1.4987793}
-      - {x: -14.465361, y: -0.025693359}
-      - {x: -14.807939, y: -2.817705}
-      - {x: -12.718212, y: -4.9245605}
-      - {x: -5.164365, y: -2.629287}
-      - {x: -7.528154, y: -5.8323927}
-      - {x: -1.721455, y: -4.479209}
-      - {x: 3.6398923, y: -5.746748}
-      - {x: 2.3552244, y: -7.44251}
-      - {x: 3.4857323, y: -9.223916}
---- !u!114 &874110113
+    - - {x: 4.1805735, y: 9.53601}
+      - {x: -15.06935, y: -1.7262087}
+      - {x: 3.876462, y: -9.005471}
+      - {x: 15.944515, y: -0.9297912}
+--- !u!114 &7782373853165367191
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -203,28 +143,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 624057944460187340}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c55c83d4c4dd1145ad5fbbab3c3df36, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f7b7ef11b651334898ff677e842e147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AlphaTolerance: 80
-  DistanceThreshold: 64
-  Scale: 1
-  Decompose: 0
-  RunInPlayMode: 0
-  UseCache: 0
-  lastAlphaTolerance: 80
-  lastScale: 1
-  lastDistanceThreshold: 64
-  lastDecompose: 0
-  lastSprite: {fileID: 21300000, guid: c5cae9a61173c914896730b389dc51e4, type: 3}
-  lastRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 2048
-    height: 1490
-  lastOffset: {x: 1024, y: 745}
-  lastPixelsPerUnit: 58.380844
-  lastFlipX: 0
-  lastFlipY: 0
-  editorCache: []
+  _Status: -1
+  _SpriteRenderer: {fileID: 7801964139892930430}
+  _ScaleMagnification: 1
+  _Speed: 1.5
+  _RotateSpeed: 10
+  _TimeOut: 5
+  _FadeDisappear: 0
+  _FadeDisappear_Time: 0

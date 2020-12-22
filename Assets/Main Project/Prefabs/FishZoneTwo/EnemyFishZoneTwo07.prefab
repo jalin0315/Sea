@@ -379,8 +379,8 @@ MonoBehaviour:
   - {fileID: 1789032079424734114}
   - {fileID: 697519459696988696}
   m_Bounds:
-    m_Center: {x: 1.9572163, y: -1.142159, z: 0}
-    m_Extent: {x: 27.38435, y: 6.5621085, z: 0}
+    m_Center: {x: -0.0000076293945, y: 0.0026535988, z: 0}
+    m_Extent: {x: 30.215008, y: 5.171777, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
 --- !u!114 &4335501782922745573
@@ -396,7 +396,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Status: -1
-  _SpriteRenderer: {fileID: 0}
+  _SpriteRenderer: {fileID: 854377774987011343}
   _ScaleMagnification: 1
   _Speed: 1.5
   _RotateSpeed: 10

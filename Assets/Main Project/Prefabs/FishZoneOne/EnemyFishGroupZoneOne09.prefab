@@ -11,11 +11,10 @@ GameObject:
   - component: {fileID: 8273208373240604419}
   - component: {fileID: 8789634618174492696}
   - component: {fileID: -6293081856608512559}
+  - component: {fileID: 1225822411684747666}
   - component: {fileID: 5898882258536291374}
-  - component: {fileID: 5820290389150138826}
-  - component: {fileID: 5820290389150138825}
   m_Layer: 0
-  m_Name: EnemyFishGroup09
+  m_Name: EnemyFishGroupZoneOne09
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,27 +105,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &5898882258536291374
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6014192312917415564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f7b7ef11b651334898ff677e842e147, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Status: -1
-  _SpriteRenderer: {fileID: 0}
-  _ScaleMagnification: 1
-  _Speed: 1.5
-  _RotateSpeed: 10
-  _TimeOut: 5
-  _FadeDisappear: 0
-  _FadeDisappear_Time: 0
---- !u!60 &5820290389150138826
+--- !u!60 &1225822411684747666
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,77 +130,18 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.53499997, y: -3.5149999}
-      - {x: 0.225, y: -2.925}
-      - {x: -0.074999996, y: -2.415}
-      - {x: -1.395, y: -2.155}
-      - {x: -1.755, y: -3.0349998}
-      - {x: -0.565, y: -3.495}
-    - - {x: -2.705, y: -2.955}
-      - {x: -1.7049999, y: -2.175}
-      - {x: -1.9449999, y: -1.5849999}
-      - {x: -0.105, y: -0.815}
-      - {x: -1.2149999, y: 0.685}
-      - {x: -2.745, y: 0.325}
-      - {x: -2.745, y: -0.525}
-      - {x: -3.2749999, y: -0.24499999}
-      - {x: -3.205, y: -1.025}
-      - {x: -4.055, y: -1.495}
-      - {x: -2.055, y: -1.5949999}
-      - {x: -4.365, y: -1.7149999}
-      - {x: -4.285, y: -2.345}
-      - {x: -2.745, y: -2.925}
-    - - {x: 4.055, y: -2.845}
-      - {x: 4.365, y: -2.095}
-      - {x: 3.475, y: -1.925}
-      - {x: 3.235, y: -2.5249999}
-      - {x: 4.015, y: -2.7949998}
-    - - {x: 2.125, y: -2.725}
-      - {x: 3.185, y: -1.805}
-      - {x: 2.195, y: -0.53499997}
-      - {x: 0.955, y: -0.775}
-      - {x: 0.375, y: -2.0049999}
-      - {x: 2.075, y: -2.685}
-    - - {x: 3.875, y: -0.775}
-      - {x: 4.835, y: -0.035}
-      - {x: 4.205, y: 0.995}
-      - {x: 3.2649999, y: 1.0649999}
-      - {x: 2.715, y: 2.135}
-      - {x: 1.785, y: 1.935}
-      - {x: 1.425, y: 1.165}
-      - {x: 2.565, y: 0.775}
-      - {x: 2.365, y: -0.185}
-      - {x: 3.8349998, y: -0.73499995}
-    - - {x: 1.175, y: -0.49499997}
-      - {x: 1.915, y: 0.125}
-      - {x: 1.235, y: 1.005}
-      - {x: 0.375, y: 0.835}
-      - {x: -0.005, y: -0.024999999}
-      - {x: 1.145, y: -0.465}
-    - - {x: -3.605, y: -0.085}
-      - {x: -2.8149998, y: 0.59499997}
-      - {x: -3.5349998, y: 1.525}
-      - {x: -4.505, y: 1.3349999}
-      - {x: -4.8849998, y: 0.42499998}
-      - {x: -3.655, y: -0.035}
-    - - {x: -0.125, y: 0.73499995}
-      - {x: 0.78499997, y: 1.4549999}
-      - {x: 0.185, y: 2.445}
-      - {x: -1.2149999, y: 2.375}
-      - {x: -1.635, y: 1.345}
-      - {x: -0.175, y: 0.775}
-    - - {x: -2.585, y: 1.4649999}
-      - {x: -1.675, y: 2.2549999}
-      - {x: -2.5249999, y: 3.345}
-      - {x: -3.635, y: 3.115}
-      - {x: -4.055, y: 2.0349998}
-      - {x: -2.625, y: 1.495}
-    - - {x: 1.875, y: 2.055}
-      - {x: 2.495, y: 2.575}
-      - {x: 1.185, y: 3.175}
-      - {x: 0.875, y: 2.445}
-      - {x: 1.8449999, y: 2.085}
---- !u!114 &5820290389150138825
+    - - {x: 1.8720151, y: 3.184876}
+      - {x: -0.549536, y: 2.645743}
+      - {x: -3.7567098, y: 3.1179805}
+      - {x: -4.7004147, y: 0.6991942}
+      - {x: -3.5832355, y: -0.5297804}
+      - {x: -3.8729422, y: -2.705626}
+      - {x: -0.6693159, y: -3.3216796}
+      - {x: 1.509978, y: -2.6613603}
+      - {x: 4.4763756, y: -2.43083}
+      - {x: 3.1869318, y: -1.1280838}
+      - {x: 4.8546643, y: 0.010347903}
+--- !u!114 &5898882258536291374
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -230,28 +150,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6014192312917415564}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c55c83d4c4dd1145ad5fbbab3c3df36, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f7b7ef11b651334898ff677e842e147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AlphaTolerance: 80
-  DistanceThreshold: 45
-  Scale: 1
-  Decompose: 0
-  RunInPlayMode: 0
-  UseCache: 0
-  lastAlphaTolerance: 80
-  lastScale: 1
-  lastDistanceThreshold: 45
-  lastDecompose: 0
-  lastSprite: {fileID: 21300000, guid: 46c520eedb2903e40818d238dc20a2eb, type: 3}
-  lastRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1024
-    height: 1024
-  lastOffset: {x: 512, y: 512}
-  lastPixelsPerUnit: 100
-  lastFlipX: 0
-  lastFlipY: 0
-  editorCache: []
+  _Status: -1
+  _SpriteRenderer: {fileID: 8789634618174492696}
+  _ScaleMagnification: 1
+  _Speed: 1.5
+  _RotateSpeed: 10
+  _TimeOut: 5
+  _FadeDisappear: 0
+  _FadeDisappear_Time: 0

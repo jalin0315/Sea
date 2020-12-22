@@ -263,10 +263,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2854533323023326394}
   - component: {fileID: 854377774987011343}
+  - component: {fileID: 3880997179234690425}
   - component: {fileID: 1423681689718122665}
   - component: {fileID: 1827326858817172603}
   - component: {fileID: 4335501782922745573}
-  - component: {fileID: 3880997179234690425}
   m_Layer: 0
   m_Name: EnemyFishZoneTwo02
   m_TagString: Enemy
@@ -339,6 +339,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &3880997179234690425
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3134276554564493555}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c37f790e42c820f4ead69b3961c9137f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!50 &1423681689718122665
 Rigidbody2D:
   serializedVersion: 4
@@ -388,8 +407,8 @@ MonoBehaviour:
   - {fileID: 5044178316815443714}
   - {fileID: 7111073814522895253}
   m_Bounds:
-    m_Center: {x: -0.0061359406, y: 0.000875473, z: 0}
-    m_Extent: {x: 13.6138735, y: 3.6090934, z: 0}
+    m_Center: {x: -0.006132126, y: 0.00089263916, z: 0}
+    m_Extent: {x: 13.61387, y: 3.609108, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
 --- !u!114 &4335501782922745573
@@ -405,32 +424,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Status: -1
-  _SpriteRenderer: {fileID: 0}
+  _SpriteRenderer: {fileID: 854377774987011343}
   _ScaleMagnification: 1
   _Speed: 1.5
   _RotateSpeed: 10
   _TimeOut: 5
   _FadeDisappear: 0
   _FadeDisappear_Time: 0
---- !u!95 &3880997179234690425
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3134276554564493555}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c37f790e42c820f4ead69b3961c9137f, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3406232045236699922
 GameObject:
   m_ObjectHideFlags: 0
