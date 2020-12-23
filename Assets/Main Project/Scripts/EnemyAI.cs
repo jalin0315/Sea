@@ -6,6 +6,17 @@ namespace CTJ
 {
     public class EnemyAI : MonoBehaviour
     {
+        // --- 位置 ---
+        public enum Screen
+        {
+            Up,
+            Down,
+            Left,
+            Right
+        }
+        private Screen _Screen;
+        // --- 位置 ---
+        // --- 狀態 ---
         public enum Status
         {
             Patrol,
@@ -18,10 +29,13 @@ namespace CTJ
             Target,
             TargetLock
         }
-        public Status _Status;
+        [HideInInspector] public Status _Status;
+        // --- 狀態 ---
         private Vector3 _Scale;
-        public SpriteRenderer _SpriteRenderer;
-        public Queue<GameObject> _Queue_GameObject = new Queue<GameObject>();
+        [SerializeField] private SpriteRenderer _SpriteRenderer;
+        private Color _Color;
+        [SerializeField] private Collider2D _Collider2D;
+        [HideInInspector] public Queue<GameObject> _Queue_GameObject = new Queue<GameObject>();
         [HideInInspector] public float _ScaleMagnification;
         [HideInInspector] public float _Speed;
         private float _RotateSpeed;
@@ -29,9 +43,7 @@ namespace CTJ
         private GameObject _WaypointTarget;
         private float _PatrolTime;
         private float _PatrolIntervalTime;
-        private Vector3 _OutOfDistance_Position_Offset;
-        // --- End ---
-        private Vector2 _TranslateOffset;
+        // --- 巡邏 ---
         private Transform _Player;
         public static Transform _Bait;
         private Vector3 _CurrentPlayerPosition;
@@ -39,12 +51,12 @@ namespace CTJ
         private float _TargetLockTime;
         private float _T_L_Timer;
         // --- 回收機制 ---
+        [HideInInspector] public float _ActivityTime;
         private bool _Visible;
-        [HideInInspector] public float _Visible_Timer;
         [HideInInspector] public bool _FadeDisappear;
-        public float _FadeDisappear_Time;
-        // --- End ---
+        // --- 回收機制 ---
         public static bool _Recycle;
+        private Vector3 _variable_vector3;
 
         private void Awake()
         {
@@ -54,7 +66,9 @@ namespace CTJ
 
         private void OnEnable()
         {
-
+            _Color = Color.white;
+            _SpriteRenderer.color = _Color;
+            _Collider2D.enabled = true;
         }
 
         private void Update()
@@ -65,6 +79,25 @@ namespace CTJ
 
         private void FixedUpdate() => UpdateStatus();
 
+        public void ScreenChange(Screen _screen)
+        {
+            _variable_vector3 = transform.position;
+            _Screen = _screen;
+            switch (_Screen)
+            {
+                case Screen.Up:
+                    break;
+                case Screen.Down:
+                    break;
+                case Screen.Left:
+                    _variable_vector3.x = _SpriteRenderer.bounds.min.x;
+                    break;
+                case Screen.Right:
+                    _variable_vector3.x = _SpriteRenderer.bounds.max.x;
+                    break;
+            }
+            transform.position = _variable_vector3;
+        }
         public void StateChange(Status _status)
         {
             _Status = _status;
@@ -90,14 +123,15 @@ namespace CTJ
                     break;
                 case Status.SwimLeft:
                     {
-                        transform.localScale = new Vector3(-_Scale.x, _Scale.y, _Scale.z) * _ScaleMagnification;
-                        _TranslateOffset = new Vector2(0.0f, 0.0f);
+                        _variable_vector3.x = -_Scale.x;
+                        _variable_vector3.y = _Scale.y;
+                        _variable_vector3.z = 1.0f;
+                        transform.localScale = _variable_vector3 * _ScaleMagnification;
                     }
                     break;
                 case Status.SwimRight:
                     {
                         transform.localScale = _Scale * _ScaleMagnification;
-                        _TranslateOffset = new Vector2(0.0f, 0.0f);
                     }
                     break;
                 case Status.SwimLeftStyle:
@@ -107,7 +141,10 @@ namespace CTJ
                     break;
                 case Status.SwimRightStyle:
                     {
-                        transform.localScale = new Vector3(-_Scale.x, _Scale.y, _Scale.z) * _ScaleMagnification;
+                        _variable_vector3.x = -_Scale.x;
+                        _variable_vector3.y = _Scale.y;
+                        _variable_vector3.z = 1.0f;
+                        transform.localScale = _variable_vector3 * _ScaleMagnification;
                     }
                     break;
                 case Status.Target:
@@ -145,10 +182,8 @@ namespace CTJ
             }
         }
 
-        private float _delta(float _value)
-        {
-            return Mathf.DeltaAngle(0, _value);
-        }
+
+        private float _delta(float _value) { return Mathf.DeltaAngle(0, _value); }
         private void UpdateStatus()
         {
             switch (_Status)
@@ -176,8 +211,19 @@ namespace CTJ
                         }
                         else if (_PatrolTime < 0.0f) transform.Translate(Vector2.right * TimeSystem._FixedDeltaTime() * (_Speed * 2.0f), Space.Self);
                         if (_delta(transform.eulerAngles.z) > 90.0f || _delta(transform.eulerAngles.z) < -90.0f)
-                            transform.localScale = new Vector3(transform.localScale.x, -_Scale.y * _ScaleMagnification, transform.localScale.z);
-                        else transform.localScale = new Vector3(transform.localScale.x, _Scale.y * _ScaleMagnification, transform.localScale.z);
+                        {
+                            _variable_vector3.x = transform.localScale.x;
+                            _variable_vector3.y = -_Scale.y * _ScaleMagnification;
+                            _variable_vector3.z = 1.0f;
+                            transform.localScale = _variable_vector3;
+                        }
+                        else
+                        {
+                            _variable_vector3.x = transform.localScale.x;
+                            _variable_vector3.y = _Scale.y * _ScaleMagnification;
+                            _variable_vector3.z = 1.0f;
+                            transform.localScale = _variable_vector3;
+                        }
                     }
                     break;
                 case Status.SwimUp:
@@ -196,24 +242,28 @@ namespace CTJ
                     break;
                 case Status.SwimLeft:
                     {
-                        transform.Translate((Vector2.left + _TranslateOffset) * TimeSystem._DeltaTime() * _Speed, Space.World);
-                        transform.right = Vector2.Lerp(transform.right, -(Vector2.left + _TranslateOffset), TimeSystem._DeltaTime() * _RotateSpeed);
+                        transform.Translate(Vector2.left * TimeSystem._FixedDeltaTime() * _Speed, Space.World);
                     }
                     break;
                 case Status.SwimRight:
                     {
-                        transform.Translate((Vector2.right + _TranslateOffset) * TimeSystem._DeltaTime() * _Speed, Space.World);
-                        transform.right = Vector2.Lerp(transform.right, Vector2.right + _TranslateOffset, TimeSystem._DeltaTime() * _RotateSpeed);
+                        transform.Translate(Vector2.right * TimeSystem._FixedDeltaTime() * _Speed, Space.World);
                     }
                     break;
                 case Status.SwimLeftStyle:
                     {
-                        transform.Translate(new Vector3(1.0f, Mathf.Sin(TimeSystem._Time() * 2.5f)) * TimeSystem._DeltaTime() * _Speed, Space.World);
+                        _variable_vector3.x = 1.0f;
+                        _variable_vector3.y = Mathf.Sin(TimeSystem._Time() * 2.5f);
+                        _variable_vector3.z = 0.0f;
+                        transform.Translate(_variable_vector3 * TimeSystem._DeltaTime() * _Speed, Space.World);
                     }
                     break;
                 case Status.SwimRightStyle:
                     {
-                        transform.Translate(new Vector3(-1.0f, Mathf.Sin(TimeSystem._Time() * 2.5f)) * TimeSystem._DeltaTime() * _Speed, Space.World);
+                        _variable_vector3.x = -1.0f;
+                        _variable_vector3.y = Mathf.Sin(TimeSystem._Time() * 2.5f);
+                        _variable_vector3.z = 0.0f;
+                        transform.Translate(_variable_vector3 * TimeSystem._DeltaTime() * _Speed, Space.World);
                     }
                     break;
                 case Status.Target:
@@ -242,18 +292,30 @@ namespace CTJ
             }
         }
 
+        private bool _disable_once;
         private void Disappear()
         {
-            if (_FadeDisappear)
+            if (!_FadeDisappear)
             {
-                _SpriteRenderer.color = new Color(_SpriteRenderer.color.r, _SpriteRenderer.color.g, _SpriteRenderer.color.b, _SpriteRenderer.color.a - (TimeSystem._DeltaTime() * _FadeDisappear_Time));
-                if (_SpriteRenderer.color.a <= 0.0f) EnemyManager._Instance.Recovery(_Queue_GameObject, gameObject);
-                return;
+                if (!_Visible) _ActivityTime -= TimeSystem._DeltaTime();
+                if (_ActivityTime <= 0.0f) { EnemyManager._Instance.RecycleAI(_Queue_GameObject, gameObject); return; }
             }
-            if (!_Visible) _Visible_Timer -= TimeSystem._DeltaTime();
-            if (_Visible_Timer < 0.0f) EnemyManager._Instance.Recovery(_Queue_GameObject, gameObject);
+            else
+            {
+                _ActivityTime -= TimeSystem._DeltaTime();
+                if (_ActivityTime <= 0.0f)
+                {
+                    if (!_disable_once) { _Collider2D.enabled = false; _disable_once = true; }
+                    _Color.r -= TimeSystem._DeltaTime();
+                    _Color.g -= TimeSystem._DeltaTime();
+                    _Color.b -= TimeSystem._DeltaTime();
+                    _Color.a -= TimeSystem._DeltaTime() * 0.5f;
+                    _SpriteRenderer.color = _Color;
+                    if (_Color.a <= 0.0f) { _disable_once = false; EnemyManager._Instance.RecycleAI(_Queue_GameObject, gameObject); return; }
+                }
+            }
         }
-        private void OnBecameVisible() => _Visible = true;
-        private void OnBecameInvisible() => _Visible = false;
+        private void OnBecameVisible() { if (_FadeDisappear) return; _Visible = true; }
+        private void OnBecameInvisible() { if (_FadeDisappear) return; _Visible = false; }
     }
 }

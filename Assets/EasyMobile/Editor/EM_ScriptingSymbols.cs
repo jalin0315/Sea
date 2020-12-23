@@ -27,6 +27,7 @@ namespace EasyMobile.Editor
         public const string IronSource = "EM_IRONSOURCE";
         public const string TapJoy = "EM_TAPJOY";
         public const string UnityAds = "EM_UNITY_ADS";
+        public const string Vungle = "EM_VUNGLE";
         public const string UnityMonetization = "UNITY_MONETIZATION";
 
         public static string[] GetAllSymbols()

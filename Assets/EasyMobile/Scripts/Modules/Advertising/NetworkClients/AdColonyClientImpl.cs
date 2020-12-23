@@ -954,7 +954,7 @@ namespace EasyMobile
 
         private void OnRewardGrantedHandle(string zoneId, bool success, string rewardName, int rewardQuantity)
         {
-            mIsRewardedAdCompleted = true;
+            mIsRewardedAdCompleted = success;
         }
 
         private void OnAudioStartedHandle(InterstitialAd obj)

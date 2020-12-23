@@ -156,8 +156,8 @@ namespace CTJ
                                 default:
                                     break;
                             }
-                            EnemyManager._Instance.IEnumeratorSpawnNpcNPC(true);
-                            EnemyManager._Instance.IEnumeratorSpawnNpc00(true);
+                            //EnemyManager._Instance.IEnumeratorSpawnNpcNPC(true);
+                            //EnemyManager._Instance.IEnumeratorSpawnNpc00(true);
                             SuppliesManager._Instance.IEnumeratorCallSupplies(true);
                             SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
                             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);

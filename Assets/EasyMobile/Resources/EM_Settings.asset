@@ -224,8 +224,45 @@ MonoBehaviour:
         keys: []
         values: []
       mEnableTestMode: 1
+    mVungleAds:
+      mEnable: 0
+      mAppId:
+        mIosId: 
+        mAndroidId: 
+      mDefaultInterstitialAdId:
+        mIosId: 
+        mAndroidId: 
+      mDefaultRewardedAdId:
+        mIosId: 
+        mAndroidId: 
+      mDefaultBannerAdId:
+        mIosId: 
+        mAndroidId: 
+      mCustomInterstitialAdIds:
+        keys: []
+        values: []
+      mCustomRewardedAdIds:
+        keys: []
+        values: []
+      mCustomBannerAdIds:
+        keys: []
+        values: []
+      mUseAdvancedSetting: 0
+      mAdvancedSettings:
+        adOrientation: 6
+        prematureAdClosePopup:
+          alertTitle: Alert!!!
+          alertText: You are about to close this ad. If this is a rewarded ad, you
+            might not receive the reward.
+          closeText: Close
+          continueText: Continue
+        enableAdSound: 1
+        minimumDiskSpaceForInitialization: 51000000
+        minimumDiskSpaceForAds: 50000000
+        disableHardwareId: 0
   mGameServiceSettings:
     mAutoInit: 1
+    mAutoInitAfterUserLogout: 0
     mAutoInitDelay: 0
     mAndroidMaxLoginRequests: 0
     mGpgsDebugLogEnabled: 1
@@ -357,5 +394,5 @@ MonoBehaviour:
   mIsGameServiceModuleEnable: 1
   mIsNotificationModuleEnable: 0
   mIsSharingModuleEnable: 1
-  mActiveModuleIndex: 4
+  mActiveModuleIndex: 8
   mIsSelectingModule: 1

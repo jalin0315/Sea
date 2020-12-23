@@ -2,6 +2,7 @@
  * Fingerprint: keytool -keystore "C:\Unity Project\Project S\user.keystore" -list -v
  * --- ADB 調用 ---
  * adb devices
+ * 指定設備
  * adb -s emulator-5554  forward tcp:34999 localabstract:Unity-com.WolfCub.ProjectS
  * adb forward tcp:34999 localabstract:Unity-com.WolfCub.ProjectS
  * --- 注意事項 ---
@@ -30,4 +31,6 @@
  * X 無敵模式尚未重製。
  * O 復活時會瞬間受傷。
  * X 光影重新開始遊戲時消失。
+ * X 在還沒有初始化廣告前，吃到廣告潛艇沒有作用。
+ * X 優化巡邏路徑點功能。
  * ------

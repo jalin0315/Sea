@@ -39,6 +39,9 @@ namespace EasyMobile.Editor
         public const string UnityAdNameSpace = "UnityEngine.Advertisements";
         public const string UnityAdvertisementClass = "Advertisement";
 
+        //Vungle
+        public const string VungleClassName = "Vungle";
+
         // Unity Monetization
         public const string UnityMonetizationClass = "UnityEngine.Monetization";
 
@@ -82,6 +85,7 @@ namespace EasyMobile.Editor
         public const string IronSourceDownloadURL = "https://developers.ironsrc.com/ironsource-mobile/unity/unity-plugin/#step-1";
         public const string MoPubDownloadURL = "https://github.com/mopub/mopub-unity-sdk/";
         public const string TapJoyDownloadURL = "https://ltv.tapjoy.com/d/sdks";
+        public const string VungleDownloadURL = "https://publisher.vungle.com/sdk/plugins/unity";
 
         // Game Services 3rd party plugins URLs
         public const string GooglePlayGamesDownloadURL = "https://github.com/playgameservices/play-games-plugin-for-unity";
@@ -202,6 +206,16 @@ namespace EasyMobile.Editor
             if (!EM_Settings.Advertising.UnityAds.Enable)
                 return false;
             return EM_EditorUtil.NamespaceExists(UnityAdNameSpace) && EM_EditorUtil.FindClass(UnityAdvertisementClass, UnityAdNameSpace) != null;
+        }
+
+        //Determindes if Vungle plugin is available.
+        /// </summary>
+        /// <returns><c>true</c> if Vungle plugin is available, otherwise <c>false</c>.</returns>
+        public static bool IsVungleAvail()
+        {
+            if (!EM_Settings.Advertising.VungleAds.Enable)
+                return false;
+            return EM_EditorUtil.FindClass(VungleClassName) != null;
         }
 
         /// Determines if Unity Monetization plugin is available.
@@ -341,6 +355,11 @@ namespace EasyMobile.Editor
         public static void DownloadTapJoyPlugin()
         {
             Application.OpenURL(TapJoyDownloadURL);
+        }
+
+        public static void DownloadVunglePlugin()
+        {
+            Application.OpenURL(VungleDownloadURL);
         }
 
         public static void InstallPlayMakerActions(bool interactive)
