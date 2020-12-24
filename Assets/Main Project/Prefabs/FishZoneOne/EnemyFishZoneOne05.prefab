@@ -148,7 +148,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Status: -1
   _SpriteRenderer: {fileID: 7861705014296253948}
-  _Collider2D: {fileID: 2987859106067211070}
+  _Collider2D:
+  - {fileID: 2987859106067211070}
   _ScaleMagnification: 1
   _Speed: 1.5
   _ActivityTime: 0

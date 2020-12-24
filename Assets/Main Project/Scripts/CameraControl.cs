@@ -32,7 +32,7 @@ namespace CTJ
         private void Update()
         {
             if (!GameManager._Instance._InGame) return;
-            if (GameManager._Instance._Result <= GameManager._Instance._MaxMeter) _Camera.orthographicSize = GameManager._Instance._Result * _MaxMeter + 6.5f;
+            if (GameManager._Meter <= GameManager._Instance._MaxMeter) _Camera.orthographicSize = GameManager._Meter * _MaxMeter + 6.5f;
             _UpperBoundary.position = _UpperCenter();
             _LowerBoundary.position = _LowerCenter();
         }

@@ -34,7 +34,7 @@ namespace CTJ
         private Vector3 _Scale;
         [SerializeField] private SpriteRenderer _SpriteRenderer;
         private Color _Color;
-        [SerializeField] private Collider2D _Collider2D;
+        [SerializeField] private List<Collider2D> _Collider2D;
         [HideInInspector] public Queue<GameObject> _Queue_GameObject = new Queue<GameObject>();
         [HideInInspector] public float _ScaleMagnification;
         [HideInInspector] public float _Speed;
@@ -56,6 +56,7 @@ namespace CTJ
         [HideInInspector] public bool _FadeDisappear;
         // --- 回收機制 ---
         public static bool _Recycle;
+        private int _variable_int;
         private Vector3 _variable_vector3;
 
         private void Awake()
@@ -68,7 +69,7 @@ namespace CTJ
         {
             _Color = Color.white;
             _SpriteRenderer.color = _Color;
-            _Collider2D.enabled = true;
+            for (int _i = 0; _i < _Collider2D.Count; _i++) _Collider2D[_i].enabled = true;
         }
 
         private void Update()
@@ -81,6 +82,7 @@ namespace CTJ
 
         public void ScreenChange(Screen _screen)
         {
+            transform.localScale = _Scale * _ScaleMagnification;
             _variable_vector3 = transform.position;
             _Screen = _screen;
             switch (_Screen)
@@ -106,9 +108,16 @@ namespace CTJ
                 case Status.Patrol:
                     {
                         transform.localScale = _Scale * _ScaleMagnification;
+                        _variable_int = Random.Range(0, 2);
+                        switch (_variable_int)
+                        {
+                            case 0:
+                                EnemyManager._Instance.ReRandomWaypoints();
+                                break;
+                        }
                         _WaypointTarget = EnemyManager._Instance._Waypoints[Random.Range(0, EnemyManager._Instance._Waypoints.Count)];
                         _PatrolTime = Random.Range(10.0f, 20.0f);
-                        _PatrolIntervalTime = 5.0f;
+                        _PatrolIntervalTime = 2.5f;
                     }
                     break;
                 case Status.SwimUp:
@@ -182,7 +191,6 @@ namespace CTJ
             }
         }
 
-
         private float _delta(float _value) { return Mathf.DeltaAngle(0, _value); }
         private void UpdateStatus()
         {
@@ -209,7 +217,11 @@ namespace CTJ
                                 _PatrolIntervalTime = 5.0f;
                             }
                         }
-                        else if (_PatrolTime < 0.0f) transform.Translate(Vector2.right * TimeSystem._FixedDeltaTime() * (_Speed * 2.0f), Space.Self);
+                        else if (_PatrolTime < 0.0f)
+                        {
+                            _FadeDisappear = true;
+                            transform.Translate(Vector2.right * TimeSystem._FixedDeltaTime() * (_Speed * 2.0f), Space.Self);
+                        }
                         if (_delta(transform.eulerAngles.z) > 90.0f || _delta(transform.eulerAngles.z) < -90.0f)
                         {
                             _variable_vector3.x = transform.localScale.x;
@@ -305,11 +317,15 @@ namespace CTJ
                 _ActivityTime -= TimeSystem._DeltaTime();
                 if (_ActivityTime <= 0.0f)
                 {
-                    if (!_disable_once) { _Collider2D.enabled = false; _disable_once = true; }
-                    _Color.r -= TimeSystem._DeltaTime();
-                    _Color.g -= TimeSystem._DeltaTime();
-                    _Color.b -= TimeSystem._DeltaTime();
-                    _Color.a -= TimeSystem._DeltaTime() * 0.5f;
+                    if (!_disable_once)
+                    {
+                        for (int _i = 0; _i < _Collider2D.Count; _i++) _Collider2D[_i].enabled = false;
+                        _disable_once = true;
+                    }
+                    _Color.r -= TimeSystem._DeltaTime() * 2.0f;
+                    _Color.g -= TimeSystem._DeltaTime() * 2.0f;
+                    _Color.b -= TimeSystem._DeltaTime() * 2.0f;
+                    _Color.a -= TimeSystem._DeltaTime() * 0.8f;
                     _SpriteRenderer.color = _Color;
                     if (_Color.a <= 0.0f) { _disable_once = false; EnemyManager._Instance.RecycleAI(_Queue_GameObject, gameObject); return; }
                 }

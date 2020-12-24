@@ -44,7 +44,7 @@ namespace CTJ
         public void InitializeStart()
         {
             if (_Sprite_Player == null) _Sprite_Player = _SpriteRenderer.sprite;
-            _Slider_MaxHealth.value = 100.0f - (GameManager._Instance._Meter * 0.005f);
+            _Slider_MaxHealth.value = 100.0f - (GameManager._Meter * 0.005f);
             //_Slider_MaxHealth.value = 10.0f;
             _Slider_Health.value = _Slider_MaxHealth.value;
             HealthBarColorChange();

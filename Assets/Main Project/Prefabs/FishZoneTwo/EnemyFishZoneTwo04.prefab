@@ -78,7 +78,6 @@ GameObject:
   - component: {fileID: 2854533323023326394}
   - component: {fileID: 854377774987011343}
   - component: {fileID: 2474757576723895727}
-  - component: {fileID: 1423681689718122665}
   - component: {fileID: 7042756870918798293}
   - component: {fileID: 4335501782922745573}
   m_Layer: 0
@@ -172,27 +171,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!50 &1423681689718122665
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3134276554564493555}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &7042756870918798293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,12 +212,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Status: -1
   _SpriteRenderer: {fileID: 854377774987011343}
+  _Collider2D:
+  - {fileID: 1557644926021774891}
+  - {fileID: 1533168321612095031}
+  - {fileID: 3114553042993482014}
+  - {fileID: 3796481872363583510}
+  - {fileID: 7813725126367669498}
   _ScaleMagnification: 1
   _Speed: 1.5
-  _RotateSpeed: 10
-  _TimeOut: 5
+  _ActivityTime: 0
   _FadeDisappear: 0
-  _FadeDisappear_Time: 0
 --- !u!1 &4631641590560162392
 GameObject:
   m_ObjectHideFlags: 0

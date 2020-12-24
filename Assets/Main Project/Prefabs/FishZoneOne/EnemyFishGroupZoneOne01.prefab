@@ -104,7 +104,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!60 &1513953337972386373
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -150,7 +150,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Status: -1
   _SpriteRenderer: {fileID: 1040026996560712512}
-  _Collider2D: {fileID: 1513953337972386373}
+  _Collider2D:
+  - {fileID: 1513953337972386373}
   _ScaleMagnification: 1
   _Speed: 1.5
   _ActivityTime: 0

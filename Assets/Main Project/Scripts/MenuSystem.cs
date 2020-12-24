@@ -184,8 +184,7 @@ namespace CTJ
         public void OnButtonCheckpoint(float _meter)
         {
             StateChange(Status.Animation);
-            GameManager._Instance._Meter = _meter;
-            GameManager._Instance._Result = Convert.ToInt32(GameManager._Instance._Meter);
+            GameManager._Meter = _meter;
             GameManager._Instance.FixZoneTrigger();
             Timeline._Instance._Idle.Stop();
             Timeline._Instance._Opening.Play();
