@@ -38,7 +38,7 @@ namespace CTJ
 
         private void Update()
         {
-            if (GameManager._Instance._InGame) return;
+            if (GameManager._InGame) return;
             if (MenuSystem._Instance._Status != MenuSystem.Status.Submarine) return;
             if (Input.GetMouseButton(0)) _ScrollPos = _Scrollbar.value;
             else

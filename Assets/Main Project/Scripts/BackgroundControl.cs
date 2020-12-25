@@ -45,7 +45,7 @@ namespace CTJ
 
         private void FixedUpdate()
         {
-            if (GameManager._Instance._InGame)
+            if (GameManager._InGame)
             {
                 for (int _i = 0; _i < _List_Background.Count; _i++)
                 {

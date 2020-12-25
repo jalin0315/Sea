@@ -37,7 +37,7 @@ namespace CTJ
 
         private void Update()
         {
-            if (!GameManager._Instance._InGame) return;
+            if (!GameManager._InGame) return;
             if (!_Enable) return;
             if (_RectTransform.position.y > _UpperLimit)
             {

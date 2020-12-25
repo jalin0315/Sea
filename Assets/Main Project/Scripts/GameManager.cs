@@ -13,13 +13,13 @@ namespace CTJ
         public static GameManager _Instance;
         [SerializeField] private Text _Text_Depth;
         [SerializeField] private Slider _Slider_Depth;
-        [HideInInspector] public bool _InGame;
+        public static bool _InGame;
         [SerializeField] private Joystick _Joystick;
         public bool _Enable_Joystick;
         public bool _Enable_Vibrate;
         public float _Time;
         public static float _Meter;
-        public float _MaxMeter;
+        public static float _MaxMeter;
         [HideInInspector] public int _ResurrectTotal;
         public float _Light_MaxMeter;
         private float _Light_Result;
@@ -33,12 +33,11 @@ namespace CTJ
         [SerializeField] private int[] _ZoneClassPoints;
         [SerializeField] private bool[] _ZonePoints;
 
-        private void Awake() => _Instance = this;
-
-        private void InitializeStart()
+        private void Initialization()
         {
             _InGame = false;
-            _Meter = System.Convert.ToInt32(_Meter);
+            _Meter = 0.0f;
+            _MaxMeter = 11000.0f;
             _ResurrectTotal = 1;
             MenuSystem._Instance._Text_ResurrectTotal.text = "x" + " " + _ResurrectTotal.ToString();
             _Light_Result = 1 / _Light_MaxMeter;
@@ -72,7 +71,12 @@ namespace CTJ
             11000
             };
         }
-        private void Start() => InitializeStart();
+
+        private void Awake()
+        {
+            _Instance = this;
+            Initialization();
+        }
 
         private void Update()
         {
@@ -290,17 +294,20 @@ namespace CTJ
             if (_Meter >= 10900) return;
             if (_Meter >= 8000)
             {
-                EnemyManager._Instance.IEnumeratorSpawnNpc04(true);
+                //EnemyManager._Instance.IEnumeratorSpawnNpc04(true);
+                CameraControl._Instance.Initialization();
                 return;
             }
             if (_Meter >= 6500)
             {
                 EnemyManager._Instance.IEnumeratorSpawnNpcJellyFish(true);
+                CameraControl._Instance.Initialization();
                 return;
             }
             if (_Meter >= 4000)
             {
-                EnemyManager._Instance.IEnumeratorSpawnNpc03(true);
+                //EnemyManager._Instance.IEnumeratorSpawnNpc03(true);
+                CameraControl._Instance.Initialization();
                 return;
             }
         }
@@ -362,14 +369,12 @@ namespace CTJ
         }
         public void ReGameLogic()
         {
-            _Meter = 0.0f;
-            _Meter = 0;
-            InitializeStart();
+            Initialization();
             Player._Instance._Transform.position = Vector2.zero;
             Player._Instance.InitializeStart();
             Player._Instance._Animator.SetBool("Death", false);
             Player._Instance._EnableSkill = false;
-            CameraControl._Instance._Transform_Camera.position = new Vector3(Vector2.zero.x, Vector2.zero.y, CameraControl._Instance._Transform_Camera.position.z);
+            CameraControl._Instance.Initialization();
             EnemyManager._Instance.IEnumeratorStopAllCoroutines();
             EnemyAI._Recycle = true;
             JellyFishEnemyAI._Recycle = true;

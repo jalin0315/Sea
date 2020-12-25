@@ -65,7 +65,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!CTJ.GameManager._Instance._InGame) return;
+        if (!CTJ.GameManager._InGame) return;
         cam = null;
         if (canvas.renderMode == RenderMode.ScreenSpaceCamera)
             cam = canvas.worldCamera;
@@ -133,7 +133,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     public virtual void OnPointerUp(PointerEventData eventData)
     {
-        if (!CTJ.GameManager._Instance._InGame) return;
+        if (!CTJ.GameManager._InGame) return;
         input = Vector2.zero;
         handle.anchoredPosition = Vector2.zero;
     }

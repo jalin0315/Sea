@@ -56,7 +56,7 @@ namespace CTJ
 
         private void Update()
         {
-            if (!GameManager._Instance._InGame) return;
+            if (!GameManager._InGame) return;
             PropTime();
         }
 
@@ -243,7 +243,7 @@ namespace CTJ
 
         public void DeathEnable()
         {
-            GameManager._Instance._InGame = false;
+            GameManager._InGame = false;
             MenuSystem._Instance.StateChange(MenuSystem.Status.Animation);
             MovementSystem._Instance._FloatingJoystick.Initialize();
             _ParticleSystem_Death.Play();
@@ -251,7 +251,7 @@ namespace CTJ
         public void DeathDisable()
         {
             TimeSystem.TimeScale(1.0f);
-            GameManager._Instance._InGame = true;
+            GameManager._InGame = true;
             MenuSystem._Instance.StateChange(MenuSystem.Status.InGame);
             _Slider_Health.value = _Slider_MaxHealth.value;
             HealthBarColorChange();
@@ -273,7 +273,7 @@ namespace CTJ
 
         private void OnTriggerStay2D(Collider2D collision)
         {
-            if (!GameManager._Instance._InGame) return;
+            if (!GameManager._InGame) return;
             if (_Invincible) return;
             if (_Attack) return;
             if (_Invincible_Guise) return;

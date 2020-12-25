@@ -1356,10 +1356,10 @@ namespace CTJ
             IEnumeratorSpawnNpc03(false);
             IEnumeratorSpawnNpc04(false);
             yield return new WaitForSeconds(2.0f);
-            if (GameManager._Meter >= 600.0f && GameManager._Meter < 2000.0f) IEnumeratorSpawnNpc01(true);
-            if (GameManager._Meter >= 2000.0f && GameManager._Meter < 4000.0f) IEnumeratorSpawnNpc02(true);
-            if (GameManager._Meter >= 4000.0f && GameManager._Meter < 8000.0f) IEnumeratorSpawnNpc03(true);
             if (GameManager._Meter >= 8000.0f) IEnumeratorSpawnNpc04(true);
+            else if (GameManager._Meter >= 4000.0f) IEnumeratorSpawnNpc03(true);
+            else if (GameManager._Meter >= 2000.0f) IEnumeratorSpawnNpc02(true);
+            else if (GameManager._Meter >= 600.0f) IEnumeratorSpawnNpc01(true);
         }
         public void IEnumeratorDuration(bool _enable)
         {

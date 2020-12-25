@@ -83,7 +83,7 @@ namespace CTJ
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (!GameManager._Instance._InGame) return;
+            if (!GameManager._InGame) return;
             if (collision.tag == "Player")
             {
                 Player._Instance.Supplies(tag, _Number, _SpriteRenderer.sprite);

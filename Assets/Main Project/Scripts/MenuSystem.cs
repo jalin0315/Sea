@@ -154,7 +154,7 @@ namespace CTJ
         }
         private void Update()
         {
-            if (GameManager._Instance._InGame) return;
+            if (GameManager._InGame) return;
             Settings();
         }
         private void Settings()
@@ -222,7 +222,7 @@ namespace CTJ
         {
             StateChange(Status.Animation);
             TimeSystem.TimeScale(1.0f);
-            GameManager._Instance._InGame = false;
+            GameManager._InGame = false;
             Timeline._Instance._ReturnMainMenu.Play();
         }
         private void OnButtonRestart()
