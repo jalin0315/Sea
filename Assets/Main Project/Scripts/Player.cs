@@ -41,18 +41,19 @@ namespace CTJ
             _Instance = this;
         }
 
-        public void InitializeStart()
+        public void Initialization()
         {
             if (_Sprite_Player == null) _Sprite_Player = _SpriteRenderer.sprite;
             _Slider_MaxHealth.value = 100.0f - (GameManager._Meter * 0.005f);
             //_Slider_MaxHealth.value = 10.0f;
-            _Slider_Health.value = _Slider_MaxHealth.value;
+            _Slider_Health.maxValue = _Slider_MaxHealth.value;
+            _Slider_Health.value = _Slider_Health.maxValue;
             HealthBarColorChange();
             _Animator.SetBool("Invincible2", false);
             _Image_PropTime.fillAmount = 1.0f;
             _PropTimer = 0.0f;
         }
-        private void Start() => InitializeStart();
+        private void Start() => Initialization();
 
         private void Update()
         {
@@ -268,7 +269,11 @@ namespace CTJ
         {
             if (!_Attack) return;
             if (collision.tag == "Enemy")
-                collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * 100.0f, ForceMode2D.Impulse);
+            {
+                Attack _attack = collision.GetComponent<Attack>();
+                if (_attack == null) return;
+                _attack.AttackEnemy();
+            }
         }
 
         private void OnTriggerStay2D(Collider2D collision)

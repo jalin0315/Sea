@@ -11,7 +11,6 @@ namespace CTJ
     public class GameManager : MonoBehaviour
     {
         public static GameManager _Instance;
-        [SerializeField] private Text _Text_Depth;
         [SerializeField] private Slider _Slider_Depth;
         public static bool _InGame;
         [SerializeField] private Joystick _Joystick;
@@ -20,7 +19,7 @@ namespace CTJ
         public float _Time;
         public static float _Meter;
         public static float _MaxMeter;
-        [HideInInspector] public int _ResurrectTotal;
+        public int _ResurrectTotal;
         public float _Light_MaxMeter;
         private float _Light_Result;
         [SerializeField] private Light _Light_BG;
@@ -32,6 +31,7 @@ namespace CTJ
         [SerializeField] private GameObject _Object_PlayerLight;
         [SerializeField] private int[] _ZoneClassPoints;
         [SerializeField] private bool[] _ZonePoints;
+        private Color _variable_color;
 
         private void Initialization()
         {
@@ -63,6 +63,7 @@ namespace CTJ
             6900,
             7000,
             7100,
+            7900,
             8000,
             8900,
             9000,
@@ -101,22 +102,21 @@ namespace CTJ
 
         private void Diving()
         {
-            if (_Meter > _MaxMeter) return;
-            //_Text_Depth.text = _Meter.ToString("###,###") + " " + "Metres";
+            if (_Meter >= _MaxMeter) return;
+            _Meter += TimeSystem._DeltaTime() * _Time;
             _Slider_Depth.value = _Meter;
-            _Meter += _Time * TimeSystem._DeltaTime();
-            if (_Meter > _Light_MaxMeter) return;
-            float _bg_r = _Color_BG_Original.r - (_Meter * _Color_BG_Original.r * _Light_Result);
-            float _bg_g = _Color_BG_Original.g - (_Meter * _Color_BG_Original.g * _Light_Result);
-            float _bg_b = _Color_BG_Original.b - (_Meter * _Color_BG_Original.b * _Light_Result);
-            _Light_BG.color = new Color(_bg_r, _bg_g, _bg_b, 1.0f);
-            float _lm_00_r = _Color_AmbientLights_00_Original.r - (_Meter * _Color_AmbientLights_00_Original.r * _Light_Result);
-            float _lm_00_g = _Color_AmbientLights_00_Original.g - (_Meter * _Color_AmbientLights_00_Original.g * _Light_Result);
-            float _lm_00_b = _Color_AmbientLights_00_Original.b - (_Meter * _Color_AmbientLights_00_Original.b * _Light_Result);
-            for (int _i = 0; _i < _List_AmbientLights_00.Count; _i++)
-            {
-                _List_AmbientLights_00[_i].color = new Color(_lm_00_r, _lm_00_g, _lm_00_b, 1.0f);
-            }
+            Debug.Log(_Meter);
+            if (_Meter >= _Light_MaxMeter) return;
+            _variable_color.r = _Color_BG_Original.r - (_Meter * _Color_BG_Original.r * _Light_Result);
+            _variable_color.g = _Color_BG_Original.g - (_Meter * _Color_BG_Original.g * _Light_Result);
+            _variable_color.b = _Color_BG_Original.b - (_Meter * _Color_BG_Original.b * _Light_Result);
+            _variable_color.a = 1.0f;
+            _Light_BG.color = _variable_color;
+            _variable_color.r = _Color_AmbientLights_00_Original.r - (_Meter * _Color_AmbientLights_00_Original.r * _Light_Result);
+            _variable_color.g = _Color_AmbientLights_00_Original.g - (_Meter * _Color_AmbientLights_00_Original.g * _Light_Result);
+            _variable_color.b = _Color_AmbientLights_00_Original.b - (_Meter * _Color_AmbientLights_00_Original.b * _Light_Result);
+            _variable_color.a = 1.0f;
+            for (int _i = 0; _i < _List_AmbientLights_00.Count; _i++) _List_AmbientLights_00[_i].color = _variable_color;
         }
 
         public void FixZoneTrigger()
@@ -124,8 +124,7 @@ namespace CTJ
             _ZonePoints = new bool[_ZoneClassPoints.Length];
             for (int _i = 0; _i < _ZoneClassPoints.Length; _i++)
             {
-                if (_Meter > _ZoneClassPoints[_i] && !_ZonePoints[_i])
-                    _ZonePoints[_i] = true;
+                if (_Meter > _ZoneClassPoints[_i] && !_ZonePoints[_i]) _ZonePoints[_i] = true;
             }
         }
         private void ZoneTrigger()
@@ -158,24 +157,24 @@ namespace CTJ
                                 default:
                                     break;
                             }
-                            EnemyManager._Instance.IEnumeratorSpawnNpcNPC(true);
                             EnemyManager._Instance.IEnumeratorSpawnNpc00(true);
+                            EnemyManager._Instance.IEnumeratorSpawnNpcNPC(true);
                             SuppliesManager._Instance.IEnumeratorCallSupplies(true);
                             SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_00);
                             break;
                         case 600:
                             EnemyManager._Instance.IEnumeratorSpawnNpc00(false);
                             EnemyManager._Instance.IEnumeratorSpawnNpc01(true);
                             break;
                         case 900:
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_00);
                             break;
                         case 1000:
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                             break;
                         case 1900:
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_01);
                             break;
                         case 2000:
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
@@ -183,7 +182,7 @@ namespace CTJ
                             EnemyManager._Instance.IEnumeratorSpawnNpc02(true);
                             break;
                         case 2900:
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_01);
                             break;
                         case 3000:
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
@@ -193,19 +192,19 @@ namespace CTJ
                             if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
                             _Object_PlayerLight.SetActive(true);
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
-                            EnemyManager._Instance.IEnumeratorSpawnNpcNPC(true);
                             EnemyManager._Instance.IEnumeratorSpawnNpc02(false);
+                            EnemyManager._Instance.IEnumeratorSpawnNpcNPC(true);
                             SuppliesManager._Instance.IEnumeratorCallSupplies(true);
                             SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
                             break;
                         case 4900:
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_02);
                             break;
                         case 5000:
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                             break;
                         case 5900:
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_02);
                             break;
                         case 6000:
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
@@ -219,16 +218,23 @@ namespace CTJ
                             SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
                             break;
                         case 6900:
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
+                            EnemyManager._Instance.IEnumeratorSpawnNpcJellyFish(false);
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_02);
                             break;
                         case 7000:
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
+                            CameraControl._Instance.StatusChange(CameraControl.Status.Lock);
+                            EnemyManager._Instance.IEnumeratorSpawnNpcHuman(true);
                             break;
                         case 7100:
                             // Command
                             // Enable witch.
                             // 指向攻擊生物比例降低
                             // 定向攻擊生物比例不變
+                            break;
+                        case 7900:
+                            CameraControl._Instance.StatusChange(CameraControl.Status.Free);
+                            EnemyManager._Instance.IEnumeratorSpawnNpcHuman(false);
                             break;
                         case 8000:
                             // 生態域分界
@@ -237,13 +243,11 @@ namespace CTJ
                             if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                             EnemyManager._Instance.IEnumeratorSpawnNpcNPC(true);
-                            EnemyManager._Instance.IEnumeratorSpawnNpc03(false);
-                            EnemyManager._Instance.IEnumeratorSpawnNpcJellyFish(false);
                             SuppliesManager._Instance.IEnumeratorCallSupplies(true);
                             SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
                             break;
                         case 8900:
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_02);
                             break;
                         case 9000:
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
@@ -294,38 +298,36 @@ namespace CTJ
             if (_Meter >= 10900) return;
             if (_Meter >= 8000)
             {
-                //EnemyManager._Instance.IEnumeratorSpawnNpc04(true);
-                CameraControl._Instance.Initialization();
+                EnemyManager._Instance.IEnumeratorSpawnNpc04(true);
                 return;
             }
             if (_Meter >= 6500)
             {
                 EnemyManager._Instance.IEnumeratorSpawnNpcJellyFish(true);
-                CameraControl._Instance.Initialization();
                 return;
             }
             if (_Meter >= 4000)
             {
-                //EnemyManager._Instance.IEnumeratorSpawnNpc03(true);
-                CameraControl._Instance.Initialization();
+                EnemyManager._Instance.IEnumeratorSpawnNpc03(true);
                 return;
             }
         }
         public void Transition()
         {
-            CameraControl._Instance._Camera.orthographicSize = _Meter * (3.5f / _MaxMeter) + 6.5f;
-            float _bg_r = _Color_BG_Original.r - (_Meter * _Color_BG_Original.r * _Light_Result);
-            float _bg_g = _Color_BG_Original.g - (_Meter * _Color_BG_Original.g * _Light_Result);
-            float _bg_b = _Color_BG_Original.b - (_Meter * _Color_BG_Original.b * _Light_Result);
-            _Light_BG.color = new Color(_bg_r, _bg_g, _bg_b, 1.0f);
-            float _lm_00_r = _Color_AmbientLights_00_Original.r - (_Meter * _Color_AmbientLights_00_Original.r * _Light_Result);
-            float _lm_00_g = _Color_AmbientLights_00_Original.g - (_Meter * _Color_AmbientLights_00_Original.g * _Light_Result);
-            float _lm_00_b = _Color_AmbientLights_00_Original.b - (_Meter * _Color_AmbientLights_00_Original.b * _Light_Result);
-            for (int _i = 0; _i < _List_AmbientLights_00.Count; _i++)
-            {
-                _List_AmbientLights_00[_i].color = new Color(_lm_00_r, _lm_00_g, _lm_00_b, 1.0f);
-            }
+            CameraControl._Instance.Initialization();
             EnemyAI._Recycle = true;
+            JellyFishEnemyAI._Recycle = true;
+            HumanEnemyAI._Recycle = true;
+            _variable_color.r = _Color_BG_Original.r - (_Meter * _Color_BG_Original.r * _Light_Result);
+            _variable_color.g = _Color_BG_Original.g - (_Meter * _Color_BG_Original.g * _Light_Result);
+            _variable_color.b = _Color_BG_Original.b - (_Meter * _Color_BG_Original.b * _Light_Result);
+            _variable_color.a = 1.0f;
+            _Light_BG.color = _variable_color;
+            _variable_color.r = _Color_AmbientLights_00_Original.r - (_Meter * _Color_AmbientLights_00_Original.r * _Light_Result);
+            _variable_color.g = _Color_AmbientLights_00_Original.g - (_Meter * _Color_AmbientLights_00_Original.g * _Light_Result);
+            _variable_color.b = _Color_AmbientLights_00_Original.b - (_Meter * _Color_AmbientLights_00_Original.b * _Light_Result);
+            _variable_color.a = 1.0f;
+            for (int _i = 0; _i < _List_AmbientLights_00.Count; _i++) _List_AmbientLights_00[_i].color = _variable_color;
             // 生態域分界
             if (_Meter >= 8000)
             {
@@ -371,13 +373,14 @@ namespace CTJ
         {
             Initialization();
             Player._Instance._Transform.position = Vector2.zero;
-            Player._Instance.InitializeStart();
+            Player._Instance.Initialization();
             Player._Instance._Animator.SetBool("Death", false);
             Player._Instance._EnableSkill = false;
             CameraControl._Instance.Initialization();
             EnemyManager._Instance.IEnumeratorStopAllCoroutines();
             EnemyAI._Recycle = true;
             JellyFishEnemyAI._Recycle = true;
+            HumanEnemyAI._Recycle = true;
             NPC._Recycle = true;
             SuppliesManager._Instance.IEnumeratorStopAllCoroutines();
             SuppliesControl._RecoveryAll = true;
@@ -388,249 +391,5 @@ namespace CTJ
         }
 
         private void OnApplicationQuit() => print("OnApplicationQuit()");
-
-        // --------------------
-        float energy;    //meter->米.公尺  energy->能量(放技能用
-        int time, hp;    //time->每秒+幾米
-        GameObject player;
-        bool isStart, isSkill_Time, isSkill_Light, isSkill_Camera;
-        string fileName, LoadData;
-        List<int> save_GameObjectID = new List<int>();
-        List<int> load_GameObjectID = new List<int>();
-        public void Save()
-        {
-            save_GameObjectID.Clear();
-
-            Data data = new Data
-            {
-                gameObject_ID = save_GameObjectID
-            };
-
-            string jsonInfo = JsonUtility.ToJson(data, true);
-
-            File.WriteAllText(Application.persistentDataPath + "/" + fileName, jsonInfo);
-
-            Debug.LogWarning("寫入完成");
-        }
-        public void Load()
-        {
-            if (File.Exists(Application.persistentDataPath + "/" + fileName))
-            {
-                LoadData = File.ReadAllText(Application.persistentDataPath + "/" + fileName);
-
-                Data ID = JsonUtility.FromJson<Data>(LoadData);
-
-                load_GameObjectID = ID.gameObject_ID;
-
-                Debug.LogWarning("讀取完成");
-            }
-        }
-        private void ZoneTrigger_Old()
-        {
-            /*
-            if (_Meter > 11000)
-            {
-                int _index = 21;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                Timeline._Instance._FadeIn.Play();
-                // Command
-                // Game End
-                _ZonePoints[_index] = true;
-            }
-            // 生態域分界
-            if (_Meter > 10900)
-            {
-                int _index = 20;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                Timeline._Instance._FadeIn.Play();
-                // Command
-                // Boss End
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 10000)
-            {
-                int _index = 19;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                // Command
-                // Boss
-                Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 9000)
-            {
-                int _index = 18;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 8900)
-            {
-                int _index = 17;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
-                _ZonePoints[_index] = true;
-            }
-            // 生態域分界
-            if (_Meter > 8000)
-            {
-                int _index = 16;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                // Command
-                // Disable witch.
-                Timeline._Instance._FadeIn.Play();
-                Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
-                EnemyManager._Instance.IEnumeratorSpawnNpc03(false);
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 7100)
-            {
-                int _index = 15;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                // Command
-                // Enable witch.
-                // 指向攻擊生物比例降低
-                // 定向攻擊生物比例不變
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 7000)
-            {
-                int _index = 14;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 6900)
-            {
-                int _index = 13;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 6000)
-            {
-                int _index = 12;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 5900)
-            {
-                int _index = 11;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 5000)
-            {
-                int _index = 10;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 4900)
-            {
-                int _index = 9;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
-                _ZonePoints[_index] = true;
-            }
-            // 生態域分界
-            if (_Meter > 4000)
-            {
-                int _index = 8;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                Timeline._Instance._FadeIn.Play();
-                Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
-                EnemyManager._Instance.IEnumeratorSpawnNpc02(false);
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 3000)
-            {
-                int _index = 7;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 2900)
-            {
-                int _index = 6;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 2000)
-            {
-                int _index = 5;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
-                EnemyManager._Instance.IEnumeratorSpawnNpc01(false);
-                EnemyManager._Instance.IEnumeratorSpawnNpc02(true);
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 1900)
-            {
-                int _index = 4;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 1000)
-            {
-                int _index = 3;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                Player._Instance._Slider_MaxHealth.value -= Player._Instance._MaxHealthLess;
-                StartCoroutine(SuppliesManager._Instance._CallSupplies_Singleton);
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 900)
-            {
-                int _index = 2;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
-                _ZonePoints[_index] = true;
-            }
-
-            if (_Meter > 600)
-            {
-                int _index = 1;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                EnemyManager._Instance.IEnumeratorSpawnNpc00(false);
-                EnemyManager._Instance.IEnumeratorSpawnNpc01(true);
-                _ZonePoints[_index] = true;
-            }
-            if (_Meter > 0)
-            {
-                int _index = 0;
-                if (_ZonePoints.Count - 1 < _index) _ZonePoints.Add(false);
-                if (_ZonePoints[_index]) return;
-                EnemyManager._Instance.IEnumeratorSpawnNpcBackground(true);
-                EnemyManager._Instance.IEnumeratorSpawnNpc00(true);
-                StartCoroutine(SuppliesManager._Instance._CallSuppliesAd_Singleton);
-                BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Background_00_Pool);
-                _ZonePoints[_index] = true;
-            }
-            */
-        }
     }
 }

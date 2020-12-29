@@ -446,6 +446,7 @@ GameObject:
   - component: {fileID: 3110335024159508448}
   - component: {fileID: 3717449308821636182}
   - component: {fileID: 3570680332724817088}
+  - component: {fileID: 3245816777309566420}
   m_Layer: 0
   m_Name: JellyFishEnemy
   m_TagString: Enemy
@@ -558,7 +559,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!70 &3110335024159508448
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -621,7 +622,7 @@ MonoBehaviour:
     m_Center: {x: 0.073830605, y: 0.6793394, z: 0}
     m_Extent: {x: 13.026096, y: 8.901535, z: 0}
   m_UseBatching: 1
-  m_AlwaysUpdate: 1
+  m_AlwaysUpdate: 0
 --- !u!114 &3570680332724817088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -639,6 +640,19 @@ MonoBehaviour:
   _Rigidbody2D: {fileID: 4506138136031739186}
   _Light: {fileID: 477800902}
   _Time: 3
+--- !u!114 &3245816777309566420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3189904373659610180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16241439de1ba047bcffb7c4fa3a3c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Rigidbody2D: {fileID: 4506138136031739186}
 --- !u!1 &3418885102524428162
 GameObject:
   m_ObjectHideFlags: 0

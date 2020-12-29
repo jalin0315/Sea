@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 7070074578752735509}
   m_Layer: 0
   m_Name: NPCZoneTwo00
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -297,7 +297,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956403724c618004b929071ef1fa53b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _EnableSpriteRenderers: 0
   _SpriteRenderer: {fileID: 9079183070643721765}
+  _Array_SpriteRenderer: []
+  _EnableOffect: 0
+  _Offect: 0
 --- !u!1 &7250752479071136736
 GameObject:
   m_ObjectHideFlags: 0

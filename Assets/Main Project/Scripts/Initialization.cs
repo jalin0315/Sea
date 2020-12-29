@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Advertisements;
 
 public class Initialization : MonoBehaviour
 {
@@ -10,7 +9,7 @@ public class Initialization : MonoBehaviour
     private void Awake()
     {
         _Instance = this;
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = -1;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 }

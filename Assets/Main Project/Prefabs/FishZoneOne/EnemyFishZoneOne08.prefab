@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -6790093409494453337}
   - component: {fileID: 7248612514345066755}
   - component: {fileID: 7782373853165367191}
+  - component: {fileID: -5270568126583236485}
   m_Layer: 0
   m_Name: EnemyFishZoneOne08
   m_TagString: Enemy
@@ -98,7 +99,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -122,7 +123,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 23.03, y: 9.220997}
+    oldSize: {x: 23.140392, y: 9.22}
     newSize: {x: 2.43, y: 2.43}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -153,10 +154,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Status: -1
+  _EnableSpriteRenderers: 0
   _SpriteRenderer: {fileID: 7801964139892930430}
+  _Array_SpriteRenderer: []
   _Collider2D:
   - {fileID: 7248612514345066755}
   _ScaleMagnification: 1
   _Speed: 1.5
+  _EnableOffset: 0
+  _Offset: 0
   _ActivityTime: 0
   _FadeDisappear: 0
+--- !u!114 &-5270568126583236485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624057944460187340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16241439de1ba047bcffb7c4fa3a3c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Rigidbody2D: {fileID: -6790093409494453337}

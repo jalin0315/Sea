@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9074014461626770101}
   - component: {fileID: 5768809557668761215}
+  - component: {fileID: 1685778619871797796}
   m_Layer: 0
   m_Name: bone_4
   m_TagString: Enemy
@@ -60,6 +61,19 @@ PolygonCollider2D:
       - {x: 0.11486298, y: -0.97241426}
       - {x: 5.3664517, y: -0.4214328}
       - {x: 8.565367, y: 0.13852131}
+--- !u!114 &1685778619871797796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 202977703755525506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16241439de1ba047bcffb7c4fa3a3c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Rigidbody2D: {fileID: -2401004627603390864}
 --- !u!1 &1144048861721561134
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,6 +115,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3752766133083524119}
   - component: {fileID: 4623079075566439371}
+  - component: {fileID: 824778029120886634}
   m_Layer: 0
   m_Name: bone_5
   m_TagString: Enemy
@@ -156,6 +171,19 @@ PolygonCollider2D:
       - {x: 2.415053, y: -0.72810477}
       - {x: 2.7766464, y: -0.07977827}
       - {x: 2.4169292, y: 0.6566055}
+--- !u!114 &824778029120886634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3073541437261844812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16241439de1ba047bcffb7c4fa3a3c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Rigidbody2D: {fileID: -2401004627603390864}
 --- !u!1 &3134276554564493555
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,11 +195,12 @@ GameObject:
   - component: {fileID: 2854533323023326394}
   - component: {fileID: 854377774987011343}
   - component: {fileID: 1948719742284176519}
+  - component: {fileID: -2401004627603390864}
   - component: {fileID: 6544380458233235397}
   - component: {fileID: 4335501782922745573}
   m_Layer: 0
   m_Name: EnemyFishZoneTwo08
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -260,6 +289,27 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!50 &-2401004627603390864
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3134276554564493555}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!114 &6544380458233235397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,8 +336,8 @@ MonoBehaviour:
   - {fileID: 4180362027453912131}
   - {fileID: 7758859307219504724}
   m_Bounds:
-    m_Center: {x: -0.0000019073486, y: -0.0068883896, z: 0}
-    m_Extent: {x: 19.080004, y: 5.9881144, z: 0}
+    m_Center: {x: -0.0048446655, y: 0.0043754578, z: 0}
+    m_Extent: {x: 19.067482, y: 5.9834785, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
 --- !u!114 &4335501782922745573
@@ -303,7 +353,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Status: -1
+  _EnableSpriteRenderers: 0
   _SpriteRenderer: {fileID: 854377774987011343}
+  _Array_SpriteRenderer: []
   _Collider2D:
   - {fileID: 7414196956788549176}
   - {fileID: 8884809866212655655}
@@ -314,6 +366,8 @@ MonoBehaviour:
   - {fileID: 6015293768602738231}
   _ScaleMagnification: 1
   _Speed: 1.5
+  _EnableOffset: 0
+  _Offset: 0
   _ActivityTime: 0
   _FadeDisappear: 0
 --- !u!1 &3178340080268907375
@@ -356,6 +410,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6974998576907041722}
   - component: {fileID: 1959600811151963028}
+  - component: {fileID: 6603145135427708374}
   m_Layer: 0
   m_Name: bone_8
   m_TagString: Enemy
@@ -408,6 +463,19 @@ PolygonCollider2D:
       - {x: -0.34301344, y: -0.89940727}
       - {x: 1.9519656, y: -0.57154894}
       - {x: 4.112541, y: 0.5135005}
+--- !u!114 &6603145135427708374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3347564376445935971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16241439de1ba047bcffb7c4fa3a3c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Rigidbody2D: {fileID: -2401004627603390864}
 --- !u!1 &4620137109713076234
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,6 +486,7 @@ GameObject:
   m_Component:
   - component: {fileID: 408024181972207323}
   - component: {fileID: 6015293768602738231}
+  - component: {fileID: 6362125645270920090}
   m_Layer: 0
   m_Name: bone_6
   m_TagString: Enemy
@@ -471,6 +540,19 @@ PolygonCollider2D:
       - {x: 3.83081, y: -0.7197329}
       - {x: 5.5141945, y: 0.68789184}
       - {x: 3.2413754, y: 0.9042519}
+--- !u!114 &6362125645270920090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4620137109713076234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16241439de1ba047bcffb7c4fa3a3c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Rigidbody2D: {fileID: -2401004627603390864}
 --- !u!1 &5017043806885862074
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,6 +593,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4180362027453912131}
   - component: {fileID: 1461383472625324035}
+  - component: {fileID: 2302823280438339137}
   m_Layer: 0
   m_Name: bone_10
   m_TagString: Enemy
@@ -563,6 +646,19 @@ PolygonCollider2D:
       - {x: 2.4962285, y: -0.3278563}
       - {x: 5.384496, y: -0.98478556}
       - {x: 5.018126, y: -0.5373438}
+--- !u!114 &2302823280438339137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5143564601640428712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16241439de1ba047bcffb7c4fa3a3c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Rigidbody2D: {fileID: -2401004627603390864}
 --- !u!1 &6496154853189811509
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,6 +699,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8375601506987028659}
   - component: {fileID: 8884809866212655655}
+  - component: {fileID: 6803053284173220943}
   m_Layer: 0
   m_Name: bone_3
   m_TagString: Enemy
@@ -654,6 +751,19 @@ PolygonCollider2D:
       - {x: -1.9146713, y: -1.2298646}
       - {x: 7.2895536, y: -0.97610843}
       - {x: 7.249084, y: 1.0427698}
+--- !u!114 &6803053284173220943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6964767465636162777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16241439de1ba047bcffb7c4fa3a3c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Rigidbody2D: {fileID: -2401004627603390864}
 --- !u!1 &7335602229356670588
 GameObject:
   m_ObjectHideFlags: 0
@@ -664,6 +774,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6013626851383596696}
   - component: {fileID: 7414196956788549176}
+  - component: {fileID: 9053258496658580290}
   m_Layer: 0
   m_Name: bone_1
   m_TagString: Enemy
@@ -719,3 +830,16 @@ PolygonCollider2D:
       - {x: 9.566978, y: -1.4199464}
       - {x: 14.197444, y: -1.014063}
       - {x: 14.201114, y: 1.5835749}
+--- !u!114 &9053258496658580290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7335602229356670588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16241439de1ba047bcffb7c4fa3a3c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Rigidbody2D: {fileID: -2401004627603390864}

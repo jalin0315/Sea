@@ -10,8 +10,12 @@ namespace CTJ
         private Vector3 _Scale;
         private float _ScaleMagnification;
         private Color _Color;
+        [SerializeField] private bool _EnableSpriteRenderers;
         [SerializeField] private SpriteRenderer _SpriteRenderer;
+        [SerializeField] private SpriteRenderer[] _Array_SpriteRenderer;
         private float _Speed;
+        [SerializeField] private bool _EnableOffect;
+        [SerializeField] private float _Offect;
         public static bool _Recycle;
 
         private void Awake()
@@ -33,20 +37,27 @@ namespace CTJ
                 case 0:
                     _ScaleMagnification = 1.0f;
                     _Color.a = 0.8f;
-                    _SpriteRenderer.color = _Color;
+                    if (_EnableSpriteRenderers)
+                        for (int _i = 0; _i < _Array_SpriteRenderer.Length; _i++)
+                            _Array_SpriteRenderer[_i].color = _Color;
+                    else _SpriteRenderer.color = _Color;
                     _Speed = 0.6f;
                     break;
                 case 1:
                     _ScaleMagnification = 0.8f;
                     _Color.a = 0.6f;
-                    _SpriteRenderer.color = _Color;
-                    _Speed = 0.4f;
+                    if (_EnableSpriteRenderers)
+                        for (int _i = 0; _i < _Array_SpriteRenderer.Length; _i++)
+                            _Array_SpriteRenderer[_i].color = _Color;
+                    else _SpriteRenderer.color = _Color; _Speed = 0.4f;
                     break;
                 case 2:
                     _ScaleMagnification = 0.5f;
                     _Color.a = 0.4f;
-                    _SpriteRenderer.color = _Color;
-                    _Speed = 0.2f;
+                    if (_EnableSpriteRenderers)
+                        for (int _i = 0; _i < _Array_SpriteRenderer.Length; _i++)
+                            _Array_SpriteRenderer[_i].color = _Color;
+                    else _SpriteRenderer.color = _Color; _Speed = 0.2f;
                     break;
             }
             _direction = Random.Range(0, 2);
@@ -59,7 +70,8 @@ namespace CTJ
                     _new_position.x = CameraControl._Instance._Origin().x;
                     _new_position.y = Random.Range(CameraControl._Instance._Vertex().y, CameraControl._Instance._Origin().y);
                     transform.position = _new_position;
-                    _new_position.x = _SpriteRenderer.bounds.min.x;
+                    if (_EnableOffect) _new_position.x = _SpriteRenderer.bounds.min.x + -_Offect;
+                    else _new_position.x = _SpriteRenderer.bounds.min.x;
                     transform.position = _new_position;
                     break;
                 // 從右側螢幕外生成
@@ -70,7 +82,8 @@ namespace CTJ
                     _new_position.x = CameraControl._Instance._Vertex().x;
                     _new_position.y = Random.Range(CameraControl._Instance._Vertex().y, CameraControl._Instance._Origin().y);
                     transform.position = _new_position;
-                    _new_position.x = _SpriteRenderer.bounds.max.x;
+                    if (_EnableOffect) _new_position.x = _SpriteRenderer.bounds.max.x + _Offect;
+                    else _new_position.x = _SpriteRenderer.bounds.max.x;
                     transform.position = _new_position;
                     break;
             }
@@ -80,7 +93,10 @@ namespace CTJ
         {
             if (_Recycle) { EnemyManager._Instance.RecycleNPC(_Queue_GameObject, gameObject); return; }
             _Color.a -= TimeSystem._DeltaTime() * 0.05f;
-            _SpriteRenderer.color = _Color;
+            if (_EnableSpriteRenderers)
+                for (int _i = 0; _i < _Array_SpriteRenderer.Length; _i++)
+                    _Array_SpriteRenderer[_i].color = _Color;
+            else _SpriteRenderer.color = _Color;
             if (_Color.a <= 0.0f) { EnemyManager._Instance.RecycleNPC(_Queue_GameObject, gameObject); return; }
         }
 

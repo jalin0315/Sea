@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8702351967451619617}
   - component: {fileID: 5313066706689569992}
   - component: {fileID: 7782373853165367191}
+  - component: {fileID: 6074693510600539415}
   m_Layer: 0
   m_Name: EnemyFishZoneOne10
   m_TagString: Enemy
@@ -98,7 +99,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -151,10 +152,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Status: -1
+  _EnableSpriteRenderers: 0
   _SpriteRenderer: {fileID: 7801964139892930430}
+  _Array_SpriteRenderer: []
   _Collider2D:
   - {fileID: 5313066706689569992}
   _ScaleMagnification: 1
   _Speed: 1.5
+  _EnableOffset: 0
+  _Offset: 0
   _ActivityTime: 0
   _FadeDisappear: 0
+--- !u!114 &6074693510600539415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624057944460187340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16241439de1ba047bcffb7c4fa3a3c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Rigidbody2D: {fileID: 8702351967451619617}

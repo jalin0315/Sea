@@ -167,11 +167,12 @@ GameObject:
   - component: {fileID: 2854533323023326394}
   - component: {fileID: 854377774987011343}
   - component: {fileID: 6955846382416178137}
+  - component: {fileID: -7173242997497476850}
   - component: {fileID: 6701625782641685646}
   - component: {fileID: 4335501782922745573}
   m_Layer: 0
   m_Name: EnemyFishZoneTwo06
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -260,6 +261,27 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!50 &-7173242997497476850
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3134276554564493555}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!114 &6701625782641685646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,8 +312,8 @@ MonoBehaviour:
   - {fileID: 7996652845055671569}
   - {fileID: 4327379535251620391}
   m_Bounds:
-    m_Center: {x: -0.528347, y: 0, z: 0}
-    m_Extent: {x: 19.822182, y: 11.550003, z: 0}
+    m_Center: {x: -0.5581436, y: 0, z: 0}
+    m_Extent: {x: 19.792227, y: 11.550003, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
 --- !u!114 &4335501782922745573
@@ -307,7 +329,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Status: -1
+  _EnableSpriteRenderers: 0
   _SpriteRenderer: {fileID: 854377774987011343}
+  _Array_SpriteRenderer: []
   _Collider2D:
   - {fileID: 4382898995086680547}
   - {fileID: 4684608156976380304}
@@ -316,6 +340,8 @@ MonoBehaviour:
   - {fileID: 4810470080104357756}
   _ScaleMagnification: 1
   _Speed: 1.5
+  _EnableOffset: 0
+  _Offset: 0
   _ActivityTime: 0
   _FadeDisappear: 0
 --- !u!1 &3319812418869314317
@@ -359,6 +385,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6262401799901945409}
   - component: {fileID: 893859142795594495}
+  - component: {fileID: 4528479512390806826}
   m_Layer: 0
   m_Name: bone_8
   m_TagString: Enemy
@@ -433,6 +460,19 @@ PolygonCollider2D:
       - {x: -7.4136767, y: -6.699009}
       - {x: -7.942549, y: -5.7241206}
       - {x: -9.39753, y: -5.6316504}
+--- !u!114 &4528479512390806826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3757167279637405464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16241439de1ba047bcffb7c4fa3a3c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Rigidbody2D: {fileID: -7173242997497476850}
 --- !u!1 &4699621993226395852
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,6 +483,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4327379535251620391}
   - component: {fileID: 4810470080104357756}
+  - component: {fileID: 4263000319658850234}
   m_Layer: 0
   m_Name: bone_15
   m_TagString: Enemy
@@ -496,6 +537,19 @@ PolygonCollider2D:
       - {x: 2.7582035, y: -2.6500072}
       - {x: 6.6374393, y: -2.4120398}
       - {x: 11.358891, y: 0.45307544}
+--- !u!114 &4263000319658850234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4699621993226395852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16241439de1ba047bcffb7c4fa3a3c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Rigidbody2D: {fileID: -7173242997497476850}
 --- !u!1 &5622632405487956094
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,6 +652,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5787993263359946460}
   - component: {fileID: 4684608156976380304}
+  - component: {fileID: 4607066721433431122}
   m_Layer: 0
   m_Name: bone_3
   m_TagString: Enemy
@@ -655,6 +710,19 @@ PolygonCollider2D:
       - {x: 8.201559, y: -3.943441}
       - {x: 9.434915, y: -2.1102624}
       - {x: 9.630596, y: 0.21200323}
+--- !u!114 &4607066721433431122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5839705153958780761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16241439de1ba047bcffb7c4fa3a3c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Rigidbody2D: {fileID: -7173242997497476850}
 --- !u!1 &5880956704798498031
 GameObject:
   m_ObjectHideFlags: 0
@@ -665,6 +733,7 @@ GameObject:
   m_Component:
   - component: {fileID: 367554561606755113}
   - component: {fileID: 1199990029285869704}
+  - component: {fileID: 7529736071148635351}
   m_Layer: 0
   m_Name: bone_6
   m_TagString: Enemy
@@ -716,6 +785,19 @@ PolygonCollider2D:
       - {x: -1.1797769, y: 3.6854606}
       - {x: 9.033493, y: -5.242393}
       - {x: 8.332493, y: 3.0762844}
+--- !u!114 &7529736071148635351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5880956704798498031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16241439de1ba047bcffb7c4fa3a3c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Rigidbody2D: {fileID: -7173242997497476850}
 --- !u!1 &6364717466906754261
 GameObject:
   m_ObjectHideFlags: 0
@@ -757,6 +839,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1070794439292659481}
   - component: {fileID: 4382898995086680547}
+  - component: {fileID: 7346177908036439960}
   m_Layer: 0
   m_Name: bone_1
   m_TagString: Enemy
@@ -820,6 +903,19 @@ PolygonCollider2D:
       - {x: 15.772748, y: -5.574109}
       - {x: 13.626244, y: -2.5406332}
       - {x: 14.039547, y: 3.4652092}
+--- !u!114 &7346177908036439960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7222705278216867444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16241439de1ba047bcffb7c4fa3a3c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Rigidbody2D: {fileID: -7173242997497476850}
 --- !u!1 &8087236199767990936
 GameObject:
   m_ObjectHideFlags: 0

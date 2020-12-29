@@ -7,7 +7,7 @@ namespace CTJ
     public class CameraControl : MonoBehaviour
     {
         public static CameraControl _Instance;
-        private enum Status
+        public enum Status
         {
             Free,
             Lock
@@ -36,11 +36,13 @@ namespace CTJ
 
         public void Initialization()
         {
-            _variable_Vector3.x = Vector2.zero.x;
+            _MaxMeter = 3.5f / GameManager._MaxMeter;
+            _Camera.orthographicSize = GameManager._Meter * _MaxMeter + 6.5f;
+            _variable_Vector3.x = _Target.position.x;
             _variable_Vector3.y = Vector2.zero.y;
             _variable_Vector3.z = _Transform_Camera.position.z;
             _Transform_Camera.position = _variable_Vector3;
-            StatusChange(Status.Lock);
+            StatusChange(Status.Free);
         }
 
         private void Awake()
@@ -50,25 +52,21 @@ namespace CTJ
 
         private void Start()
         {
-            _MaxMeter = 3.5f / GameManager._MaxMeter;
             Initialization();
         }
 
         private void Update()
         {
-            if (!GameManager._InGame) return;
             if (GameManager._Meter <= GameManager._MaxMeter) _Camera.orthographicSize = GameManager._Meter * _MaxMeter + 6.5f;
             StatusUpdate();
-            if (Input.GetKeyDown(KeyCode.T)) StatusChange(Status.Lock) ;
         }
 
         private void FixedUpdate()
         {
-            if (!GameManager._InGame) return;
             StatusFixedUpdate();
         }
 
-        private void StatusChange(Status _status)
+        public void StatusChange(Status _status)
         {
             _Status = _status;
             switch (_Status)
@@ -102,14 +100,6 @@ namespace CTJ
                 case Status.Free:
                     _UpBoundary.position = _UpCenter();
                     _DownBoundary.position = _DownCenter();
-                    _LeftBoundary.position = _LeftCenter();
-                    _RightBoundary.position = _RightCenter();
-                    break;
-                case Status.Lock:
-                    _UpBoundary.position = _UpCenter();
-                    _DownBoundary.position = _DownCenter();
-                    _LeftBoundary.position = _LeftCenter();
-                    _RightBoundary.position = _RightCenter();
                     break;
             }
         }
@@ -119,11 +109,9 @@ namespace CTJ
             {
                 case Status.Free:
                     _variable_Vector3.x = _Target.position.x;
-                    _variable_Vector3.y = transform.position.y;
+                    _variable_Vector3.y = Vector2.zero.y;
                     _variable_Vector3.z = transform.position.z;
                     transform.position = Vector3.MoveTowards(transform.position, _variable_Vector3, 1.0f);
-                    break;
-                case Status.Lock:
                     break;
             }
         }

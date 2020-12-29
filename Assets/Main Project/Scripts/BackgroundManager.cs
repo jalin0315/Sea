@@ -11,39 +11,52 @@ namespace CTJ
         [SerializeField] private Transform _ParentTarget;
         public Transform _Transform_Camera;
         public float _UpperLimit;
-        [SerializeField] private GameObject _Prefab;
-        [SerializeField] private int _InitailSize = 5;
-        public Queue<GameObject> _Background_00_Pool = new Queue<GameObject>();
+        [SerializeField] private GameObject _Prefab_00;
+        [SerializeField] private GameObject _Prefab_01;
+        [SerializeField] private GameObject _Prefab_02;
+        [SerializeField] private int _InitailSize;
+        public Queue<GameObject> _Pool_Background_00 = new Queue<GameObject>();
+        public Queue<GameObject> _Pool_Background_01 = new Queue<GameObject>();
+        public Queue<GameObject> _Pool_Background_02 = new Queue<GameObject>();
 
         private void Start()
         {
             _Instance = this;
-            for (int _cnt = 0; _cnt < _InitailSize; _cnt++)
+            for (int _i = 0; _i < _InitailSize; _i++)
             {
-                GameObject _go = Instantiate(_Prefab, _ParentTarget);
-                _Background_00_Pool.Enqueue(_go);
+                GameObject _go = Instantiate(_Prefab_00, _ParentTarget);
+                _Pool_Background_00.Enqueue(_go);
+                _go.SetActive(false);
+            }
+            for (int _i = 0; _i < _InitailSize; _i++)
+            {
+                GameObject _go = Instantiate(_Prefab_01, _ParentTarget);
+                _Pool_Background_01.Enqueue(_go);
+                _go.SetActive(false);
+            }
+            for (int _i = 0; _i < _InitailSize; _i++)
+            {
+                GameObject _go = Instantiate(_Prefab_02, _ParentTarget);
+                _Pool_Background_02.Enqueue(_go);
                 _go.SetActive(false);
             }
         }
 
-        public void ReUse(Queue<GameObject> _pool)
+        public void ReUse(Queue<GameObject> _queue_gameobject)
         {
+            if (_queue_gameobject.Count <= 0) { Debug.LogWarningFormat("Queue index out of range. Count: {0}.", _queue_gameobject.Count); return; }
             BackgroundControl._RecoveryAll = false;
-            if (_pool.Count > 0)
-            {
-                GameObject _reuse = _pool.Dequeue();
-                BackgroundControl _b_c = _reuse.GetComponent<BackgroundControl>();
-                _b_c._Pool = _pool;
-                _b_c.ReInitialize();
-                _reuse.SetActive(true);
-            }
-            else Debug.LogErrorFormat("{0} is out of range!");
+            GameObject _reuse = _queue_gameobject.Dequeue();
+            BackgroundControl _b_c = _reuse.GetComponent<BackgroundControl>();
+            _b_c._Queue_GameObject = _queue_gameobject;
+            _b_c.ReInitialize();
+            _reuse.SetActive(true);
         }
 
-        public void Recovery(Queue<GameObject> _pool, GameObject _recovery)
+        public void Recovery(Queue<GameObject> _queue_gameobject, GameObject _go)
         {
-            _pool.Enqueue(_recovery);
-            _recovery.SetActive(false);
+            _queue_gameobject.Enqueue(_go);
+            _go.SetActive(false);
         }
 
         private void OnDrawGizmosSelected()

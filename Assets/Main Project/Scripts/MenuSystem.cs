@@ -338,7 +338,9 @@ namespace CTJ
 
         public void Test()
         {
-            MediationTestSuite.Show();
+            //MediationTestSuite.Show();
+            Player._Instance._Slider_Health.maxValue = 9999;
+            Player._Instance._Slider_Health.value = 9999;
         }
 
         public void StateChange(Status _status)

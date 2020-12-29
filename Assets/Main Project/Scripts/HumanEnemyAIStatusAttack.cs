@@ -11,7 +11,7 @@ namespace CTJ
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             if (_HumanEnemyAI == null) _HumanEnemyAI = animator.gameObject.GetComponent<HumanEnemyAI>();
-            _HumanEnemyAI._Status = HumanEnemyAI.Status.Attack;
+            _HumanEnemyAI.StatusChange(HumanEnemyAI.Status.Attack);
         }
 
         // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state

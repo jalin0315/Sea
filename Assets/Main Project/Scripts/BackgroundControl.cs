@@ -16,7 +16,7 @@ namespace CTJ
         [SerializeField] private List<float> _List_Speed;
         [SerializeField] private List<float> _List_SpeedRate;
         [SerializeField] private int _RecoveryLastLayer;
-        public Queue<GameObject> _Pool = new Queue<GameObject>();
+        public Queue<GameObject> _Queue_GameObject = new Queue<GameObject>();
         public static bool _RecoveryAll;
 
         private void Awake()
@@ -27,6 +27,7 @@ namespace CTJ
                 Initialize(_i);
             }
         }
+
         private void Start()
         {
             for (int _i = 0; _i < _List_Background.Count; _i++)
@@ -39,8 +40,7 @@ namespace CTJ
 
         private void Update()
         {
-            if (_RecoveryAll)
-                BackgroundManager._Instance.Recovery(_Pool, gameObject);
+            if (_RecoveryAll) BackgroundManager._Instance.Recovery(_Queue_GameObject, gameObject);
         }
 
         private void FixedUpdate()
@@ -77,7 +77,7 @@ namespace CTJ
             if (_List_Background[_i] == null) return;
             if (_List_Background[_i].position.y > BackgroundManager._Instance._UpperLimit)
             {
-                if (_i == _RecoveryLastLayer) BackgroundManager._Instance.Recovery(_Pool, gameObject);
+                if (_i == _RecoveryLastLayer) BackgroundManager._Instance.Recovery(_Queue_GameObject, gameObject);
                 return;
             }
             Vector2 _i_temp = BackgroundManager._Instance._Transform_Camera.position * (1.0f - _List_ParallaxEffect[_i]);

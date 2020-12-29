@@ -16,29 +16,28 @@ namespace CTJ
         [SerializeField] private int _NumberOfWaypoints;
         [HideInInspector] public List<GameObject> _Waypoints = new List<GameObject>();
         [SerializeField] private int _Quantity_Size;
-        [SerializeField] private List<GameObject> _List_Prefab_Fish = new List<GameObject>();
-        [SerializeField] private List<GameObject> _List_Prefab_SingleFish = new List<GameObject>();
-        [SerializeField] private List<GameObject> _List_Prefab_TargetFish = new List<GameObject>();
-        [SerializeField] private List<GameObject> _List_Prefab_ObstacleFishZoneTwo = new List<GameObject>();
-        [SerializeField] private List<GameObject> _List_Prefab_TargetFishZoneTwo = new List<GameObject>();
-        [SerializeField] private List<GameObject> _List_Prefab_JellyFish = new List<GameObject>();
-        [SerializeField] private List<GameObject> _List_Prefab_NPC_ZoneOne = new List<GameObject>();
-        [SerializeField] private List<GameObject> _List_Prefab_NPC_ZoneTwo = new List<GameObject>();
+        [SerializeField] private List<GameObject> _List_Prefab_Fish;
+        [SerializeField] private List<GameObject> _List_Prefab_SingleFish;
+        [SerializeField] private List<GameObject> _List_Prefab_TargetFish;
+        [SerializeField] private List<GameObject> _List_Prefab_ObstacleFishZoneTwo;
+        [SerializeField] private List<GameObject> _List_Prefab_TargetFishZoneTwo;
+        [SerializeField] private List<GameObject> _List_Prefab_JellyFish;
+        [SerializeField] private List<GameObject> _List_Prefab_Human;
+        [SerializeField] private List<GameObject> _List_Prefab_NPC_ZoneOne;
+        [SerializeField] private List<GameObject> _List_Prefab_NPC_ZoneTwo;
         private Queue<GameObject> _Pool_Fish = new Queue<GameObject>();
         private Queue<GameObject> _Pool_SingleFish = new Queue<GameObject>();
         private Queue<GameObject> _Pool_TargetFish = new Queue<GameObject>();
         private Queue<GameObject> _Pool_ObstacleFish_ZoneTwo = new Queue<GameObject>();
         private Queue<GameObject> _Pool_TargetFish_ZoneTwo = new Queue<GameObject>();
-        private Queue<GameObject> _JellyFish_Pool = new Queue<GameObject>();
+        private Queue<GameObject> _Pool_JellyFish = new Queue<GameObject>();
+        private Queue<GameObject> _Pool_Human = new Queue<GameObject>();
         private Queue<GameObject> _Pool_NPC_ZoneOne = new Queue<GameObject>();
         private Queue<GameObject> _Pool_NPC_ZoneTwo = new Queue<GameObject>();
         private int _CurrentCount;
         private int _CurrentCount_NPC;
         private int _MaxCount;
         private int _MaxCount_NPC;
-        [SerializeField] private float _SpawnOffset;
-        [SerializeField] private float _SpawnOffsetMedium;
-        [SerializeField] private float _SpawnOffsetLarge;
 
         private void Awake()
         {
@@ -124,7 +123,7 @@ namespace CTJ
                 for (int _x = 0; _x < _List_Prefab_JellyFish.Count; _x++)
                 {
                     GameObject _go = Instantiate(_List_Prefab_JellyFish[_x], Vector2.zero, Quaternion.identity, transform);
-                    _JellyFish_Pool.Enqueue(_go);
+                    _Pool_JellyFish.Enqueue(_go);
                     _go.SetActive(false);
                 }
                 for (int _x = 0; _x < _List_Prefab_NPC_ZoneOne.Count;)
@@ -158,19 +157,17 @@ namespace CTJ
                         _t.Clear();
                 }
             }
+            for (int _x = 0; _x < _List_Prefab_Human.Count; _x++)
+            {
+                GameObject _go = Instantiate(_List_Prefab_Human[_x], Vector2.zero, Quaternion.identity, transform);
+                _Pool_Human.Enqueue(_go);
+                _go.SetActive(false);
+            }
         }
 
         private void Start()
         {
             RandomWaypointsInitialize();
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.U))
-            {
-                IEnumeratorSpawnNpc04(true);
-            }
         }
 
         private void ReUseAI(Queue<GameObject> _queue_gameobject, EnemyAI.Screen _screen, EnemyAI.Status _status, Vector2 _position, float _scale_magnification, float _speed, float _activity_time, bool _fade_disappear)
@@ -213,6 +210,20 @@ namespace CTJ
             _enemy_ai.StateChange(_status);
             _CurrentCount++;
         }
+        private void ReUseJellyFish()
+        {
+            if (_Pool_JellyFish.Count <= 0) { Debug.LogWarningFormat("Queue index out of range. Count: {0}.", _Pool_JellyFish.Count); return; }
+            JellyFishEnemyAI._Recycle = false;
+            GameObject _go = _Pool_JellyFish.Dequeue();
+            _go.SetActive(true);
+        }
+        private void ReUseHuman()
+        {
+            if (_Pool_Human.Count <= 0) { Debug.LogWarningFormat("Queue index out of range. Count: {0}.", _Pool_Human.Count); return; }
+            HumanEnemyAI._Recycle = false;
+            GameObject _go = _Pool_Human.Dequeue();
+            _go.SetActive(true);
+        }
         private void ReUseNPC(Queue<GameObject> _queue_gameobject)
         {
             if (_queue_gameobject.Count <= 0) { Debug.LogWarningFormat("Queue index out of range. Count: {1}.", _queue_gameobject.Count); return; }
@@ -228,6 +239,16 @@ namespace CTJ
             _queue_gameobject.Enqueue(_go);
             _go.SetActive(false);
             _CurrentCount--;
+        }
+        public void RecycleJellyFish(GameObject _go)
+        {
+            _Pool_JellyFish.Enqueue(_go);
+            _go.SetActive(false);
+        }
+        public void RecycleHuman(GameObject _go)
+        {
+            _Pool_Human.Enqueue(_go);
+            _go.SetActive(false);
         }
         public void RecycleNPC(Queue<GameObject> _queue_gameobject, GameObject _go)
         {
@@ -254,356 +275,6 @@ namespace CTJ
                 _random.x = Random.Range(_Origin().x, _Vertex().x);
                 _random.y = Random.Range(_Origin().y, _Vertex().y);
                 _Waypoints[_i].transform.position = _random;
-            }
-        }
-
-        private void ReUse(Queue<GameObject> _queue, EnemyAI.Status _status, Vector3 _position, Quaternion _rotation, float _speed, float _time_out, bool _disappear_status)
-        {
-            EnemyAI._Recycle = false;
-            if (_queue.Count > 0)
-            {
-                GameObject _go = _queue.Dequeue();
-                _go.SetActive(true);
-                _go.transform.position = _position;
-                _go.transform.rotation = _rotation;
-                EnemyAI _enemy_ai = _go.GetComponent<EnemyAI>();
-                _enemy_ai._Queue_GameObject = _queue;
-                _enemy_ai._Speed = _speed;
-                //_enemy_ai._TimeOut = _time_out;
-                _enemy_ai._FadeDisappear = _disappear_status;
-                if (_queue == _Pool_TargetFish_ZoneTwo)
-                {
-                    //_enemy_ai._SpriteRenderer.color = Color.white;
-                    //_enemy_ai._FadeDisappear_Time = 0.1f;
-                }
-                if (_queue == _Pool_ObstacleFish_ZoneTwo)
-                {
-                    _enemy_ai._ScaleMagnification = 1.5f;
-                }
-                if (_queue == _Pool_NPC_ZoneOne)
-                {
-                    float _alpha = Random.Range(0.1f, 0.8f);
-                    if (_alpha < 0.3f) _enemy_ai._ScaleMagnification = 0.2f;
-                    else if (_alpha < 0.55f) _enemy_ai._ScaleMagnification = 0.6f;
-                    else if (_alpha < 0.8f) _enemy_ai._ScaleMagnification = 1.0f;
-                    //_enemy_ai._SpriteRenderer.color = new Color(Color.black.r, Color.black.g, Color.black.b, _alpha);
-                    //_enemy_ai._FadeDisappear_Time = 0.025f;
-                    //_CurrentCount_BackgroundFish++;
-                }
-                if (_queue == _Pool_NPC_ZoneTwo)
-                {
-                    float _alpha = Random.Range(0.1f, 0.8f);
-                    if (_alpha < 0.3f) _enemy_ai._ScaleMagnification = 0.8f;
-                    else if (_alpha < 0.55f) _enemy_ai._ScaleMagnification = 0.9f;
-                    else if (_alpha < 0.8f) _enemy_ai._ScaleMagnification = 1.0f;
-                    //_enemy_ai._SpriteRenderer.color = new Color(Color.black.r, Color.black.g, Color.black.b, _alpha);
-                    //_enemy_ai._FadeDisappear_Time = 0.025f;
-                    //_CurrentCount_BackgroundFish++;
-                }
-                if (_queue != _Pool_NPC_ZoneOne && _queue != _Pool_NPC_ZoneTwo)
-                {
-                    if (GameManager._Meter >= 6000.0f) { _enemy_ai._ScaleMagnification = 2.0f; }
-                    else if (GameManager._Meter >= 4000.0f) { _enemy_ai._ScaleMagnification = 1.0f; }
-                    else if (GameManager._Meter >= 2000.0f) { _enemy_ai._ScaleMagnification = 2.0f; }
-                    else if (GameManager._Meter >= 1000.0f) { _enemy_ai._ScaleMagnification = 1.5f; }
-                    else if (GameManager._Meter >= 0.0f) { _enemy_ai._ScaleMagnification = 1.0f; }
-                    _CurrentCount++;
-                }
-                _enemy_ai.StateChange(_status);
-            }
-        }
-        // 螢幕外倒數消失
-        private void ReUse(Queue<GameObject> _queue, EnemyAI.Status _status, Vector3 _position, float _speed, float _time_out)
-        {
-            EnemyAI._Recycle = false;
-            if (_queue.Count <= 0) { Debug.LogWarningFormat("{0} pool count: {1}", nameof(_queue), _queue.Count); return; }
-            GameObject _go = _queue.Dequeue();
-            _go.SetActive(true);
-            _go.transform.position = _position;
-            EnemyAI _enemy_ai = _go.GetComponent<EnemyAI>();
-            _enemy_ai._Queue_GameObject = _queue;
-            _enemy_ai._ScaleMagnification = 1.0f;
-            _enemy_ai._Speed = _speed;
-            //_enemy_ai._TimeOut = _time_out;
-            _enemy_ai._FadeDisappear = false;
-            //_enemy_ai._SpriteRenderer.color = Color.white;
-        }
-        // 逐漸消失
-        private void ReUse(Queue<GameObject> _queue, EnemyAI.Status _status, Vector3 _position, float _speed, bool _enable_disappear, float _disappear_time)
-        {
-            EnemyAI._Recycle = false;
-            if (_queue.Count <= 0) { Debug.LogWarningFormat("{0} pool count: {1}", nameof(_queue), _queue.Count); return; }
-        }
-        public void Recovery(Queue<GameObject> _queue, GameObject _go)
-        {
-            _queue.Enqueue(_go);
-            _go.SetActive(false);
-            _CurrentCount--;
-        }
-        private void ReUseJellyFish()
-        {
-            if (_JellyFish_Pool.Count <= 0) { Debug.LogWarningFormat("{0} current count: {1}.", nameof(_JellyFish_Pool), _JellyFish_Pool.Count); return; }
-            JellyFishEnemyAI._Recycle = false;
-            GameObject _go = _JellyFish_Pool.Dequeue();
-            _go.SetActive(true);
-        }
-        public void RecycleJellyFish(GameObject _go)
-        {
-            _JellyFish_Pool.Enqueue(_go);
-            _go.SetActive(false);
-        }
-
-        /*
-        public IEnumerator SpawnNpc(Queue<GameObject> _pool, bool _random_status, EnemyType _enemy_type, bool _loop, float _loop_time, int _count, float _time)
-        {
-            EnemyAI._RecoveryAll = false;
-            _BreakSpawnNpcLoop = false;
-            while (true)
-            {
-                if (_BreakSpawnNpcLoop) break;
-                yield return new WaitForSeconds(Random.Range(0.0f, _loop_time));
-                if (_CurrentCount >= _MaxCount && _MaxCount != 0) continue;
-                if (_pool.Count <= 0) continue;
-                if (_random_status) _EnemyType = (EnemyType)Random.Range(0, 6);
-                else _EnemyType = _enemy_type;
-                float _speed = 1.5f;
-                if (_EnemyType == EnemyType.Null) yield break;
-                if (_EnemyType == EnemyType.PatrolFish)
-                {
-                    for (int _i = 0; _i < _count; _i++)
-                    {
-                        yield return new WaitForSeconds(_time);
-                        Vector2 _origin = _Camera.ScreenToWorldPoint(Vector2.zero);
-                        Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
-                        int _index = Random.Range(1, 9);
-                        switch (_index)
-                        {
-                            case 1:
-                                ReUse(_pool, EnemyAI.Status.Patrol, new Vector2(_origin.x + -_SpawnOffset, _origin.y + -_SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            case 2:
-                                ReUse(_pool, EnemyAI.Status.Patrol, new Vector2(_vertex.x + _SpawnOffset, _vertex.y + _SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            case 3:
-                                ReUse(_pool, EnemyAI.Status.Patrol, new Vector2(((_origin.x + _vertex.x) / 2), _vertex.y + _SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            case 4:
-                                ReUse(_pool, EnemyAI.Status.Patrol, new Vector2((_origin.x + _vertex.x) / 2, _origin.y + -_SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            case 5:
-                                ReUse(_pool, EnemyAI.Status.Patrol, new Vector2(_origin.x + -_SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed);
-                                break;
-                            case 6:
-                                ReUse(_pool, EnemyAI.Status.Patrol, new Vector2(_vertex.x + _SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed);
-                                break;
-                            case 7:
-                                ReUse(_pool, EnemyAI.Status.Patrol, new Vector2(_origin.x + -_SpawnOffset, _vertex.y + _SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            case 8:
-                                ReUse(_pool, EnemyAI.Status.Patrol, new Vector2(_vertex.x + _SpawnOffset, _origin.y + -_SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    if (!_loop) break;
-                    else continue;
-                }
-                if (_EnemyType == EnemyType.SwimUpFish)
-                {
-                    for (int _i = 0; _i < _count; _i++)
-                    {
-                        yield return new WaitForSeconds(_time);
-                        Vector2 _origin = _Camera.ScreenToWorldPoint(Vector2.zero);
-                        Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
-                        ReUse(_pool, EnemyAI.Status.SwimUp, new Vector2((_origin.x + _vertex.x) / 2, _origin.y + -_SpawnOffset), Quaternion.identity, _speed);
-                    }
-                    if (!_loop) break;
-                    else continue;
-                }
-                if (_EnemyType == EnemyType.SwimDownFish)
-                {
-                    for (int _i = 0; _i < _count; _i++)
-                    {
-                        yield return new WaitForSeconds(_time);
-                        Vector2 _origin = _Camera.ScreenToWorldPoint(Vector2.zero);
-                        Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
-                        ReUse(_pool, EnemyAI.Status.SwimDown, new Vector2(((_origin.x + _vertex.x) / 2), _vertex.y + _SpawnOffset), Quaternion.identity, _speed);
-                    }
-                    if (!_loop) break;
-                    else continue;
-                }
-                if (_EnemyType == EnemyType.SwimLeftFish)
-                {
-                    for (int _i = 0; _i < _count; _i++)
-                    {
-                        yield return new WaitForSeconds(_time);
-                        Vector2 _origin = _Camera.ScreenToWorldPoint(Vector2.zero);
-                        Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
-                        ReUse(_pool, EnemyAI.Status.SwimLeft, new Vector2(_vertex.x + _SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed);
-                    }
-                    if (!_loop) break;
-                    else continue;
-                }
-                if (_EnemyType == EnemyType.SwimRightFish)
-                {
-                    for (int _i = 0; _i < _count; _i++)
-                    {
-                        yield return new WaitForSeconds(_time);
-                        Vector2 _origin = _Camera.ScreenToWorldPoint(Vector2.zero);
-                        Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
-                        ReUse(_pool, EnemyAI.Status.SwimRight, new Vector2(_origin.x + -_SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed);
-                    }
-                    if (!_loop) break;
-                    else continue;
-                }
-                if (_EnemyType == EnemyType.SwimLeftStyleFish)
-                {
-                    for (int _i = 0; _i < _count; _i++)
-                    {
-                        yield return new WaitForSeconds(_time);
-                        Vector2 _origin = _Camera.ScreenToWorldPoint(Vector2.zero);
-                        Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
-                        ReUse(_pool, EnemyAI.Status.SwimLeftStyle, new Vector2(_origin.x + -_SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed);
-                    }
-                    if (!_loop) break;
-                    else continue;
-                }
-                if (_EnemyType == EnemyType.SwimRightStyleFish)
-                {
-                    for (int _i = 0; _i < _count; _i++)
-                    {
-                        yield return new WaitForSeconds(_time);
-                        Vector2 _origin = _Camera.ScreenToWorldPoint(Vector2.zero);
-                        Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
-                        ReUse(_pool, EnemyAI.Status.SwimRightStyle, new Vector2(_vertex.x + _SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed);
-                    }
-                    if (!_loop) break;
-                    else continue;
-                }
-                if (_EnemyType == EnemyType.TargetFish)
-                {
-                    for (int _i = 0; _i < _count; _i++)
-                    {
-                        yield return new WaitForSeconds(_time);
-                        Vector2 _origin = _Camera.ScreenToWorldPoint(Vector2.zero);
-                        Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
-                        int _index = Random.Range(1, 9);
-                        switch (_index)
-                        {
-                            case 1:
-                                ReUse(_pool, EnemyAI.Status.Target, new Vector2(_origin.x + -_SpawnOffset, _origin.y + -_SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            case 2:
-                                ReUse(_pool, EnemyAI.Status.Target, new Vector2(_vertex.x + _SpawnOffset, _vertex.y + _SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            case 3:
-                                ReUse(_pool, EnemyAI.Status.Target, new Vector2(Random.Range(_origin.x, _vertex.x), _vertex.y + _SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            case 4:
-                                ReUse(_pool, EnemyAI.Status.Target, new Vector2(Random.Range(_origin.x, _vertex.x), _origin.y + -_SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            case 5:
-                                ReUse(_pool, EnemyAI.Status.Target, new Vector2(_origin.x + -_SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed);
-                                break;
-                            case 6:
-                                ReUse(_pool, EnemyAI.Status.Target, new Vector2(_vertex.x + _SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed);
-                                break;
-                            case 7:
-                                ReUse(_pool, EnemyAI.Status.Target, new Vector2(_origin.x + -_SpawnOffset, _vertex.y + _SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            case 8:
-                                ReUse(_pool, EnemyAI.Status.Target, new Vector2(_vertex.x + _SpawnOffset, _origin.y + -_SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    if (!_loop) break;
-                    else continue;
-                }
-                if (_EnemyType == EnemyType.TargetLockFish)
-                {
-                    for (int _i = 0; _i < _count; _i++)
-                    {
-                        yield return new WaitForSeconds(_time);
-                        Vector2 _origin = _Camera.ScreenToWorldPoint(Vector2.zero);
-                        Vector2 _vertex = _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight));
-                        int _index = Random.Range(1, 9);
-                        switch (_index)
-                        {
-                            case 1:
-                                ReUse(_pool, EnemyAI.Status.TargetLock, new Vector2(_origin.x + -_SpawnOffset, _origin.y + -_SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            case 2:
-                                ReUse(_pool, EnemyAI.Status.TargetLock, new Vector2(_vertex.x + _SpawnOffset, _vertex.y + _SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            case 3:
-                                ReUse(_pool, EnemyAI.Status.Target, new Vector2(Random.Range(_origin.x, _vertex.x), _vertex.y + _SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            case 4:
-                                ReUse(_pool, EnemyAI.Status.Target, new Vector2(Random.Range(_origin.x, _vertex.x), _origin.y + -_SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            case 5:
-                                ReUse(_pool, EnemyAI.Status.Target, new Vector2(_origin.x + -_SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed);
-                                break;
-                            case 6:
-                                ReUse(_pool, EnemyAI.Status.Target, new Vector2(_vertex.x + _SpawnOffset, Random.Range(_origin.y, _vertex.y)), Quaternion.identity, _speed);
-                                break;
-                            case 7:
-                                ReUse(_pool, EnemyAI.Status.TargetLock, new Vector2(_origin.x + -_SpawnOffset, _vertex.y + _SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            case 8:
-                                ReUse(_pool, EnemyAI.Status.TargetLock, new Vector2(_vertex.x + _SpawnOffset, _origin.y + -_SpawnOffset), Quaternion.identity, _speed);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    if (!_loop) break;
-                    else continue;
-                }
-            }
-        }
-        */
-
-        private IEnumerator _SpawnNpc_NPC_Singleton;
-        private IEnumerator _SpawnNpc_Logic_NPC()
-        {
-            float _interval;
-            while (true)
-            {
-                yield return new WaitForEndOfFrame();
-                _interval = Random.Range(1.0f, 2.0f);
-                if (GameManager._Meter >= 4000.0f)
-                {
-                    _MaxCount_NPC = 3;
-                    ReUseNPC(_Pool_NPC_ZoneTwo);
-                    yield return new WaitForSeconds(_interval);
-                    continue;
-                }
-                if (GameManager._Meter >= 0.0f)
-                {
-                    _MaxCount_NPC = 10;
-                    ReUseNPC(_Pool_NPC_ZoneOne);
-                    yield return new WaitForSeconds(_interval);
-                    continue;
-                }
-            }
-        }
-        public void IEnumeratorSpawnNpcNPC(bool _enable)
-        {
-            if (_enable)
-            {
-                if (_SpawnNpc_NPC_Singleton != null)
-                    StopCoroutine(_SpawnNpc_NPC_Singleton);
-                _SpawnNpc_NPC_Singleton = _SpawnNpc_Logic_NPC();
-                StartCoroutine(_SpawnNpc_NPC_Singleton);
-            }
-            else
-            {
-                if (_SpawnNpc_NPC_Singleton != null)
-                    StartCoroutine(_SpawnNpc_NPC_Singleton);
             }
         }
 
@@ -1343,6 +1014,69 @@ namespace CTJ
             else
             {
                 if (_SpawnNpc_JellyFish_Singleton != null) StopCoroutine(_SpawnNpc_JellyFish_Singleton);
+            }
+        }
+
+        private IEnumerator _SpawnNpc_Human_Singleton;
+        private IEnumerator _SpawnNpc_Logic_Human()
+        {
+            while (true)
+            {
+                yield return new WaitForEndOfFrame();
+                ReUseHuman();
+            }
+        }
+        public void IEnumeratorSpawnNpcHuman(bool _enable)
+        {
+            if (_enable)
+            {
+                if (_SpawnNpc_Human_Singleton != null) StopCoroutine(_SpawnNpc_Human_Singleton);
+                _SpawnNpc_Human_Singleton = _SpawnNpc_Logic_Human();
+                StartCoroutine(_SpawnNpc_Human_Singleton);
+            }
+            else
+            {
+                if (_SpawnNpc_Human_Singleton != null) StopCoroutine(_SpawnNpc_Human_Singleton);
+            }
+        }
+
+        private IEnumerator _SpawnNpc_NPC_Singleton;
+        private IEnumerator _SpawnNpc_Logic_NPC()
+        {
+            float _interval;
+            while (true)
+            {
+                yield return new WaitForEndOfFrame();
+                _interval = Random.Range(1.0f, 2.0f);
+                if (GameManager._Meter >= 4000.0f)
+                {
+                    _MaxCount_NPC = 3;
+                    ReUseNPC(_Pool_NPC_ZoneTwo);
+                    yield return new WaitForSeconds(_interval);
+                    continue;
+                }
+                if (GameManager._Meter >= 0.0f)
+                {
+                    _MaxCount_NPC = 10;
+                    ReUseNPC(_Pool_NPC_ZoneOne);
+                    yield return new WaitForSeconds(_interval);
+                    continue;
+                }
+            }
+        }
+        public void IEnumeratorSpawnNpcNPC(bool _enable)
+        {
+            if (_enable)
+            {
+                if (_SpawnNpc_NPC_Singleton != null)
+                    StopCoroutine(_SpawnNpc_NPC_Singleton);
+                _SpawnNpc_NPC_Singleton = _SpawnNpc_Logic_NPC();
+                StartCoroutine(_SpawnNpc_NPC_Singleton);
+            }
+            else
+            {
+                if (_SpawnNpc_NPC_Singleton != null)
+                    StartCoroutine(_SpawnNpc_NPC_Singleton);
             }
         }
 
