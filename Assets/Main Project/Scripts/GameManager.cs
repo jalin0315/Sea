@@ -68,6 +68,7 @@ namespace CTJ
             8900,
             9000,
             10000,
+            10800,
             10900,
             11000
             };
@@ -105,7 +106,6 @@ namespace CTJ
             if (_Meter >= _MaxMeter) return;
             _Meter += TimeSystem._DeltaTime() * _Time;
             _Slider_Depth.value = _Meter;
-            Debug.Log(_Meter);
             if (_Meter >= _Light_MaxMeter) return;
             _variable_color.r = _Color_BG_Original.r - (_Meter * _Color_BG_Original.r * _Light_Result);
             _variable_color.g = _Color_BG_Original.g - (_Meter * _Color_BG_Original.g * _Light_Result);
@@ -256,7 +256,12 @@ namespace CTJ
                             // Command
                             // Boss
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
+                            CameraControl._Instance.StatusChange(CameraControl.Status.Lock);
                             EnemyManager._Instance.IEnumeratorSpawnNpc04(false);
+                            EnemyManager._Instance.ReUseBoss();
+                            break;
+                        case 10800:
+                            BossAI._Instance._Animator.SetTrigger("End");
                             break;
                         case 10900:
                             // 生態域分界
@@ -361,6 +366,7 @@ namespace CTJ
                 _InGame = _in_game;
                 TimeSystem.TimeScale(0.0f);
                 MovementSystem._Instance._FloatingJoystick.Initialize();
+                MovementSystem._Instance._DynamicJoystick.Initialize();
                 return;
             }
         }
@@ -381,9 +387,11 @@ namespace CTJ
             EnemyAI._Recycle = true;
             JellyFishEnemyAI._Recycle = true;
             HumanEnemyAI._Recycle = true;
+            BossLegAI._Recycle = true;
+            BossAI._Instance.RecycleThis();
             NPC._Recycle = true;
             SuppliesManager._Instance.IEnumeratorStopAllCoroutines();
-            SuppliesControl._RecoveryAll = true;
+            SuppliesControl._Recycle = true;
             BaitControl._RecoveryAll = true;
             BackgroundControl._RecoveryAll = true;
             LightRays2DControl._Instance.Initialization(false);

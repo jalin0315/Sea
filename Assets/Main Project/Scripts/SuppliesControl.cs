@@ -7,76 +7,45 @@ namespace CTJ
 {
     public class SuppliesControl : MonoBehaviour
     {
-        [HideInInspector] public Vector3 _Scale;
         [SerializeField] private SpriteRenderer _SpriteRenderer;
-        [SerializeField] private int _Number;
+        [HideInInspector] public Queue<GameObject> _Queue_GameObject = new Queue<GameObject>();
+        [SerializeField] private int _ID;
         [SerializeField] private float _Speed;
-        public Queue<GameObject> _Queue = new Queue<GameObject>();
-        public static bool _RecoveryAll;
-        public int _Direction;
-        public float _Time;
-        public float _Timer;
+        [HideInInspector] public float _AdTime;
         [SerializeField] private List<GameObject> _List_LightGroup = new List<GameObject>();
+        public static bool _Recycle;
+        private Vector2 _variable_vector2;
 
-        private void Awake()
+        private void Update()
         {
-            _Scale = transform.localScale;
+            if (tag == "SuppliesProps") { if (_Recycle) { SuppliesManager._Instance.RecycleProp(_Queue_GameObject, gameObject); return; } return; }
+            if (tag == "SuppliesAd") { if (_Recycle) { SuppliesManager._Instance.RecycleAd(gameObject); return; } }
         }
 
         private void FixedUpdate()
         {
-            if (_RecoveryAll)
+            if (tag == "SuppliesProps")
             {
-                SuppliesManager._Instance.Recovery(_Queue, gameObject);
-                return;
-            }
-            if (tag == "SuppliesRed" || tag == "SuppliesYellow" || tag == "SuppliesProps")
-            {
-                transform.Translate(Vector2.down * _Speed * TimeSystem._DeltaTime(), Space.Self);
-                if (transform.position.y < SuppliesManager._Instance._Origin().y) SuppliesManager._Instance.Recovery(_Queue, gameObject);
+                transform.Translate(Vector2.down * _Speed * TimeSystem._FixedDeltaTime(), Space.World);
+                if (transform.position.y < SuppliesManager._Instance._Origin().y + -1.0f) SuppliesManager._Instance.RecycleProp(_Queue_GameObject, gameObject);
                 return;
             }
             if (tag == "SuppliesAd")
             {
-                // 螢幕內自動轉向
-                /*
-                Vector2 _origin = SuppliesManager._Instance._Camera.ScreenToWorldPoint(Vector2.zero);
-                Vector2 _vertex = SuppliesManager._Instance._Camera.ScreenToWorldPoint(new Vector2(SuppliesManager._Instance._Camera.pixelWidth, SuppliesManager._Instance._Camera.pixelHeight));
-                if (transform.position.x > _vertex.x)
+                if (_AdTime > 0)
                 {
-                    transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 180.0f);
-                    transform.localScale = new Vector3(_Scale.x, -_Scale.y, _Scale.z);
-                }
-                else if (transform.position.x < _origin.x)
-                {
-                    transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0.0f);
-                    transform.localScale = _Scale;
-                }
-                transform.Translate(Vector2.right * _Speed * Time.deltaTime, Space.Self);
-                */
-                /*
-                if (_Direction == 0)
-                {
-                    transform.Translate(Vector2.right * _Speed * Time.deltaTime, Space.Self);
+                    _AdTime -= TimeSystem._FixedDeltaTime();
+                    _variable_vector2.x = transform.position.x;
+                    _variable_vector2.y = 0.0f;
+                    transform.position = Vector2.Lerp(transform.position, _variable_vector2, TimeSystem._FixedDeltaTime() * _Speed);
                     return;
                 }
-                if (_Direction == 1)
+                if (_AdTime <= 0)
                 {
-                    transform.Translate(Vector2.left * _Speed * Time.deltaTime, Space.Self);
-                    return;
-                }
-                */
-                if (_Timer > 0)
-                {
-                    _Timer -= TimeSystem._DeltaTime();
-                    transform.position = Vector2.Lerp(transform.position, new Vector2(transform.position.x, 0.0f), TimeSystem._DeltaTime() * _Speed);
-                }
-                else if (_Timer <= 0)
-                {
-                    transform.position = Vector2.Lerp(transform.position, new Vector2(transform.position.x, SuppliesManager._Instance._Vertex().y + 10.0f), TimeSystem._DeltaTime() * _Speed);
-                    if (transform.position.y > SuppliesManager._Instance._Vertex().y + 5.0f)
-                        SuppliesManager._Instance.Recovery(_Queue, gameObject);
-                    _Timer = 0;
+                    _variable_vector2.x = transform.position.x;
+                    _variable_vector2.y = SuppliesManager._Instance._Vertex().y + 5.0f;
+                    transform.position = Vector2.Lerp(transform.position, _variable_vector2, TimeSystem._FixedDeltaTime() * _Speed);
+                    if (transform.position.y > SuppliesManager._Instance._Vertex().y + 1.0f) SuppliesManager._Instance.RecycleAd(gameObject);
                 }
             }
         }
@@ -86,8 +55,9 @@ namespace CTJ
             if (!GameManager._InGame) return;
             if (collision.tag == "Player")
             {
-                Player._Instance.Supplies(tag, _Number, _SpriteRenderer.sprite);
-                SuppliesManager._Instance.Recovery(_Queue, gameObject);
+                Player._Instance.Supplies(tag, _ID, _SpriteRenderer.sprite);
+                if (tag == "SuppliesProps") SuppliesManager._Instance.RecycleProp(_Queue_GameObject, gameObject);
+                if (tag == "SuppliesAd") SuppliesManager._Instance.RecycleAd(gameObject);
             }
         }
     }

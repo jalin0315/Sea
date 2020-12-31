@@ -5,9 +5,12 @@
  * 指定設備
  * adb -s emulator-5554  forward tcp:34999 localabstract:Unity-com.WolfCub.ProjectS
  * adb forward tcp:34999 localabstract:Unity-com.WolfCub.ProjectS
+ * IP 查詢。x 為設備代碼
+ * adb -s xxxxxxxx shell ip -f inet addr show wlan0
  * --- 注意事項 ---
  * Unity Dashboard 已覆蓋 Test mode
  * Google Admob 已啟用測試模式
+ * https://www.example.com
  * --- 新功能 ---
  * 新增 6,500 公尺水母區
  * --- 待修正 ---
@@ -33,9 +36,9 @@
  * X 光影重新開始遊戲時消失。
  * X 在還沒有初始化廣告前，吃到廣告潛艇沒有作用。
  * X 優化巡邏路徑點功能。
- * X 啟用攻擊模式攻擊中層魚，導致缺失 Rigidbody2D.
+ * O 啟用攻擊模式攻擊中層魚，導致缺失 Rigidbody2D.
  * X 攝影機腳本優化。
- * X 補給品位置會生成在邊界外。
+ * R 補給品位置會生成在邊界外。
  * O 在幀數低時，人間生成時會造成瞬間傷害。
  * X 縮小搖桿可觸碰範圍。
  * ------

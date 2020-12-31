@@ -85,31 +85,11 @@ namespace CTJ
                 _PropTimer = 0.0f;
             }
         }
-        public void Supplies(string _tag, int _number, Sprite _sprite)
+        public void Supplies(string _tag, int _id, Sprite _sprite)
         {
-            if (_tag == "SuppliesRed")
-            {
-                if (_Slider_Health.value < _Slider_MaxHealth.value)
-                {
-                    _Slider_Health.value = _Slider_MaxHealth.value;
-                    //if (_Slider_Health.value >= _Slider_MaxHealth.value) _Slider_Health.value = _Slider_MaxHealth.value;
-                    HealthBarColorChange();
-                }
-                return;
-            }
-            if (_tag == "SuppliesYellow") return;
-            if (_tag == "SuppliesAd")
-            {
-                if (Advertising.IsRewardedAdReady(RewardedAdNetwork.AdMob, AdPlacement.Default))
-                {
-                    Advertising.ShowRewardedAd(RewardedAdNetwork.AdMob, AdPlacement.Default);
-                    AdvertisingEvent._Reward_MaxHealth = true;
-                }
-                return;
-            }
             if (_tag == "SuppliesProps")
             {
-                switch (_number)
+                switch (_id)
                 {
                     case 0:
                         {
@@ -227,11 +207,16 @@ namespace CTJ
                             GameManager._Instance.ResurrectControl(1);
                         }
                         break;
-                    default:
-                        Debug.LogErrorFormat("SuppliesNumber Error! Number: {0}", _number);
-                        break;
                 }
                 return;
+            }
+            if (_tag == "SuppliesAd")
+            {
+                if (Advertising.IsRewardedAdReady())
+                {
+                    Advertising.ShowRewardedAd();
+                    AdvertisingEvent._Reward_MaxHealth = true;
+                }
             }
         }
         public void MaxHealth()
@@ -247,6 +232,7 @@ namespace CTJ
             GameManager._InGame = false;
             MenuSystem._Instance.StateChange(MenuSystem.Status.Animation);
             MovementSystem._Instance._FloatingJoystick.Initialize();
+            MovementSystem._Instance._DynamicJoystick.Initialize();
             _ParticleSystem_Death.Play();
         }
         public void DeathDisable()

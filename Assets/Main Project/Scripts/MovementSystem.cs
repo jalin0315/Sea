@@ -10,6 +10,7 @@ namespace CTJ
     {
         public static MovementSystem _Instance;
         public FloatingJoystick _FloatingJoystick;
+        public DynamicJoystick _DynamicJoystick;
         [SerializeField] private SpriteRenderer _SpriteRenderer;
         [SerializeField] private Rigidbody2D _Rigidbody2D;
         [HideInInspector] public float _VelocityX() { return _Rigidbody2D.velocity.x; }
@@ -35,7 +36,8 @@ namespace CTJ
             if (GameManager._Instance._Enable_Joystick) if (GameManager._InGame) JoystickMovement();
         }
 
-        private Vector2 _movement() { return new Vector2(_FloatingJoystick.Horizontal, _FloatingJoystick.Vertical); }
+        //private Vector2 _movement() { return new Vector2(_FloatingJoystick.Horizontal, _FloatingJoystick.Vertical); }
+        private Vector2 _movement() { return new Vector2(_DynamicJoystick.Horizontal, _DynamicJoystick.Vertical); }
         private void JoystickMovement()
         {
             _Rigidbody2D.AddForce(_movement() * (_Speed * _Magnification));

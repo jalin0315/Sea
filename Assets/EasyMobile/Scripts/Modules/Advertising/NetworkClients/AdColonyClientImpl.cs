@@ -797,20 +797,28 @@ namespace EasyMobile
             }
 
             /// Default rewarded video ad?
-            if (IsDefaultRewardedAd(ad.ZoneId) && mIsRewardedAdCompleted)
+            if (IsDefaultRewardedAd(ad.ZoneId))
             {
+                if (mIsRewardedAdCompleted) {
+                    OnRewardedAdCompleted(AdPlacement.Default);
+                } else {
+                    OnRewardedAdSkipped(AdPlacement.Default);
+                }
                 mIsRewardedAdCompleted = false;
-                OnRewardedAdCompleted(AdPlacement.Default);
                 return;
             }
 
             /// Custom rewarded video ad?
             AdPlacement customRewardedPlm = FindPlacementOfCustomRewardedAd(ad.ZoneId);
 
-            if (customRewardedPlm != null && mIsRewardedAdCompleted)
+            if (customRewardedPlm != null)
             {
+                if (mIsRewardedAdCompleted) {
+                    OnRewardedAdCompleted(customRewardedPlm);
+                } else {
+                    OnRewardedAdSkipped(customRewardedPlm);
+                }
                 mIsRewardedAdCompleted = false;
-                OnRewardedAdCompleted(customRewardedPlm);
                 return;
             }
         }

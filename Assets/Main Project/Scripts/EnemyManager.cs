@@ -23,6 +23,7 @@ namespace CTJ
         [SerializeField] private List<GameObject> _List_Prefab_TargetFishZoneTwo;
         [SerializeField] private List<GameObject> _List_Prefab_JellyFish;
         [SerializeField] private List<GameObject> _List_Prefab_Human;
+        [SerializeField] private List<GameObject> _List_Prefab_Boss;
         [SerializeField] private List<GameObject> _List_Prefab_NPC_ZoneOne;
         [SerializeField] private List<GameObject> _List_Prefab_NPC_ZoneTwo;
         private Queue<GameObject> _Pool_Fish = new Queue<GameObject>();
@@ -32,6 +33,7 @@ namespace CTJ
         private Queue<GameObject> _Pool_TargetFish_ZoneTwo = new Queue<GameObject>();
         private Queue<GameObject> _Pool_JellyFish = new Queue<GameObject>();
         private Queue<GameObject> _Pool_Human = new Queue<GameObject>();
+        private Queue<GameObject> _Pool_Boss = new Queue<GameObject>();
         private Queue<GameObject> _Pool_NPC_ZoneOne = new Queue<GameObject>();
         private Queue<GameObject> _Pool_NPC_ZoneTwo = new Queue<GameObject>();
         private int _CurrentCount;
@@ -163,6 +165,12 @@ namespace CTJ
                 _Pool_Human.Enqueue(_go);
                 _go.SetActive(false);
             }
+            for (int _x = 0; _x < _List_Prefab_Boss.Count; _x++)
+            {
+                GameObject _go = Instantiate(_List_Prefab_Boss[_x], _List_Prefab_Boss[_x].transform.position, Quaternion.identity, transform);
+                _Pool_Boss.Enqueue(_go);
+                _go.SetActive(false);
+            }
         }
 
         private void Start()
@@ -224,6 +232,13 @@ namespace CTJ
             GameObject _go = _Pool_Human.Dequeue();
             _go.SetActive(true);
         }
+        public void ReUseBoss()
+        {
+            if (_Pool_Boss.Count <= 0) { Debug.LogWarningFormat("Queue index out of range. Count: {0}.", _Pool_Boss.Count); return; }
+            GameObject _go = _Pool_Boss.Dequeue();
+            _go.transform.position = new Vector2((_Origin().x + _Vertex().x) * 0.5f, _go.transform.position.y);
+            _go.SetActive(true);
+        }
         private void ReUseNPC(Queue<GameObject> _queue_gameobject)
         {
             if (_queue_gameobject.Count <= 0) { Debug.LogWarningFormat("Queue index out of range. Count: {1}.", _queue_gameobject.Count); return; }
@@ -248,6 +263,11 @@ namespace CTJ
         public void RecycleHuman(GameObject _go)
         {
             _Pool_Human.Enqueue(_go);
+            _go.SetActive(false);
+        }
+        public void RecycleBoss(GameObject _go)
+        {
+            _Pool_Boss.Enqueue(_go);
             _go.SetActive(false);
         }
         public void RecycleNPC(Queue<GameObject> _queue_gameobject, GameObject _go)

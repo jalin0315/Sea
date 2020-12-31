@@ -262,8 +262,8 @@ MonoBehaviour:
         disableHardwareId: 0
   mGameServiceSettings:
     mAutoInit: 1
-    mAutoInitAfterUserLogout: 0
-    mAutoInitDelay: 0
+    mAutoInitAfterUserLogout: 1
+    mAutoInitDelay: 1
     mAndroidMaxLoginRequests: 0
     mGpgsDebugLogEnabled: 1
     mGpgsPopupGravity: 0
@@ -278,7 +278,7 @@ MonoBehaviour:
       translatable=\"false\">193738808303</string>\r\n  <!--package_name-->\r\n 
       <string name=\"package_name\" translatable=\"false\">com.WolfCub.ProjectS</string>\r\n</resources>"
     mEnableMultiplayer: 0
-    mEnableSavedGames: 1
+    mEnableSavedGames: 0
     mAutoConflictResolutionStrategy: 0
     mGpgsDataSource: 0
   mInAppPurchaseSettings:
@@ -394,5 +394,5 @@ MonoBehaviour:
   mIsGameServiceModuleEnable: 1
   mIsNotificationModuleEnable: 0
   mIsSharingModuleEnable: 1
-  mActiveModuleIndex: 8
+  mActiveModuleIndex: 0
   mIsSelectingModule: 1
