@@ -30,7 +30,7 @@ namespace CTJ
 
         public void ReUse()
         {
-            if (_Pool_BossLeg.Count <= 0) { Debug.LogWarningFormat("Queue index out of range. Count: {0}.", _Pool_BossLeg.Count); return; }
+            if (_Pool_BossLeg.Count <= 0) { Logger.LogWarningFormat("Queue index out of range. Count: {0}.", _Pool_BossLeg.Count); return; }
             BossLegAI._Recycle = false;
             GameObject _go = _Pool_BossLeg.Dequeue();
             _go.SetActive(true);

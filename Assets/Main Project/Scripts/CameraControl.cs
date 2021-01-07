@@ -32,6 +32,7 @@ namespace CTJ
         [SerializeField] private Collider2D _Collider2D_Left;
         [SerializeField] private Collider2D _Collider2D_Right;
         private float _MaxMeter;
+        // Variable
         private Vector3 _variable_Vector3;
 
         public void Initialization()
@@ -111,7 +112,7 @@ namespace CTJ
                     _variable_Vector3.x = _Target.position.x;
                     _variable_Vector3.y = Vector2.zero.y;
                     _variable_Vector3.z = transform.position.z;
-                    transform.position = Vector3.MoveTowards(transform.position, _variable_Vector3, 1.0f);
+                    transform.position = Vector3.Lerp(transform.position, _variable_Vector3, TimeSystem._FixedDeltaTime() * 15.0f);
                     break;
             }
         }

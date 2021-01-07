@@ -22,6 +22,7 @@ namespace CTJ
         [SerializeField] private List<GameObject> _List_Prefab_ObstacleFishZoneTwo;
         [SerializeField] private List<GameObject> _List_Prefab_TargetFishZoneTwo;
         [SerializeField] private List<GameObject> _List_Prefab_JellyFish;
+        [SerializeField] private List<GameObject> _List_Prefab_ClioneLimacina;
         [SerializeField] private List<GameObject> _List_Prefab_Human;
         [SerializeField] private List<GameObject> _List_Prefab_Boss;
         [SerializeField] private List<GameObject> _List_Prefab_NPC_ZoneOne;
@@ -32,6 +33,7 @@ namespace CTJ
         private Queue<GameObject> _Pool_ObstacleFish_ZoneTwo = new Queue<GameObject>();
         private Queue<GameObject> _Pool_TargetFish_ZoneTwo = new Queue<GameObject>();
         private Queue<GameObject> _Pool_JellyFish = new Queue<GameObject>();
+        private Queue<GameObject> _Pool_ClioneLimacina = new Queue<GameObject>();
         private Queue<GameObject> _Pool_Human = new Queue<GameObject>();
         private Queue<GameObject> _Pool_Boss = new Queue<GameObject>();
         private Queue<GameObject> _Pool_NPC_ZoneOne = new Queue<GameObject>();
@@ -128,6 +130,12 @@ namespace CTJ
                     _Pool_JellyFish.Enqueue(_go);
                     _go.SetActive(false);
                 }
+                for (int _x = 0; _x < _List_Prefab_ClioneLimacina.Count; _x++)
+                {
+                    GameObject _go = Instantiate(_List_Prefab_ClioneLimacina[_x], Vector2.zero, Quaternion.identity, transform);
+                    _Pool_ClioneLimacina.Enqueue(_go);
+                    _go.SetActive(false);
+                }
                 for (int _x = 0; _x < _List_Prefab_NPC_ZoneOne.Count;)
                 {
                     for (int _j = Random.Range(0, _List_Prefab_NPC_ZoneOne.Count); _t.Count < _List_Prefab_NPC_ZoneOne.Count;)
@@ -180,7 +188,7 @@ namespace CTJ
 
         private void ReUseAI(Queue<GameObject> _queue_gameobject, EnemyAI.Screen _screen, EnemyAI.Status _status, Vector2 _position, float _scale_magnification, float _speed, float _activity_time, bool _fade_disappear)
         {
-            if (_queue_gameobject.Count <= 0) { Debug.LogWarningFormat("Queue index out of range. Count: {0}.", _queue_gameobject.Count); return; }
+            if (_queue_gameobject.Count <= 0) { Logger.LogWarningFormat("Queue index out of range. Count: {0}.", _queue_gameobject.Count); return; }
             EnemyAI._Recycle = false;
             GameObject _go = _queue_gameobject.Dequeue();
             _go.SetActive(true);
@@ -198,7 +206,7 @@ namespace CTJ
         }
         private void ReUseAI(Queue<GameObject> _queue_gameobject, EnemyAI.Screen _screen, EnemyAI.Status _status, Vector2 _position, float _speed, float _activity_time, bool _fade_disappear)
         {
-            if (_queue_gameobject.Count <= 0) { Debug.LogWarningFormat("Queue index out of range. Count: {0}.", _queue_gameobject.Count); return; }
+            if (_queue_gameobject.Count <= 0) { Logger.LogWarningFormat("Queue index out of range. Count: {0}.", _queue_gameobject.Count); return; }
             EnemyAI._Recycle = false;
             GameObject _go = _queue_gameobject.Dequeue();
             _go.SetActive(true);
@@ -220,28 +228,35 @@ namespace CTJ
         }
         private void ReUseJellyFish()
         {
-            if (_Pool_JellyFish.Count <= 0) { Debug.LogWarningFormat("Queue index out of range. Count: {0}.", _Pool_JellyFish.Count); return; }
+            if (_Pool_JellyFish.Count <= 0) { Logger.LogWarningFormat("Queue index out of range. Count: {0}.", _Pool_JellyFish.Count); return; }
             JellyFishEnemyAI._Recycle = false;
             GameObject _go = _Pool_JellyFish.Dequeue();
             _go.SetActive(true);
         }
+        private void ReUseClioneLimacina()
+        {
+            if (_Pool_ClioneLimacina.Count <= 0) { Logger.LogWarningFormat("Queue index out of range. Count: {0}.", _Pool_ClioneLimacina.Count); return; }
+            ClioneLimacina._Recycle = false;
+            GameObject _go = _Pool_ClioneLimacina.Dequeue();
+            _go.SetActive(true);
+        }
         private void ReUseHuman()
         {
-            if (_Pool_Human.Count <= 0) { Debug.LogWarningFormat("Queue index out of range. Count: {0}.", _Pool_Human.Count); return; }
+            if (_Pool_Human.Count <= 0) { Logger.LogWarningFormat("Queue index out of range. Count: {0}.", _Pool_Human.Count); return; }
             HumanEnemyAI._Recycle = false;
             GameObject _go = _Pool_Human.Dequeue();
             _go.SetActive(true);
         }
         public void ReUseBoss()
         {
-            if (_Pool_Boss.Count <= 0) { Debug.LogWarningFormat("Queue index out of range. Count: {0}.", _Pool_Boss.Count); return; }
+            if (_Pool_Boss.Count <= 0) { Logger.LogWarningFormat("Queue index out of range. Count: {0}.", _Pool_Boss.Count); return; }
             GameObject _go = _Pool_Boss.Dequeue();
             _go.transform.position = new Vector2((_Origin().x + _Vertex().x) * 0.5f, _go.transform.position.y);
             _go.SetActive(true);
         }
         private void ReUseNPC(Queue<GameObject> _queue_gameobject)
         {
-            if (_queue_gameobject.Count <= 0) { Debug.LogWarningFormat("Queue index out of range. Count: {1}.", _queue_gameobject.Count); return; }
+            if (_queue_gameobject.Count <= 0) { Logger.LogWarningFormat("Queue index out of range. Count: {1}.", _queue_gameobject.Count); return; }
             NPC._Recycle = false;
             GameObject _go = _queue_gameobject.Dequeue();
             _go.SetActive(true);
@@ -258,6 +273,11 @@ namespace CTJ
         public void RecycleJellyFish(GameObject _go)
         {
             _Pool_JellyFish.Enqueue(_go);
+            _go.SetActive(false);
+        }
+        public void RecycleClioneLimacina(GameObject _go)
+        {
+            _Pool_ClioneLimacina.Enqueue(_go);
             _go.SetActive(false);
         }
         public void RecycleHuman(GameObject _go)
@@ -310,7 +330,7 @@ namespace CTJ
             while (true)
             {
                 yield return new WaitForEndOfFrame();
-                if (_CurrentCount >= _MaxCount) { Debug.LogWarningFormat("{0} current count: {1}. Max count: {2}.", nameof(_CurrentCount), _CurrentCount, _MaxCount); continue; }
+                if (_CurrentCount >= _MaxCount) { Logger.LogWarningFormat("{0} current count: {1}. Max count: {2}.", nameof(_CurrentCount), _CurrentCount, _MaxCount); continue; }
                 _speed = Random.Range(1.5f, 2.5f);
                 _interval = Random.Range(0.1f, 0.5f);
                 if (MovementSystem._Instance._VelocityX() > 1.0f)
@@ -380,7 +400,7 @@ namespace CTJ
                         while (true)
                         {
                             yield return new WaitForEndOfFrame();
-                            if (_CurrentCount >= _MaxCount) { Debug.LogWarningFormat("{0} current count: {1}. Max count: {2}.", nameof(_CurrentCount), _CurrentCount, _MaxCount); continue; }
+                            if (_CurrentCount >= _MaxCount) { Logger.LogWarningFormat("{0} current count: {1}. Max count: {2}.", nameof(_CurrentCount), _CurrentCount, _MaxCount); continue; }
                             _speed = Random.Range(1.5f, 2.5f);
                             _r = Random.Range(0, 2);
                             _interval = Random.Range(0.1f, 0.5f);
@@ -552,7 +572,7 @@ namespace CTJ
                         while (true)
                         {
                             yield return new WaitForEndOfFrame();
-                            if (_CurrentCount >= _MaxCount) { Debug.LogWarningFormat("{0} current count: {1}. Max count: {2}.", nameof(_CurrentCount), _CurrentCount, _MaxCount); continue; }
+                            if (_CurrentCount >= _MaxCount) { Logger.LogWarningFormat("{0} current count: {1}. Max count: {2}.", nameof(_CurrentCount), _CurrentCount, _MaxCount); continue; }
                             _r = Random.Range(1, 3);
                             _speed = Random.Range(2.0f, 3.0f);
                             _interval = Random.Range(0.5f, 1.0f);
@@ -731,7 +751,7 @@ namespace CTJ
                         while (true)
                         {
                             yield return new WaitForEndOfFrame();
-                            if (_CurrentCount >= _MaxCount) { Debug.LogWarningFormat("{0} current count: {1}. Max count: {2}.", nameof(_CurrentCount), _CurrentCount, _MaxCount); continue; }
+                            if (_CurrentCount >= _MaxCount) { Logger.LogWarningFormat("{0} current count: {1}. Max count: {2}.", nameof(_CurrentCount), _CurrentCount, _MaxCount); continue; }
                             _speed = Random.Range(2.0f, 4.0f);
                             if (MovementSystem._Instance._VelocityX() > 1.0f)
                             {
@@ -778,7 +798,7 @@ namespace CTJ
                         while (true)
                         {
                             yield return new WaitForEndOfFrame();
-                            if (_CurrentCount >= _MaxCount) { Debug.LogWarningFormat("{0} current count: {1}. Max count: {2}.", nameof(_CurrentCount), _CurrentCount, _MaxCount); continue; }
+                            if (_CurrentCount >= _MaxCount) { Logger.LogWarningFormat("{0} current count: {1}. Max count: {2}.", nameof(_CurrentCount), _CurrentCount, _MaxCount); continue; }
                             _speed = 2.5f;
                             _r = Random.Range(0, 2);
                             _interval = Random.Range(0.5f, 1.0f);
@@ -846,7 +866,7 @@ namespace CTJ
                 if (GameManager._Meter < 6000.0f)
                 {
                     _MaxCount = 5;
-                    if (_CurrentCount >= _MaxCount) { Debug.LogWarningFormat("{0} current count: {1}. Max count: {2}.", nameof(_CurrentCount), _CurrentCount, _MaxCount); continue; }
+                    if (_CurrentCount >= _MaxCount) { Logger.LogWarningFormat("{0} current count: {1}. Max count: {2}.", nameof(_CurrentCount), _CurrentCount, _MaxCount); continue; }
                     if (MovementSystem._Instance._VelocityX() > 1.0f)
                     {
                         _position.x = _Vertex().x;
@@ -917,7 +937,7 @@ namespace CTJ
                 else if (GameManager._Meter >= 6000.0f)
                 {
                     _MaxCount = 4;
-                    if (_CurrentCount >= _MaxCount) { Debug.LogWarningFormat("{0} current count: {1}. Max count: {2}.", nameof(_CurrentCount), _CurrentCount, _MaxCount); continue; }
+                    if (_CurrentCount >= _MaxCount) { Logger.LogWarningFormat("{0} current count: {1}. Max count: {2}.", nameof(_CurrentCount), _CurrentCount, _MaxCount); continue; }
                     if (MovementSystem._Instance._VelocityX() > 2.0f)
                     {
                         _position.x = _Vertex().x;
@@ -979,7 +999,7 @@ namespace CTJ
             {
                 yield return new WaitForEndOfFrame();
                 _MaxCount = 1;
-                if (_CurrentCount >= _MaxCount) { Debug.LogWarningFormat("{0} current count: {1}. Max count: {2}.", nameof(_CurrentCount), _CurrentCount, _MaxCount); continue; }
+                if (_CurrentCount >= _MaxCount) { Logger.LogWarningFormat("{0} current count: {1}. Max count: {2}.", nameof(_CurrentCount), _CurrentCount, _MaxCount); continue; }
                 _speed = Random.Range(3.0f, 4.0f);
                 _r = Random.Range(0, 2);
                 switch (_r)
@@ -1034,6 +1054,30 @@ namespace CTJ
             else
             {
                 if (_SpawnNpc_JellyFish_Singleton != null) StopCoroutine(_SpawnNpc_JellyFish_Singleton);
+            }
+        }
+
+        private IEnumerator _SpawnNpc_ClioneLimacina_Singleton;
+        private IEnumerator _SpawnNpc_Logic_ClioneLimacina()
+        {
+            while (true)
+            {
+                yield return new WaitForEndOfFrame();
+                ReUseClioneLimacina();
+                yield return new WaitForSeconds(Random.Range(0.0f, 0.5f));
+            }
+        }
+        public void IEnumeratorSpawnNpcClioneLimacina(bool _enable)
+        {
+            if (_enable)
+            {
+                if (_SpawnNpc_ClioneLimacina_Singleton != null) StopCoroutine(_SpawnNpc_ClioneLimacina_Singleton);
+                _SpawnNpc_ClioneLimacina_Singleton = _SpawnNpc_Logic_ClioneLimacina();
+                StartCoroutine(_SpawnNpc_ClioneLimacina_Singleton);
+            }
+            else
+            {
+                if (_SpawnNpc_ClioneLimacina_Singleton != null) StopCoroutine(_SpawnNpc_ClioneLimacina_Singleton);
             }
         }
 

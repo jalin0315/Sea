@@ -9,32 +9,38 @@ namespace CTJ
     public class Player : MonoBehaviour
     {
         public static Player _Instance;
-        public Transform _Transform;
         public Animator _Animator;
         [SerializeField] private SpriteRenderer _SpriteRenderer;
         public Sprite _Sprite_Player;
-        [SerializeField] private List<Sprite> _List_Sprite_Fishes = new List<Sprite>();
         public Slider _Slider_MaxHealth;
         public Slider _Slider_Health;
         [SerializeField] private Image _Image_Health;
         [SerializeField] private Color _HighHealthColor;
         [SerializeField] private Color _LowHealthColor;
         private bool _Invincible;
-        private bool _Invincible_Guise;
+        private bool _Spy;
         private bool _Attack;
-        [SerializeField] private ParticleSystem _ParticleSystem_Invincible;
-        [HideInInspector] public int _SkillOptions;
-        [SerializeField] private List<float> _List_SkillPay = new List<float>();
-        public List<float> _List_SkillTime = new List<float>();
-        public bool _EnableSkill;
         [SerializeField] private GameObject _Object_PropTime;
         [SerializeField] private Image _Image_PropTimeBackground;
         [SerializeField] private Image _Image_PropTime;
-        [SerializeField] private float _PropTimer;
-        [SerializeField] private ParticleSystem _ParticleSystem_Death;
-        [SerializeField] private ParticleSystem _ParticleSystem_Light;
-        [SerializeField] private ParticleSystem _ParticleSystem_Yellow;
+        private float _PropTimer;
+        [SerializeField] private float _AccelerateTime;
+        [SerializeField] private float _SpyTime;
+        [SerializeField] private float _SlowMotionTime;
+        [HideInInspector] public bool _SlowMotionActivity;
+        public float _SlowMotionActivityTime;
+        [SerializeField] private float _AttackTime;
+        [SerializeField] private float _ShrinkTime;
+        [SerializeField] private Sprite[] _Array_Sprite_Enemies;
+        [SerializeField] private ParticleSystem _ParticleSystem_Invincible;
+        [SerializeField] private ParticleSystem _ParticleSystem_Shield;
+        [SerializeField] private ParticleSystem _ParticleSystem_Destroy;
+        [SerializeField] private ParticleSystem _ParticleSystem_Accelerate;
+        [SerializeField] private ParticleSystem _ParticleSystem_Explosion;
         [SerializeField] private ParticleSystem _ParticleSystem_Attack;
+        [SerializeField] private ParticleSystem _ParticleSystem_Kick;
+        [SerializeField] private ParticleSystem _ParticleSystem_Damage;
+        [SerializeField] private ParticleSystem _ParticleSystem_Death;
 
         private void Awake()
         {
@@ -43,15 +49,33 @@ namespace CTJ
 
         public void Initialization()
         {
-            if (_Sprite_Player == null) _Sprite_Player = _SpriteRenderer.sprite;
+            transform.position = Vector2.zero;
+            transform.rotation = Quaternion.identity;
+            _Invincible = false;
+            _Spy = false;
+            _Attack = false;
+            _Animator.SetBool("Shield", false);
+            _Animator.SetBool("Death", false);
+            _SpriteRenderer.sprite = _Sprite_Player;
             _Slider_MaxHealth.value = 100.0f - (GameManager._Meter * 0.005f);
-            //_Slider_MaxHealth.value = 10.0f;
             _Slider_Health.maxValue = _Slider_MaxHealth.value;
             _Slider_Health.value = _Slider_Health.maxValue;
             HealthBarColorChange();
-            _Animator.SetBool("Invincible2", false);
+            StopAllCoroutines();
             _Image_PropTime.fillAmount = 1.0f;
             _PropTimer = 0.0f;
+            _SlowMotionActivity = false;
+            MovementSystem._Instance._Scale_Magnification = 1.0f;
+            MovementSystem._Instance._SpeedAddition = 1.0f;
+            _ParticleSystem_Invincible.Stop();
+            _ParticleSystem_Shield.Stop();
+            _ParticleSystem_Destroy.Stop();
+            _ParticleSystem_Accelerate.Stop();
+            _ParticleSystem_Explosion.Stop();
+            _ParticleSystem_Attack.Stop();
+            _ParticleSystem_Kick.Stop();
+            _ParticleSystem_Damage.Stop();
+            _ParticleSystem_Death.Stop();
         }
         private void Start() => Initialization();
 
@@ -61,30 +85,9 @@ namespace CTJ
             PropTime();
         }
 
-        public void InvincibleEnable() => _Invincible = true;
-        public void InvincibleDisable() => _Invincible = false;
-        public void InvincibleEffectEnable() => _ParticleSystem_Invincible.Play();
-        public void InvincibleEffectDisable() => _ParticleSystem_Invincible.Stop();
-
         public void VerifyHealth(float _meter) => _Slider_MaxHealth.value = 100.0f - (_meter * 0.005f);
-        //public void VerifyHealth(float _meter) => _Slider_MaxHealth.value = 10.0f;
-        private void HealthBarColorChange()
-        {
-            Color _color_lerp = Color.Lerp(_LowHealthColor, _HighHealthColor, _Slider_Health.value / _Slider_MaxHealth.value);
-            _Image_Health.color = _color_lerp;
-        }
+        private void HealthBarColorChange() => _Image_Health.color = Color.Lerp(_LowHealthColor, _HighHealthColor, _Slider_Health.value / _Slider_MaxHealth.value);
 
-        private void PropTime()
-        {
-            if (_PropTimer <= 0.0f) return;
-            _Image_PropTime.fillAmount -= 1.0f / _PropTimer * TimeSystem._DeltaTime();
-            if (_Image_PropTime.fillAmount <= 0.0f)
-            {
-                _Object_PropTime.SetActive(false);
-                _Image_PropTime.fillAmount = 1.0f;
-                _PropTimer = 0.0f;
-            }
-        }
         public void Supplies(string _tag, int _id, Sprite _sprite)
         {
             if (_tag == "SuppliesProps")
@@ -94,75 +97,57 @@ namespace CTJ
                     case 0:
                         {
                             // 護盾
-                            _Animator.SetBool("Invincible2", true);
-                            _ParticleSystem_Invincible.Play();
-                            break;
+                            Shield(true);
                         }
+                        break;
                     case 1:
                         {
                             // 炸彈
                             EnemyAI._Recycle = true;
                             JellyFishEnemyAI._Recycle = true;
-                            _ParticleSystem_Light.Play();
-                            _ParticleSystem_Death.Play();
-                            break;
+                            ClioneLimacina._Recycle = true;
+                            _ParticleSystem_Explosion.Play();
                         }
+                        break;
                     case 2:
                         {
                             // 玩家加速
-                            MovementSystem._Instance._Magnification = 2.5f;
-                            _ParticleSystem_Yellow.Play();
+                            MovementSystem._Instance._SpeedAddition = 3.0f;
+                            _ParticleSystem_Accelerate.Play();
                             _Image_PropTimeBackground.sprite = _sprite;
                             _Image_PropTime.sprite = _sprite;
                             _Image_PropTime.fillAmount = 1.0f;
-                            _PropTimer = 5.0f;
+                            _PropTimer = _AccelerateTime;
+                            Accelerate(_AccelerateTime);
                             _Object_PropTime.SetActive(true);
-                            StartCoroutine(Delay(5.0f));
-                            IEnumerator Delay(float _time)
-                            {
-                                yield return new WaitForSeconds(_time);
-                                MovementSystem._Instance._Magnification = 1.0f;
-                                _ParticleSystem_Yellow.Stop();
-                            }
-                            break;
                         }
+                        break;
                     case 3:
                         {
                             // 偽裝
-                            MovementSystem._Instance._Scale = Vector3.one * 0.25f;
-                            int _i = Random.Range(0, _List_Sprite_Fishes.Count);
-                            _SpriteRenderer.sprite = _List_Sprite_Fishes[_i];
-                            _Invincible_Guise = true;
+                            MovementSystem._Instance._Scale_Magnification = 2.0f;
+                            _SpriteRenderer.sprite = _Array_Sprite_Enemies[Random.Range(0, _Array_Sprite_Enemies.Length)];
+                            _Spy = true;
                             _Image_PropTimeBackground.sprite = _sprite;
                             _Image_PropTime.sprite = _sprite;
                             _Image_PropTime.fillAmount = 1.0f;
-                            _PropTimer = 5.0f;
+                            _PropTimer = _SpyTime;
+                            Spy(_SpyTime);
                             _Object_PropTime.SetActive(true);
-                            StartCoroutine(Delay(5.0f));
-                            IEnumerator Delay(float _time)
-                            {
-                                yield return new WaitForSeconds(_time);
-                                MovementSystem._Instance._Scale = MovementSystem._Instance._Scale_Original;
-                                _SpriteRenderer.sprite = _Sprite_Player;
-                                _Invincible_Guise = false;
-                            }
-                            break;
                         }
+                        break;
                     case 4:
                         {
                             // 慢動作
-                            TimeSystem.TimeScale(0.5f);
+                            _SlowMotionActivity = true;
+                            TimeSystem.TimeScale(_SlowMotionActivityTime);
+                            MovementSystem._Instance._SpeedAddition = 5.0f;
                             _Image_PropTimeBackground.sprite = _sprite;
                             _Image_PropTime.sprite = _sprite;
                             _Image_PropTime.fillAmount = 1.0f;
-                            _PropTimer = 2.0f;
+                            _PropTimer = _SlowMotionTime;
+                            SlowMotion(_SlowMotionTime);
                             _Object_PropTime.SetActive(true);
-                            StartCoroutine(Delay(2.0f));
-                            IEnumerator Delay(float _time)
-                            {
-                                yield return new WaitForSeconds(_time);
-                                TimeSystem.TimeScale(1.0f);
-                            }
                         }
                         break;
                     case 5:
@@ -173,15 +158,9 @@ namespace CTJ
                             _Image_PropTimeBackground.sprite = _sprite;
                             _Image_PropTime.sprite = _sprite;
                             _Image_PropTime.fillAmount = 1.0f;
-                            _PropTimer = 5.0f;
+                            _PropTimer = _AttackTime;
+                            Attack(_AttackTime);
                             _Object_PropTime.SetActive(true);
-                            StartCoroutine(Delay(5.0f));
-                            IEnumerator Delay(float _time)
-                            {
-                                yield return new WaitForSeconds(_time);
-                                _Attack = false;
-                                _ParticleSystem_Attack.Stop();
-                            }
                         }
                         break;
                     case 6:
@@ -191,14 +170,9 @@ namespace CTJ
                             _Image_PropTimeBackground.sprite = _sprite;
                             _Image_PropTime.sprite = _sprite;
                             _Image_PropTime.fillAmount = 1.0f;
-                            _PropTimer = 5.0f;
+                            _PropTimer = _ShrinkTime;
+                            Shrink(_ShrinkTime);
                             _Object_PropTime.SetActive(true);
-                            StartCoroutine(Delay(5.0f));
-                            IEnumerator Delay(float _time)
-                            {
-                                yield return new WaitForSeconds(_time);
-                                MovementSystem._Instance._Scale_Magnification = 1.0f;
-                            }
                         }
                         break;
                     case 7:
@@ -217,37 +191,137 @@ namespace CTJ
                     Advertising.ShowRewardedAd();
                     AdvertisingEvent._Reward_MaxHealth = true;
                 }
+                else Logger.LogWarning("Reward advertising not ready yet.");
+            }
+        }
+        private IEnumerator IEnumeratorSingletonAccelerate;
+        private IEnumerator IEnumeratorAccelerate(float _time)
+        {
+            yield return new WaitForSeconds(_time);
+            MovementSystem._Instance._SpeedAddition = 1.0f;
+            _ParticleSystem_Accelerate.Stop();
+        }
+        private void Accelerate(float _time)
+        {
+            if (IEnumeratorSingletonAccelerate != null) StopCoroutine(IEnumeratorSingletonAccelerate);
+            IEnumeratorSingletonAccelerate = IEnumeratorAccelerate(_time);
+            StartCoroutine(IEnumeratorSingletonAccelerate);
+        }
+        private IEnumerator IEnumeratorSingletonSpy;
+        private IEnumerator IEnumeratorSpy(float _time)
+        {
+            yield return new WaitForSeconds(_time);
+            MovementSystem._Instance._Scale_Magnification = 1.0f;
+            _SpriteRenderer.sprite = _Sprite_Player;
+            _Spy = false;
+        }
+        private void Spy(float _time)
+        {
+            if (IEnumeratorSingletonSpy != null) StopCoroutine(IEnumeratorSingletonSpy);
+            IEnumeratorSingletonSpy = IEnumeratorSpy(_time);
+            StartCoroutine(IEnumeratorSingletonSpy);
+        }
+        private IEnumerator IEnumeratorSingletonSlowMotion;
+        private IEnumerator IEnumeratorSlowMotion(float _time)
+        {
+            yield return new WaitForSeconds(_time);
+            _SlowMotionActivity = false;
+            TimeSystem.TimeScale(1.0f);
+            MovementSystem._Instance._SpeedAddition = 1.0f;
+        }
+        private void SlowMotion(float _time)
+        {
+            if (IEnumeratorSingletonSlowMotion != null) StopCoroutine(IEnumeratorSingletonSlowMotion);
+            IEnumeratorSingletonSlowMotion = IEnumeratorSlowMotion(_time);
+            StartCoroutine(IEnumeratorSingletonSlowMotion);
+        }
+        private IEnumerator IEnumeratorSingletonAttack;
+        private IEnumerator IEnumeratorAttack(float _time)
+        {
+            yield return new WaitForSeconds(_time);
+            _Attack = false;
+            _ParticleSystem_Attack.Stop();
+        }
+        private void Attack(float _time)
+        {
+            if (IEnumeratorSingletonAttack != null) StopCoroutine(IEnumeratorSingletonAttack);
+            IEnumeratorSingletonAttack = IEnumeratorAttack(_time);
+            StartCoroutine(IEnumeratorSingletonAttack);
+        }
+        private IEnumerator IEnumeratorSingletonShrink;
+        private IEnumerator IEnumeratorShrink(float _time)
+        {
+            yield return new WaitForSeconds(_time);
+            MovementSystem._Instance._Scale_Magnification = 1.0f;
+        }
+        private void Shrink(float _time)
+        {
+            if (IEnumeratorSingletonShrink != null) StopCoroutine(IEnumeratorSingletonShrink);
+            IEnumeratorSingletonShrink = IEnumeratorShrink(_time);
+            StartCoroutine(IEnumeratorSingletonShrink);
+        }
+        private void PropTime()
+        {
+            if (_PropTimer <= 0.0f) return;
+            _Image_PropTime.fillAmount -= 1.0f / _PropTimer * TimeSystem._DeltaTime();
+            if (_Image_PropTime.fillAmount <= 0.0f)
+            {
+                _Image_PropTime.fillAmount = 1.0f;
+                _Object_PropTime.SetActive(false);
+                _PropTimer = 0.0f;
             }
         }
         public void MaxHealth()
         {
             _Slider_Health.value = _Slider_MaxHealth.value;
             HealthBarColorChange();
-            InvincibleEnable();
-            _Animator.SetTrigger("Invincible");
+            Invincible();
         }
 
-        public void DeathEnable()
+        private void Invincible()
+        {
+            _Invincible = true;
+            _Animator.SetTrigger("Invincible");
+            _ParticleSystem_Invincible.Play();
+        }
+        public void InvincibleDisable() => _Invincible = false;
+        public void ParticleSystemInvincibleStop() => _ParticleSystem_Invincible.Stop();
+        private void Shield(bool _enable)
+        {
+            if (_enable)
+            {
+                _Animator.SetBool("Shield", _enable);
+                _ParticleSystem_Shield.Play();
+                return;
+            }
+            else
+            {
+                _Animator.SetBool("Shield", _enable);
+                _ParticleSystem_Shield.Stop();
+                _ParticleSystem_Destroy.Play();
+            }
+        }
+        private void Death()
         {
             GameManager._InGame = false;
             MenuSystem._Instance.StateChange(MenuSystem.Status.Animation);
-            MovementSystem._Instance._FloatingJoystick.Initialize();
             MovementSystem._Instance._DynamicJoystick.Initialize();
+            _Animator.SetBool("Death", true);
             _ParticleSystem_Death.Play();
         }
-        public void DeathDisable()
+        public void Resurrection()
         {
-            TimeSystem.TimeScale(1.0f);
-            GameManager._InGame = true;
+            GameManager._Instance.GameState(true);
             MenuSystem._Instance.StateChange(MenuSystem.Status.InGame);
             _Slider_Health.value = _Slider_MaxHealth.value;
             HealthBarColorChange();
-            InvincibleEnable();
             _Animator.SetBool("Death", false);
             _ParticleSystem_Death.Stop();
+            Invincible();
         }
         public void DeathMenu()
         {
+            GameManager._Instance.GameState(false);
             MenuSystem._Instance.StateChange(MenuSystem.Status.DeathMenu);
         }
 
@@ -259,6 +333,7 @@ namespace CTJ
                 Attack _attack = collision.GetComponent<Attack>();
                 if (_attack == null) return;
                 _attack.AttackEnemy();
+                _ParticleSystem_Kick.Play();
             }
         }
 
@@ -266,27 +341,21 @@ namespace CTJ
         {
             if (!GameManager._InGame) return;
             if (_Invincible) return;
+            if (_Spy) return;
             if (_Attack) return;
-            if (_Invincible_Guise) return;
             if (collision.tag == "Enemy")
             {
-                if (_Animator.GetBool("Invincible2"))
+                if (_Animator.GetBool("Shield"))
                 {
-                    _Animator.SetBool("Invincible2", false);
-                    InvincibleEnable();
-                    _Animator.SetTrigger("Invincible");
-                    _ParticleSystem_Invincible.Stop();
-                    _ParticleSystem_Death.Play();
-                    Vibration.Vibrate(2);
+                    Shield(false);
+                    Invincible();
                     return;
                 }
-                _Slider_Health.value -= 10.0f; // 12.5f
-                if (_Slider_Health.value <= 0.0f) _Animator.SetBool("Death", true);
-                else
-                {
-                    InvincibleEnable();
-                    _Animator.SetTrigger("Injured");
-                }
+                _Slider_Health.value -= 10.0f;
+                if (_Slider_Health.value <= 0.0f) Death();
+                else _Animator.SetTrigger("Injured");
+                _ParticleSystem_Damage.Play();
+                _Invincible = true;
                 HealthBarColorChange();
                 Vibration.Vibrate(2);
             }

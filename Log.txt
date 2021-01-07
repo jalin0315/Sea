@@ -8,11 +8,13 @@
  * IP 查詢。x 為設備代碼
  * adb -s xxxxxxxx shell ip -f inet addr show wlan0
  * --- 注意事項 ---
+ * Scripting Define Symbols: UNITY_POST_PROCESSING_STACK_V2;NATIVE_PLUGINS_LITE_VERSION;USES_SHARING;USES_RATE_MY_APP;EASY_MOBILE;EASY_MOBILE_PRO;EM_ADMOB;EM_GPGS;ENABLE_LOGS
  * Unity Dashboard 已覆蓋 Test mode
  * Google Admob 已啟用測試模式
  * https://www.example.com
  * --- 新功能 ---
  * 新增 6,500 公尺水母區
+ * 待加入海底垃圾
  * --- 待修正 ---
  * O = 已修正
  * R = 已修正且未測試
@@ -22,23 +24,27 @@
  * X 運行模擬器缺失 android.os.VibrationEffect 震動。
  * R 低階手機運行容易過熱。
  * R 獎勵廣告結束導致遊戲卡頓。
- * R 玩家在某些中層魚 Collider 相交時僅觸發一次。
+ * O 玩家在某些中層魚 Collider 相交時僅觸發一次。
  * O 死亡動畫過程，玩家會觸發其他條件。
- * R 搖桿在主畫面能被觸發。
+ * O 搖桿在主畫面能被觸發。
  * R 死亡復活後，搖桿觸發問題。
  * X 攻擊魚模式，在玩家與敵人 Collider 相交時僅觸發一次。
- * X 慢動作開啟選項且再次關閉選項，造成效果覆蓋。
- * X 慢動作在作用狀態時，暫停選單時間會強制恢復。
- * R 無敵模式有機率同步損血。
+ * O 慢動作開啟選項且再次關閉選項，造成效果覆蓋。
+ * O 慢動作在作用狀態時，暫停選單時間會強制恢復。
+ * O 無敵模式有機率同步損血。
  * X 嚴重隨機幀數歸零問題。
  * X 無敵模式尚未重製。
  * O 復活時會瞬間受傷。
  * X 光影重新開始遊戲時消失。
  * X 在還沒有初始化廣告前，吃到廣告潛艇沒有作用。
- * X 優化巡邏路徑點功能。
+ * O 優化巡邏路徑點功能。
  * O 啟用攻擊模式攻擊中層魚，導致缺失 Rigidbody2D.
- * X 攝影機腳本優化。
+ * O 攝影機腳本優化。
  * R 補給品位置會生成在邊界外。
  * O 在幀數低時，人間生成時會造成瞬間傷害。
- * X 縮小搖桿可觸碰範圍。
+ * O 縮小搖桿可觸碰範圍。
+ * X 看完廣告潛艇後，搖桿仍然存在並卡住。
+ * O 偽裝敵人時，會出現大小不均等狀況。
+ * X 在人間與 Boss 時候拔掉補給品。
+ * R 海天使不受炸彈影響。
  * ------

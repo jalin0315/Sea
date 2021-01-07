@@ -36,7 +36,7 @@ namespace CTJ
                     CreateOneShot(100, defaultAmplitude);
                     break;
                 default:
-                    Debug.LogErrorFormat("Vibration Status Error! {0}", _status);
+                    Logger.LogErrorFormat("Vibration Status Error! {0}", _status);
                     break;
             }
         }

@@ -67,6 +67,7 @@ namespace CTJ
             8000,
             8900,
             9000,
+            9900,
             10000,
             10800,
             10900,
@@ -161,6 +162,7 @@ namespace CTJ
                             EnemyManager._Instance.IEnumeratorSpawnNpcNPC(true);
                             SuppliesManager._Instance.IEnumeratorCallSupplies(true);
                             SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
+                            // 生成海底地形
                             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_00);
                             break;
                         case 600:
@@ -168,12 +170,14 @@ namespace CTJ
                             EnemyManager._Instance.IEnumeratorSpawnNpc01(true);
                             break;
                         case 900:
+                            // 生成海底地形
                             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_00);
                             break;
                         case 1000:
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                             break;
                         case 1900:
+                            // 生成海底地形
                             BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_01);
                             break;
                         case 2000:
@@ -182,7 +186,8 @@ namespace CTJ
                             EnemyManager._Instance.IEnumeratorSpawnNpc02(true);
                             break;
                         case 2900:
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_01);
+                            // 生成海底地形
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_02);
                             break;
                         case 3000:
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
@@ -198,13 +203,15 @@ namespace CTJ
                             SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
                             break;
                         case 4900:
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_02);
+                            // 生成海底地形
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_03);
                             break;
                         case 5000:
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                             break;
                         case 5900:
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_02);
+                            // 生成海底地形
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_04);
                             break;
                         case 6000:
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
@@ -219,7 +226,8 @@ namespace CTJ
                             break;
                         case 6900:
                             EnemyManager._Instance.IEnumeratorSpawnNpcJellyFish(false);
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_02);
+                            // 生成海底地形
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_05);
                             break;
                         case 7000:
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
@@ -247,17 +255,24 @@ namespace CTJ
                             SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
                             break;
                         case 8900:
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_02);
+                            // 生成海底地形
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_06);
                             break;
                         case 9000:
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
+                            EnemyManager._Instance.IEnumeratorSpawnNpc04(false);
+                            EnemyManager._Instance.IEnumeratorSpawnNpcClioneLimacina(true);
+                            break;
+                        case 9900:
+                            EnemyManager._Instance.IEnumeratorSpawnNpcClioneLimacina(false);
+                            // 生成海底地形
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_07);
                             break;
                         case 10000:
                             // Command
-                            // Boss
+                            // Boss 出場
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                             CameraControl._Instance.StatusChange(CameraControl.Status.Lock);
-                            EnemyManager._Instance.IEnumeratorSpawnNpc04(false);
                             EnemyManager._Instance.ReUseBoss();
                             break;
                         case 10800:
@@ -275,7 +290,7 @@ namespace CTJ
                             if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
                             break;
                         default:
-                            Debug.LogWarningFormat("階層錯誤！當前層級數 {0}", _ZoneClassPoints[_i]);
+                            Logger.LogWarningFormat("階層錯誤！當前層級數 {0}", _ZoneClassPoints[_i]);
                             break;
                     }
                     _ZonePoints[_i] = true;
@@ -355,19 +370,17 @@ namespace CTJ
         }
         public void GameState(bool _in_game)
         {
-            if (_in_game)
+            _InGame = _in_game;
+            if (_InGame)
             {
-                _InGame = _in_game;
-                TimeSystem.TimeScale(1.0f);
+                if (Player._Instance._SlowMotionActivity) TimeSystem.TimeScale(Player._Instance._SlowMotionActivityTime);
+                else TimeSystem.TimeScale(1.0f);
                 return;
             }
-            if (!_in_game)
+            else
             {
-                _InGame = _in_game;
                 TimeSystem.TimeScale(0.0f);
-                MovementSystem._Instance._FloatingJoystick.Initialize();
                 MovementSystem._Instance._DynamicJoystick.Initialize();
-                return;
             }
         }
         public void ResurrectControl(int _variable)
@@ -378,14 +391,13 @@ namespace CTJ
         public void ReGameLogic()
         {
             Initialization();
-            Player._Instance._Transform.position = Vector2.zero;
             Player._Instance.Initialization();
-            Player._Instance._Animator.SetBool("Death", false);
-            Player._Instance._EnableSkill = false;
+            MovementSystem._Instance.Initialization();
             CameraControl._Instance.Initialization();
             EnemyManager._Instance.IEnumeratorStopAllCoroutines();
             EnemyAI._Recycle = true;
             JellyFishEnemyAI._Recycle = true;
+            ClioneLimacina._Recycle = true;
             HumanEnemyAI._Recycle = true;
             BossLegAI._Recycle = true;
             BossAI._Instance.RecycleThis();

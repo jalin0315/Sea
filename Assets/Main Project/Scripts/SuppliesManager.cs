@@ -82,7 +82,7 @@ namespace CTJ
 
         private void ReUseProp(Queue<GameObject> _queue_gameobject)
         {
-            if (_queue_gameobject.Count <= 0) { Debug.LogWarningFormat("Queue index out of range. Count: {0}.", _queue_gameobject.Count); return; }
+            if (_queue_gameobject.Count <= 0) { Logger.LogWarningFormat("Queue index out of range. Count: {0}.", _queue_gameobject.Count); return; }
             SuppliesControl._Recycle = false;
             GameObject _go = _queue_gameobject.Dequeue();
             _variable_vector2.x = Random.Range(_Origin().x + 1.0f, _Vertex().x + -1.0f);
@@ -95,7 +95,7 @@ namespace CTJ
         }
         private void ReUseAd()
         {
-            if (_Pool_SuppliesAd.Count <= 0) { Debug.LogWarningFormat("Queue index out of range. Count: {0}.", _Pool_SuppliesAd.Count); return; }
+            if (_Pool_SuppliesAd.Count <= 0) { Logger.LogWarningFormat("Queue index out of range. Count: {0}.", _Pool_SuppliesAd.Count); return; }
             SuppliesControl._Recycle = false;
             GameObject _go = _Pool_SuppliesAd.Dequeue();
             _variable_vector2.x = Random.Range(_Origin().x + 1.0f, _Vertex().x + -1.0f);
@@ -123,7 +123,7 @@ namespace CTJ
         private IEnumerator _CallSupplies_Logic()
         {
             int _r;
-            float _interval = 30.0f;
+            float _interval = 25.0f;
             while (true)
             {
                 yield return new WaitForEndOfFrame();
@@ -175,7 +175,7 @@ namespace CTJ
         private IEnumerator _CallSuppliesAd_Singleton;
         private IEnumerator _CallSuppliesAd_Logic()
         {
-            float _interval = 30.0f;
+            float _interval = 25.0f;
             while (true)
             {
                 yield return new WaitForEndOfFrame();

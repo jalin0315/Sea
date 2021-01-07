@@ -33,15 +33,15 @@ namespace CTJ
 
         private void InterstitialAdCompletedHandler(InterstitialAdNetwork _interstitial_ad_network, AdPlacement _ad_placement)
         {
-            Debug.Log("Interstitial ad has been closed.");
+            Logger.Log("Interstitial ad has been closed.");
         }
 
         private void RewardedAdCompletedHandler(RewardedAdNetwork _rewarded_ad_network, AdPlacement _ad_placement)
         {
-            Debug.Log("Rewarded ad has completed. The user should be rewarded now.");
+            Logger.Log("Rewarded ad has completed. The user should be rewarded now.");
             if (_Reward_Resurrect)
             {
-                Player._Instance.DeathDisable();
+                Player._Instance.Resurrection();
                 GameManager._Instance.ResurrectControl(-1);
                 _Reward_Resurrect = false;
             }
@@ -54,7 +54,7 @@ namespace CTJ
 
         private void RewardedAdSkippedHandler(RewardedAdNetwork _rewarded_ad_network, AdPlacement _ad_placement)
         {
-            Debug.Log("Rewarded ad was skipped. The user should NOT be rewarded.");
+            Logger.Log("Rewarded ad was skipped. The user should NOT be rewarded.");
             _Reward_Resurrect = false;
             _Reward_MaxHealth = false;
             Advertising.LoadRewardedAd();
@@ -62,7 +62,7 @@ namespace CTJ
 
         private void AdsRemovedHandler()
         {
-            Debug.Log("Ads were removed.");
+            Logger.Log("Ads were removed.");
             // Unsubscribe
             Advertising.AdsRemoved -= AdsRemovedHandler;
         }

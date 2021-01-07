@@ -35,7 +35,7 @@ namespace CTJ
             BaitControl _b_c = _go.GetComponent<BaitControl>();
             _b_c._Rigidbody2D.AddForce(Vector2.up * _ThrowingSpeed, ForceMode2D.Impulse);
             _b_c._Queue = _queue;
-            StartCoroutine(Delay(Player._Instance._List_SkillTime[Player._Instance._SkillOptions]));
+            //StartCoroutine(Delay(Player._Instance._List_SkillTime[Player._Instance._SkillOptions]));
             IEnumerator Delay(float _time)
             {
                 yield return new WaitForSeconds(_time);

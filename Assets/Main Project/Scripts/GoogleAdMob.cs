@@ -208,7 +208,7 @@ namespace CTJ
             print("HandleRewardedAdRewarded event received for " + amount.ToString() + " " + type);
             if (_Resurrect)
             {
-                Player._Instance.DeathDisable();
+                //Player._Instance.DeathDisable();
                 GameManager._Instance.ResurrectControl(-1);
                 _Resurrect = false;
                 return;

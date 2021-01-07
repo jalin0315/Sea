@@ -27,6 +27,7 @@ namespace CTJ
         private int _r;
         private void OnEnable()
         {
+            transform.rotation = Quaternion.identity;
             _scale = Random.Range(0.05f, 0.1f);
             transform.localScale = new Vector3(_scale, _scale, 1.0f);
             if (MovementSystem._Instance._VelocityX() > 2.0f)
@@ -114,7 +115,7 @@ namespace CTJ
 
         public void Movement()
         {
-            _Rigidbody2D.AddForce(Vector2.up * TimeSystem._FixedDeltaTime() * _Speed, ForceMode2D.Impulse);
+            _Rigidbody2D.AddRelativeForce(Vector2.up * TimeSystem._FixedDeltaTime() * _Speed, ForceMode2D.Impulse);
         }
 
         private void OnBecameVisible()

@@ -11,10 +11,11 @@ namespace CTJ
 
         public void AttackEnemy()
         {
-            if (_Rigidbody2D == null) { Debug.LogWarningFormat("{0} is Null.", nameof(_Rigidbody2D)); return; }
+            if (_Rigidbody2D == null) { Logger.LogWarningFormat("{0} is Null.", nameof(_Rigidbody2D)); return; }
             _variable_vector2.x = Random.Range(-1.0f, 1.0f);
             _variable_vector2.y = Random.Range(-1.0f, 1.0f);
-            _Rigidbody2D.AddForce(_variable_vector2 * 100.0f, ForceMode2D.Impulse);
+            _Rigidbody2D.AddForce(_variable_vector2 * TimeSystem._FixedDeltaTime() * 1000.0f, ForceMode2D.Impulse);
+            _Rigidbody2D.AddTorque(TimeSystem._FixedDeltaTime() * 1000.0f, ForceMode2D.Impulse);
         }
     }
 }

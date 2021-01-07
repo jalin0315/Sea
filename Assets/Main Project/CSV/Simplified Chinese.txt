@@ -1,9 +1,0 @@
-_Index/Title/Index = Menu // Null
-_Index/Title/Settings = Settings // Null
-_Index/Vehicle = Vehicle // Null
-_Index/Notes = Notes // Null
-_Index/Description = Description // Null
-_Index/Settings = Settings // Null
-_Settings/Music = Music // Null
-_Settings/SoundEffect = Sound Effect // Null
-_Settings/Vibrator = Vibrator // Null

@@ -32,17 +32,13 @@ namespace CTJ
         [HideInInspector] public Status _Status;
         // --- 狀態 ---
         private Vector3 _Scale;
-        [SerializeField] private bool _EnableSpriteRenderers;
         [SerializeField] private SpriteRenderer _SpriteRenderer;
-        [SerializeField] private SpriteRenderer[] _Array_SpriteRenderer;
         private Color _Color;
         [SerializeField] private List<Collider2D> _Collider2D;
         [HideInInspector] public Queue<GameObject> _Queue_GameObject = new Queue<GameObject>();
         [HideInInspector] public float _ScaleMagnification;
         [HideInInspector] public float _Speed;
         private float _RotateSpeed;
-        [SerializeField] private bool _EnableOffset;
-        [SerializeField] private float _Offset;
         // --- 巡邏 ---
         private GameObject _WaypointTarget;
         private float _PatrolTime;
@@ -72,10 +68,7 @@ namespace CTJ
         private void OnEnable()
         {
             _Color = Color.white;
-            if (_EnableSpriteRenderers)
-                for (int _i = 0; _i < _Array_SpriteRenderer.Length; _i++)
-                    _Array_SpriteRenderer[_i].color = _Color;
-            else _SpriteRenderer.color = _Color;
+            _SpriteRenderer.color = _Color;
             for (int _i = 0; _i < _Collider2D.Count; _i++) _Collider2D[_i].enabled = true;
         }
 
@@ -99,12 +92,10 @@ namespace CTJ
                 case Screen.Down:
                     break;
                 case Screen.Left:
-                    if (_EnableOffset) _variable_vector3.x = _SpriteRenderer.bounds.min.x + -_Offset;
-                    else _variable_vector3.x = _SpriteRenderer.bounds.min.x;
+                    _variable_vector3.x = _SpriteRenderer.bounds.min.x;
                     break;
                 case Screen.Right:
-                    if (_EnableOffset) _variable_vector3.x = _SpriteRenderer.bounds.max.x + _Offset;
-                    else _variable_vector3.x = _SpriteRenderer.bounds.max.x;
+                    _variable_vector3.x = _SpriteRenderer.bounds.max.x;
                     break;
             }
             transform.position = _variable_vector3;
@@ -335,10 +326,7 @@ namespace CTJ
                     _Color.g -= TimeSystem._DeltaTime() * 2.0f;
                     _Color.b -= TimeSystem._DeltaTime() * 2.0f;
                     _Color.a -= TimeSystem._DeltaTime() * 0.8f;
-                    if (_EnableSpriteRenderers)
-                        for (int _i = 0; _i < _Array_SpriteRenderer.Length; _i++)
-                            _Array_SpriteRenderer[_i].color = _Color;
-                    else _SpriteRenderer.color = _Color;
+                    _SpriteRenderer.color = _Color;
                     if (_Color.a <= 0.0f) { _disable_once = false; EnemyManager._Instance.RecycleAI(_Queue_GameObject, gameObject); return; }
                 }
             }

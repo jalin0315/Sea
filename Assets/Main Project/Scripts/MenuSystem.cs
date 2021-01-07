@@ -19,7 +19,7 @@ namespace CTJ
             Animation,
             MainMenu,
             Index,
-            Submarine,
+            Vehicle,
             Settings,
             Checkpoint,
             InGame,
@@ -36,7 +36,7 @@ namespace CTJ
         [SerializeField] private GameObject _Object_Return;
         [SerializeField] private GameObject _Object_Close;
         [SerializeField] private GameObject _Object_Index;
-        [SerializeField] private GameObject _Object_Submarine;
+        [SerializeField] private GameObject _Object_Vehicle;
         [SerializeField] private GameObject _Object_Settings;
         [SerializeField] private GameObject _Object_InGameMenu;
         [SerializeField] private GameObject _Object_Fold;
@@ -52,8 +52,12 @@ namespace CTJ
         [SerializeField] private Button _Button_Checkpoint01;
         [SerializeField] private Button _Button_Checkpoint02;
         [SerializeField] private Button _Button_Index;
-        [SerializeField] private Button _Button_Submarine;
+        [SerializeField] private Button _Button_Vehicle;
         [SerializeField] private Button _Button_Settings;
+        [SerializeField] private Button _Button_Settings_Music;
+        [SerializeField] private Button _Button_Settings_SoundEffect;
+        [SerializeField] private Button _Button_Settings_Vibration;
+        [SerializeField] private Button _Button_Settings_Language;
         [SerializeField] private Button _Button_Return;
         [SerializeField] private Button _Button_Close;
         [SerializeField] private Button _Button_InGameMenu;
@@ -62,6 +66,27 @@ namespace CTJ
         [SerializeField] private Button _Button_Restart;
         [SerializeField] private Button _Button_Resurrect;
         [Space(20)]
+        [SerializeField] private int _Index_Vehicle;
+        [SerializeField] private Button[] _Array_Button_Vehicles;
+        [SerializeField] private GameObject[] _Array_GameObject_Vehicles_Locked;
+        [SerializeField] private GameObject[] _Array_GameObject_Vehicles_Unlock;
+        [Space(20)]
+        [SerializeField] private Image _Image_Music_Frame;
+        [SerializeField] private Image _Image_SoundEffect_Frame;
+        [SerializeField] private Image _Image_Vibration_Frame;
+        [SerializeField] private Image _Image_Music;
+        [SerializeField] private Image _Image_SoundEffect;
+        [SerializeField] private Image _Image_Vibration;
+        [SerializeField] private Image _Image_Language;
+        [SerializeField] private Sprite _Sprite_UnMute;
+        [SerializeField] private Sprite _Sprite_Mute;
+        [SerializeField] private Sprite _Sprite_Vibration_Enable;
+        [SerializeField] private Sprite _Sprite_Vibration_Disable;
+        [SerializeField] private bool _Enable_Music;
+        [SerializeField] private bool _Enable_SoundEffect;
+        [SerializeField] private bool _Enable_Vibration;
+        [SerializeField] private bool _IsEnglish;
+        /*
         [SerializeField] private Image _Image_Music_Mute;
         [SerializeField] private Image _Image_Music_UnMute;
         [SerializeField] private Image _Image_SoundEffect_Mute;
@@ -71,6 +96,8 @@ namespace CTJ
         [SerializeField] private Image _Image_Handle_Music;
         [SerializeField] private Image _Image_Handle_SoundEffect;
         [SerializeField] private Image _Image_Handle_Vibration;
+        */
+        /*
         [SerializeField] private Sprite _Sprite_Handle_Golden;
         [SerializeField] private Sprite _Sprite_Handle_Silver;
         [SerializeField] private Slider _Slider_Music;
@@ -79,9 +106,12 @@ namespace CTJ
         [SerializeField] private EventTrigger _EventTrigger_Music;
         [SerializeField] private EventTrigger _EventTrigger_SoundEffect;
         [SerializeField] private EventTrigger _EventTrigger_Vibration;
+        */
+        /*
         private bool _IsMusic;
         private bool _IsSoundEffect;
         private bool _IsVibration;
+        */
         [Space(20)]
         [SerializeField] private Text _Text_Prompt;
         [SerializeField] private Text _Text_TitleBar;
@@ -99,8 +129,12 @@ namespace CTJ
             _Button_Checkpoint01.onClick.AddListener(() => OnButtonCheckpoint(4000.0f));
             _Button_Checkpoint02.onClick.AddListener(() => OnButtonCheckpoint(8000.0f));
             _Button_Index.onClick.AddListener(OnButtonIndex);
-            _Button_Submarine.onClick.AddListener(OnButtonSubmarine);
+            _Button_Vehicle.onClick.AddListener(OnButtonVehicle);
             _Button_Settings.onClick.AddListener(OnButtonSettings);
+            _Button_Settings_Music.onClick.AddListener(OnButtonSettingsMusic);
+            _Button_Settings_SoundEffect.onClick.AddListener(OnButtonSettingsSoundEffect);
+            _Button_Settings_Vibration.onClick.AddListener(OnButtonSettingsVibration);
+            _Button_Settings_Language.onClick.AddListener(OnButtonSettingsLanguage);
             _Button_Return.onClick.AddListener(OnButtonReturn);
             _Button_Close.onClick.AddListener(OnButtonClose);
             _Button_InGameMenu.onClick.AddListener(OnButtonInGameMenu);
@@ -109,6 +143,7 @@ namespace CTJ
             _Button_Restart.onClick.AddListener(OnButtonRestart);
             _Button_Resurrect.onClick.AddListener(OnButtonResurrect);
 
+            /*
             _Slider_Music.onValueChanged.AddListener(delegate { OnMusicValueChange(); });
             {
                 EventTrigger.Entry _entry = new EventTrigger.Entry();
@@ -148,15 +183,19 @@ namespace CTJ
                 _entry.callback.AddListener((_data) => { OnVibrationUp((PointerEventData)_data); });
                 _EventTrigger_Vibration.triggers.Add(_entry);
             }
+            */
+            /*
             OnMusicValueChange();
             OnSoundEffectValueChange();
             OnVibrationValueChange();
+            */
         }
         private void Update()
         {
             if (GameManager._InGame) return;
-            Settings();
+            //Settings();
         }
+        /*
         private void Settings()
         {
             if (_Status != Status.Settings) return;
@@ -176,6 +215,7 @@ namespace CTJ
                 else if (_Slider_Vibration.value < 0.5f) _Slider_Vibration.value -= TimeSystem._DeltaTime() * 10.0f;
             }
         }
+        */
 
         private void OnButtonPlay()
         {
@@ -193,13 +233,81 @@ namespace CTJ
         {
             StateChange(Status.Index);
         }
-        private void OnButtonSubmarine()
+        private void OnButtonVehicle()
         {
-            StateChange(Status.Submarine);
+            StateChange(Status.Vehicle);
         }
         private void OnButtonSettings()
         {
             StateChange(Status.Settings);
+        }
+        private void OnButtonSettingsMusic()
+        {
+            if (_Enable_Music)
+            {
+                AudioSystem._Instance.VolumeChangeMusic(0.0f);
+                _Image_Music_Frame.color = Color.gray;
+                _Image_Music.sprite = _Sprite_Mute;
+                _Enable_Music = false;
+                return;
+            }
+            else
+            {
+                AudioSystem._Instance.VolumeChangeMusic(1.0f);
+                _Image_Music_Frame.color = Color.white;
+                _Image_Music.sprite = _Sprite_UnMute;
+                _Enable_Music = true;
+            }
+        }
+        private void OnButtonSettingsSoundEffect()
+        {
+            if (_Enable_SoundEffect)
+            {
+                AudioSystem._Instance.VolumeChangeSoundEffect(0.0f);
+                _Image_SoundEffect_Frame.color = Color.gray;
+                _Image_SoundEffect.sprite = _Sprite_Mute;
+                _Enable_SoundEffect = false;
+                return;
+            }
+            else
+            {
+                AudioSystem._Instance.VolumeChangeSoundEffect(1.0f);
+                _Image_SoundEffect_Frame.color = Color.white;
+                _Image_SoundEffect.sprite = _Sprite_UnMute;
+                _Enable_SoundEffect = true;
+            }
+        }
+        private void OnButtonSettingsVibration()
+        {
+            if (_Enable_Vibration)
+            {
+                GameManager._Instance._Enable_Vibrate = false;
+                _Image_Vibration_Frame.color = Color.gray;
+                _Image_Vibration.sprite = _Sprite_Vibration_Disable;
+                _Enable_Vibration = false;
+                return;
+            }
+            else
+            {
+                GameManager._Instance._Enable_Vibrate = true;
+                _Image_Vibration_Frame.color = Color.white;
+                _Image_Vibration.sprite = _Sprite_Vibration_Enable;
+                _Enable_Vibration = true;
+            }
+        }
+        private void OnButtonSettingsLanguage()
+        {
+            if (_IsEnglish)
+            {
+                LeanLocalization.CurrentLanguage = "Traditional Chinese";
+                _IsEnglish = false;
+                return;
+            }
+            else
+            {
+                LeanLocalization.CurrentLanguage = "English";
+                _IsEnglish = true;
+            }
         }
         private void OnButtonReturn()
         {
@@ -236,8 +344,10 @@ namespace CTJ
                 Advertising.ShowRewardedAd(RewardedAdNetwork.AdMob, AdPlacement.Default);
                 AdvertisingEvent._Reward_Resurrect = true;
             }
+            else Logger.LogWarning("Reward advertising not ready yet.");
         }
 
+        /*
         private void OnMusicValueChange()
         {
             AudioSystem._Instance.VolumeChangeMusic(_Slider_Music.value);
@@ -335,6 +445,7 @@ namespace CTJ
         {
             _IsVibration = false;
         }
+        */
 
         public void Test()
         {
@@ -358,7 +469,7 @@ namespace CTJ
                         _Object_Return.SetActive(false);
                         _Object_Close.SetActive(false);
                         _Object_Index.SetActive(false);
-                        _Object_Submarine.SetActive(false);
+                        _Object_Vehicle.SetActive(false);
                         _Object_Settings.SetActive(false);
                         _Object_InGameMenu.SetActive(false);
                         _Object_Fold.SetActive(false);
@@ -381,7 +492,7 @@ namespace CTJ
                         _Object_Return.SetActive(false);
                         _Object_Close.SetActive(false);
                         _Object_Index.SetActive(false);
-                        _Object_Submarine.SetActive(false);
+                        _Object_Vehicle.SetActive(false);
                         _Object_Settings.SetActive(false);
                         _Object_InGameMenu.SetActive(false);
                         _Object_Fold.SetActive(false);
@@ -404,7 +515,7 @@ namespace CTJ
                         _Object_Return.SetActive(false);
                         _Object_Close.SetActive(true);
                         _Object_Index.SetActive(true);
-                        _Object_Submarine.SetActive(false);
+                        _Object_Vehicle.SetActive(false);
                         _Object_Settings.SetActive(false);
                         _Object_InGameMenu.SetActive(false);
                         _Object_Fold.SetActive(false);
@@ -418,17 +529,17 @@ namespace CTJ
                         Advertising.ShowBannerAd(BannerAdPosition.Bottom);
                     }
                     break;
-                case Status.Submarine:
+                case Status.Vehicle:
                     {
                         _Object_Play.SetActive(false);
                         _Object_Prompt.SetActive(false);
                         _Object_Checkpoint.SetActive(false);
                         _Object_Menu.SetActive(true);
-                        _Object_MenuGroup.SetActive(false);
-                        _Object_Return.SetActive(false);
+                        _Object_MenuGroup.SetActive(true);
+                        _Object_Return.SetActive(true);
                         _Object_Close.SetActive(false);
                         _Object_Index.SetActive(false);
-                        _Object_Submarine.SetActive(true);
+                        _Object_Vehicle.SetActive(true);
                         _Object_Settings.SetActive(false);
                         _Object_InGameMenu.SetActive(false);
                         _Object_Fold.SetActive(false);
@@ -451,7 +562,7 @@ namespace CTJ
                         _Object_Return.SetActive(true);
                         _Object_Close.SetActive(false);
                         _Object_Index.SetActive(false);
-                        _Object_Submarine.SetActive(false);
+                        _Object_Vehicle.SetActive(false);
                         _Object_Settings.SetActive(true);
                         _Object_InGameMenu.SetActive(false);
                         _Object_Fold.SetActive(false);
@@ -475,7 +586,7 @@ namespace CTJ
                         _Object_Return.SetActive(false);
                         _Object_Close.SetActive(false);
                         _Object_Index.SetActive(false);
-                        _Object_Submarine.SetActive(false);
+                        _Object_Vehicle.SetActive(false);
                         _Object_Settings.SetActive(false);
                         _Object_InGameMenu.SetActive(false);
                         _Object_Fold.SetActive(false);
@@ -498,7 +609,7 @@ namespace CTJ
                         _Object_Return.SetActive(false);
                         _Object_Close.SetActive(false);
                         _Object_Index.SetActive(false);
-                        _Object_Submarine.SetActive(false);
+                        _Object_Vehicle.SetActive(false);
                         _Object_Settings.SetActive(false);
                         _Object_InGameMenu.SetActive(true);
                         _Object_Fold.SetActive(false);
@@ -522,7 +633,7 @@ namespace CTJ
                         _Object_Return.SetActive(false);
                         _Object_Close.SetActive(false);
                         _Object_Index.SetActive(false);
-                        _Object_Submarine.SetActive(false);
+                        _Object_Vehicle.SetActive(false);
                         _Object_Settings.SetActive(false);
                         _Object_InGameMenu.SetActive(false);
                         _Object_Fold.SetActive(true);
@@ -546,7 +657,7 @@ namespace CTJ
                         _Object_Return.SetActive(false);
                         _Object_Close.SetActive(false);
                         _Object_Index.SetActive(false);
-                        _Object_Submarine.SetActive(false);
+                        _Object_Vehicle.SetActive(false);
                         _Object_Settings.SetActive(false);
                         _Object_InGameMenu.SetActive(false);
                         _Object_Fold.SetActive(false);
@@ -556,14 +667,13 @@ namespace CTJ
                         _Object_ResurrectTotal.SetActive(true);
                         //_Object_PropTime.SetActive(null);
                         _Object_Death.SetActive(true);
-                        GameManager._Instance.GameState(false);
                         if (GameManager._Instance._ResurrectTotal <= 0) _Button_Resurrect.interactable = false;
                         else _Button_Resurrect.interactable = true;
                         Advertising.ShowBannerAd(BannerAdPosition.Bottom);
                     }
                     break;
                 default:
-                    Debug.LogWarningFormat("StateChange({0}) is Error!", _status);
+                    Logger.LogWarningFormat("StateChange({0}) is Error!", _status);
                     break;
             }
         }
