@@ -53,6 +53,7 @@ namespace CTJ
         [SerializeField] private Button _Button_Checkpoint02;
         [SerializeField] private Button _Button_Index;
         [SerializeField] private Button _Button_Vehicle;
+        [SerializeField] private Button[] _Array_Button_Vehicles;
         [SerializeField] private Button _Button_Settings;
         [SerializeField] private Button _Button_Settings_Music;
         [SerializeField] private Button _Button_Settings_SoundEffect;
@@ -66,10 +67,15 @@ namespace CTJ
         [SerializeField] private Button _Button_Restart;
         [SerializeField] private Button _Button_Resurrect;
         [Space(20)]
-        [SerializeField] private int _Index_Vehicle;
-        [SerializeField] private Button[] _Array_Button_Vehicles;
+        [SerializeField] private Image[] _Array_Image_Vehicles;
+        [SerializeField] private Animator _Animator_Vehicles;
+        [SerializeField] private int _Index_Vehicle = -1;
+        [SerializeField] private bool[] _Array_Vehicles_Unlock;
         [SerializeField] private GameObject[] _Array_GameObject_Vehicles_Locked;
         [SerializeField] private GameObject[] _Array_GameObject_Vehicles_Unlock;
+        [SerializeField] private SpriteRenderer _SpriteRenderer_Player;
+        [SerializeField] private SpriteRenderer _SpriteRenderer_AnimationPlayer;
+        [SerializeField] private SpriteRenderer _SpriteRenderer_AnimationPlayer_WaterReflect;
         [Space(20)]
         [SerializeField] private Image _Image_Music_Frame;
         [SerializeField] private Image _Image_SoundEffect_Frame;
@@ -117,6 +123,8 @@ namespace CTJ
         [SerializeField] private Text _Text_TitleBar;
         [SerializeField] private LeanLocalizedText _LLT_TitleBar;
         public Text _Text_ResurrectTotal;
+        // Variable
+        private Vector2 _variable_vector2;
 
         private void Awake() => _Instance = this;
 
@@ -130,6 +138,11 @@ namespace CTJ
             _Button_Checkpoint02.onClick.AddListener(() => OnButtonCheckpoint(8000.0f));
             _Button_Index.onClick.AddListener(OnButtonIndex);
             _Button_Vehicle.onClick.AddListener(OnButtonVehicle);
+            for (int _i = 0; _i < _Array_Button_Vehicles.Length; _i++)
+            {
+                int _j = _i;
+                _Array_Button_Vehicles[_i].onClick.AddListener(() => OnButtonVehicleSelected(_j));
+            }
             _Button_Settings.onClick.AddListener(OnButtonSettings);
             _Button_Settings_Music.onClick.AddListener(OnButtonSettingsMusic);
             _Button_Settings_SoundEffect.onClick.AddListener(OnButtonSettingsSoundEffect);
@@ -236,6 +249,12 @@ namespace CTJ
         private void OnButtonVehicle()
         {
             StateChange(Status.Vehicle);
+            Vehicle();
+        }
+        private void OnButtonVehicleSelected(int _index)
+        {
+            _Index_Vehicle = _index;
+            VehicleChange();
         }
         private void OnButtonSettings()
         {
@@ -345,6 +364,66 @@ namespace CTJ
                 AdvertisingEvent._Reward_Resurrect = true;
             }
             else Logger.LogWarning("Reward advertising not ready yet.");
+        }
+
+        private void Vehicle()
+        {
+            // 檢查所有載具狀態。
+            for (int _i = 0; _i < _Array_Vehicles_Unlock.Length; _i++)
+            {
+                if (_Array_Vehicles_Unlock[_i])
+                {
+                    _Array_Button_Vehicles[_i].interactable = true;
+                    _Array_GameObject_Vehicles_Locked[_i].SetActive(false);
+                    _Array_GameObject_Vehicles_Unlock[_i].SetActive(true);
+                }
+                else
+                {
+                    _Array_Button_Vehicles[_i].interactable = false;
+                    _Array_GameObject_Vehicles_Locked[_i].SetActive(true);
+                    _Array_GameObject_Vehicles_Unlock[_i].SetActive(false);
+                }
+            }
+            // 檢查如果當前的已選擇載具為空值，則自動順位選擇第一輛解鎖載具。
+            for (int _i = 0; _i < _Array_Vehicles_Unlock.Length; _i++)
+            {
+                if (_Index_Vehicle == -1)
+                {
+                    if (_Array_Vehicles_Unlock[_i]) { _Index_Vehicle = _i; break; }
+                    else continue;
+                }
+                else break;
+            }
+            VehicleChange();
+        }
+        private void VehicleChange()
+        {
+            _SpriteRenderer_Player.sprite = _Array_Image_Vehicles[_Index_Vehicle].sprite;
+            Player._Instance._Sprite_Player = _Array_Image_Vehicles[_Index_Vehicle].sprite;
+            _SpriteRenderer_AnimationPlayer.sprite = _Array_Image_Vehicles[_Index_Vehicle].sprite;
+            _SpriteRenderer_AnimationPlayer_WaterReflect.sprite = _Array_Image_Vehicles[_Index_Vehicle].sprite;
+            _Animator_Vehicles.SetBool("00", false);
+            _Animator_Vehicles.SetBool("01", false);
+            _Animator_Vehicles.SetBool("02", false);
+            _Animator_Vehicles.SetBool("03", false);
+            switch (_Index_Vehicle)
+            {
+                case 0:
+                    _Animator_Vehicles.SetBool("00", true);
+                    break;
+                case 1:
+                    _Animator_Vehicles.SetBool("01", true);
+                    break;
+                case 2:
+                    _Animator_Vehicles.SetBool("02", true);
+                    break;
+                case 3:
+                    _Animator_Vehicles.SetBool("03", true);
+                    break;
+                default:
+                    Logger.LogWarningFormat("{0}: {1}.", nameof(_Index_Vehicle), _Index_Vehicle);
+                    break;
+            }
         }
 
         /*
@@ -549,6 +628,7 @@ namespace CTJ
                         _Object_ResurrectTotal.SetActive(false);
                         _Object_PropTime.SetActive(false);
                         _Object_Death.SetActive(false);
+                        _LLT_TitleBar.TranslationName = "_Index/Title/_Vehicle";
                         Advertising.ShowBannerAd(BannerAdPosition.Bottom);
                     }
                     break;

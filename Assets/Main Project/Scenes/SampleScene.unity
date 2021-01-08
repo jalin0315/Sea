@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 995875}
   - component: {fileID: 995874}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -305,7 +305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.29803923}
   m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -381,7 +381,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1961,24 +1961,36 @@ MonoBehaviour:
   Comment: ' // '
   Cache: 0
   entries:
+  - Name: _Prompt
+    Text: "\u958B\u59CB\u904A\u6232"
   - Name: _Index/Title/Index
-    Text: Menu
+    Text: "\u9078\u55AE"
+  - Name: _Index/Title/_Vehicle
+    Text: "\u8F09\u5177"
   - Name: _Index/Title/Settings
-    Text: Settings
+    Text: "\u8A2D\u5B9A"
   - Name: _Index/Vehicle
-    Text: Vehicle
-  - Name: _Index/Notes
-    Text: Notes
+    Text: "\u8F09\u5177\u9078\u64C7"
   - Name: _Index/Description
-    Text: Description
+    Text: "\u904A\u6232\u8AAA\u660E"
   - Name: _Index/Settings
-    Text: Settings
+    Text: "\u7CFB\u7D71\u8A2D\u5B9A"
+  - Name: _Vehicle/00
+    Text: '*'
+  - Name: _Vehicle/01
+    Text: '*'
+  - Name: _Vehicle/02
+    Text: '*'
+  - Name: _Vehicle/03
+    Text: '*'
   - Name: _Settings/Music
-    Text: Music
+    Text: "\u97F3\u6A02"
   - Name: _Settings/SoundEffect
-    Text: Sound Effect
+    Text: "\u97F3\u6548"
   - Name: _Settings/Vibrator
-    Text: Vibrator
+    Text: "\u9707\u52D5"
+  - Name: _Settings/Language
+    Text: "\u8A9E\u8A00"
 --- !u!1 &268369610
 GameObject:
   m_ObjectHideFlags: 0
@@ -2328,7 +2340,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.29803923}
   m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2745,7 +2757,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ee4021ce59f313499a5cab041f02aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  translationName: 
+  translationName: _Vehicle/03
   FallbackText: Null
 --- !u!114 &376415424
 MonoBehaviour:
@@ -2779,7 +2791,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Null
+  m_Text: '*'
 --- !u!222 &376415425
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2978,7 +2990,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 72dd3af48e57d884c966dc8e0cf131f0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2986,7 +2998,7 @@ SpriteRenderer:
   m_Size: {x: 10.24, y: 10.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &400538474
@@ -4286,7 +4298,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Vehicle
+  m_Text: "\u8F09\u5177\u9078\u64C7"
 --- !u!222 &532983968
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5056,7 +5068,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.29803923}
   m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -5091,6 +5103,7 @@ GameObject:
   - component: {fileID: 609642678}
   - component: {fileID: 609642680}
   - component: {fileID: 609642679}
+  - component: {fileID: 609642681}
   m_Layer: 5
   m_Name: Prompt
   m_TagString: Untagged
@@ -5149,7 +5162,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Null
+  m_Text: "\u958B\u59CB\u904A\u6232"
 --- !u!222 &609642680
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5158,6 +5171,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 609642677}
   m_CullTransparentMesh: 0
+--- !u!114 &609642681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609642677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ee4021ce59f313499a5cab041f02aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  translationName: _Prompt
+  FallbackText: Null
 --- !u!1 &615488769
 GameObject:
   m_ObjectHideFlags: 0
@@ -5393,7 +5420,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &642265208
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5916,7 +5943,7 @@ PlayableDirector:
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
-  m_InitialTime: 6
+  m_InitialTime: 0
   m_SceneBindings:
   - key: {fileID: 6569664686535907225, guid: 6918fcd43d08ae44d802a052f6e873ca, type: 2}
     value: {fileID: 1336024462}
@@ -6065,7 +6092,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Vibrator
+  m_Text: "\u9707\u52D5"
 --- !u!222 &713838128
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6239,15 +6266,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: ca02b340887ac4a4cb9033c563b3d801, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cd014b8bb336cf348bab932a9193873a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 42.27, y: 15.479737}
+  m_Size: {x: 10.24, y: 10.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &719307361
@@ -6321,7 +6348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -8233,6 +8260,11 @@ MonoBehaviour:
   _Button_Checkpoint02: {fileID: 951564227}
   _Button_Index: {fileID: 1482906710}
   _Button_Vehicle: {fileID: 863382345}
+  _Array_Button_Vehicles:
+  - {fileID: 21772598}
+  - {fileID: 1546456406}
+  - {fileID: 121733575}
+  - {fileID: 1007739564}
   _Button_Settings: {fileID: 840248452}
   _Button_Settings_Music: {fileID: 2055805656}
   _Button_Settings_SoundEffect: {fileID: 1710604369}
@@ -8245,12 +8277,14 @@ MonoBehaviour:
   _Button_ReturnMainMenu: {fileID: 587377919}
   _Button_Restart: {fileID: 680432910}
   _Button_Resurrect: {fileID: 1567657240}
-  _Index_Vehicle: 0
-  _Array_Button_Vehicles:
-  - {fileID: 21772598}
-  - {fileID: 1546456406}
-  - {fileID: 121733575}
-  - {fileID: 1007739564}
+  _Array_Image_Vehicles:
+  - {fileID: 268458304}
+  - {fileID: 1485593028}
+  - {fileID: 1624192876}
+  - {fileID: 1401147488}
+  _Animator_Vehicles: {fileID: 1661578798}
+  _Index_Vehicle: -1
+  _Array_Vehicles_Unlock: 00010101
   _Array_GameObject_Vehicles_Locked:
   - {fileID: 1022764358}
   - {fileID: 727554090}
@@ -8261,6 +8295,9 @@ MonoBehaviour:
   - {fileID: 250044594}
   - {fileID: 1338683822}
   - {fileID: 810946407}
+  _SpriteRenderer_Player: {fileID: 1448925600}
+  _SpriteRenderer_AnimationPlayer: {fileID: 400538473}
+  _SpriteRenderer_AnimationPlayer_WaterReflect: {fileID: 719307360}
   _Image_Music_Frame: {fileID: 2055805657}
   _Image_SoundEffect_Frame: {fileID: 1710604370}
   _Image_Vibration_Frame: {fileID: 1396046100}
@@ -8994,7 +9031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ee4021ce59f313499a5cab041f02aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  translationName: 
+  translationName: _Vehicle/00
   FallbackText: Null
 --- !u!114 &1006609591
 MonoBehaviour:
@@ -9028,7 +9065,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Null
+  m_Text: '*'
 --- !u!222 &1006609592
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9169,7 +9206,7 @@ GameObject:
   - component: {fileID: 1009591816}
   - component: {fileID: 1009591815}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9289,7 +9326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -10125,7 +10162,7 @@ GameObject:
   - component: {fileID: 1110550687}
   - component: {fileID: 1110550686}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10769,7 +10806,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Description
+  m_Text: "\u904A\u6232\u8AAA\u660E"
 --- !u!222 &1164128652
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11419,7 +11456,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Music
+  m_Text: "\u97F3\u6A02"
 --- !u!222 &1238202544
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12977,24 +13014,36 @@ MonoBehaviour:
   Comment: ' // '
   Cache: 0
   entries:
+  - Name: _Prompt
+    Text: "\u958B\u59CB\u904A\u6232"
   - Name: _Index/Title/Index
     Text: "\u9078\u55AE"
+  - Name: _Index/Title/_Vehicle
+    Text: "\u8F09\u5177"
   - Name: _Index/Title/Settings
     Text: "\u8A2D\u5B9A"
   - Name: _Index/Vehicle
-    Text: "\u8F09\u5177"
-  - Name: _Index/Notes
-    Text: "\u7B46\u8A18"
+    Text: "\u8F09\u5177\u9078\u64C7"
   - Name: _Index/Description
-    Text: "\u8AAA\u660E"
+    Text: "\u904A\u6232\u8AAA\u660E"
   - Name: _Index/Settings
-    Text: "\u8A2D\u5B9A"
+    Text: "\u7CFB\u7D71\u8A2D\u5B9A"
+  - Name: _Vehicle/00
+    Text: '*'
+  - Name: _Vehicle/01
+    Text: '*'
+  - Name: _Vehicle/02
+    Text: '*'
+  - Name: _Vehicle/03
+    Text: '*'
   - Name: _Settings/Music
     Text: "\u97F3\u6A02"
   - Name: _Settings/SoundEffect
     Text: "\u97F3\u6548"
   - Name: _Settings/Vibrator
     Text: "\u9707\u52D5"
+  - Name: _Settings/Language
+    Text: "\u8A9E\u8A00"
 --- !u!1 &1336024457
 GameObject:
   m_ObjectHideFlags: 0
@@ -13773,7 +13822,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ca02b340887ac4a4cb9033c563b3d801, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 72dd3af48e57d884c966dc8e0cf131f0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -14469,7 +14518,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 4
-  m_Sprite: {fileID: 21300000, guid: 500f216d83ea1c842b6aef32c377b1d2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 72dd3af48e57d884c966dc8e0cf131f0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -14575,7 +14624,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Animator: {fileID: 1448925606}
   _SpriteRenderer: {fileID: 1448925600}
-  _Sprite_Player: {fileID: 21300000, guid: 500f216d83ea1c842b6aef32c377b1d2, type: 3}
+  _Sprite_Player: {fileID: 21300000, guid: cd014b8bb336cf348bab932a9193873a, type: 3}
   _Slider_MaxHealth: {fileID: 457411462}
   _Slider_Health: {fileID: 1302497184}
   _Image_Health: {fileID: 696022147}
@@ -14688,7 +14737,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1481165512
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16820,7 +16869,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.29803923}
   m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -17022,7 +17071,7 @@ PlayableDirector:
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
-  m_InitialTime: 6
+  m_InitialTime: 0
   m_SceneBindings:
   - key: {fileID: 1590150146236001796, guid: 506a920ba34ad5746a697e5084a2a6dc, type: 2}
     value: {fileID: 642265207}
@@ -17121,6 +17170,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1661578797}
+  - component: {fileID: 1661578798}
   m_Layer: 5
   m_Name: Vehicle
   m_TagString: Untagged
@@ -17151,6 +17201,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -100}
   m_SizeDelta: {x: 0, y: -200}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &1661578798
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1661578796}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c58c094c8e3bb6943bebd081d9ba383d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1662147078
 GameObject:
   m_ObjectHideFlags: 0
@@ -18049,7 +18118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ee4021ce59f313499a5cab041f02aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  translationName: 
+  translationName: _Vehicle/01
   FallbackText: Null
 --- !u!114 &1715076095
 MonoBehaviour:
@@ -18083,7 +18152,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Null
+  m_Text: '*'
 --- !u!222 &1715076096
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -25997,7 +26066,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ee4021ce59f313499a5cab041f02aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  translationName: 
+  translationName: _Settings/Language
   FallbackText: Null
 --- !u!114 &2006056757
 MonoBehaviour:
@@ -26031,7 +26100,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Null
+  m_Text: "\u8A9E\u8A00"
 --- !u!222 &2006056758
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -26200,7 +26269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ee4021ce59f313499a5cab041f02aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  translationName: 
+  translationName: _Vehicle/02
   FallbackText: Null
 --- !u!114 &2021553193
 MonoBehaviour:
@@ -26234,7 +26303,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Null
+  m_Text: '*'
 --- !u!222 &2021553194
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -26255,7 +26324,7 @@ GameObject:
   - component: {fileID: 2024436130}
   - component: {fileID: 2024436129}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26369,7 +26438,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -27071,7 +27140,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Sound Effect
+  m_Text: "\u97F3\u6548"
 --- !u!222 &2094918344
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -27201,7 +27270,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Settings
+  m_Text: "\u7CFB\u7D71\u8A2D\u5B9A"
 --- !u!222 &2103811838
 CanvasRenderer:
   m_ObjectHideFlags: 0
