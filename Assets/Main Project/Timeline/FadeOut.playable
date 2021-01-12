@@ -131,7 +131,7 @@ MonoBehaviour:
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: 4514109575799327809}
-    m_Duration: 1.9833333333333334
+    m_Duration: 1
     m_TimeScale: 1
     m_ParentTrack: {fileID: -4644861270465821682}
     m_EaseInDuration: 0
@@ -443,8 +443,8 @@ MonoBehaviour:
   - {fileID: 8300210812946747013}
   - {fileID: 5929575308348831005}
   - {fileID: -4644861270465821682}
-  - {fileID: -6554754713867102844}
   - {fileID: 3108133993024087550}
+  - {fileID: -6554754713867102844}
   - {fileID: -5811725129836095892}
   m_FixedDuration: 0
   m_EditorSettings:

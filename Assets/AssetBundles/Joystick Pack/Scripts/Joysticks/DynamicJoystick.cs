@@ -9,7 +9,7 @@ public class DynamicJoystick : Joystick
 
     [SerializeField] private float moveThreshold = 1;
 
-    public void Initialize()
+    public void Initialization()
     {
         background.gameObject.SetActive(false);
         input = Vector2.zero;

@@ -4,35 +4,39 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-public class Timeline : MonoBehaviour
+namespace CTJ
 {
-    public static Timeline _Instance;
-    public PlayableDirector _Prelude;
-    public PlayableDirector _Idle;
-    public PlayableDirector _Opening;
-    public PlayableDirector _FadeIn;
-    public PlayableDirector _FadeOut;
-    public PlayableDirector _ReturnMainMenu;
-    public bool _SkipEnable;
-    [SerializeField] private AudioSource[] _AudioSource;
-
-    private void Awake()
+    public class Timeline : MonoBehaviour
     {
-        _Instance = this;
-    }
+        public static Timeline _Instance;
+        public PlayableDirector _Prelude;
+        public PlayableDirector _Idle;
+        public PlayableDirector _Opening;
+        public PlayableDirector _FadeIn;
+        public PlayableDirector _FadeOut;
+        public PlayableDirector _ReturnMainMenu;
+        public PlayableDirector _End;
+        public bool _SkipEnable;
+        [SerializeField] private AudioSource[] _AudioSource;
 
-    public void SkipEnable(bool _enable) => _SkipEnable = _enable;
-    public void AudioEnable(bool _enable)
-    {
-        if (_enable)
+        private void Awake()
         {
-            for (int _i = 0; _i < _AudioSource.Length; _i++) _AudioSource[_i].volume = 1.0f;
-            return;
+            _Instance = this;
         }
-        if (!_enable)
+
+        public void SkipEnable(bool _enable) => _SkipEnable = _enable;
+        public void AudioEnable(bool _enable)
         {
-            for (int _i = 0; _i < _AudioSource.Length; _i++) _AudioSource[_i].volume = 0.0f;
-            return;
+            if (_enable)
+            {
+                for (int _i = 0; _i < _AudioSource.Length; _i++) _AudioSource[_i].volume = 1.0f;
+                return;
+            }
+            if (!_enable)
+            {
+                for (int _i = 0; _i < _AudioSource.Length; _i++) _AudioSource[_i].volume = 0.0f;
+                return;
+            }
         }
     }
 }

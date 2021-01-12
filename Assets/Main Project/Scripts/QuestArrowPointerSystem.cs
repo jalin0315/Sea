@@ -53,7 +53,7 @@ public class QuestArrowPointerSystem : MonoBehaviour
             _angle = (Mathf.Atan2(_dir.y, _dir.x) * Mathf.Rad2Deg) % 360;
             _PointerRectTransform[_i].localEulerAngles = new Vector3(_PointerRectTransform[_i].localEulerAngles.x, _PointerRectTransform[_i].localEulerAngles.y, _angle);
 
-            _border_size = 60.0f;
+            _border_size = 200.0f;
             _target_position_screen_point = _Camera.WorldToScreenPoint(_TargetPosition[_i].position);
             _is_off_screen = _target_position_screen_point.x <= _border_size || _target_position_screen_point.x >= Screen.width - _border_size || _target_position_screen_point.y <= _border_size || _target_position_screen_point.y >= Screen.height - _border_size;
 

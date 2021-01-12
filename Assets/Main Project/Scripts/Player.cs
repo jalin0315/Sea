@@ -188,6 +188,8 @@ namespace CTJ
             {
                 if (Advertising.IsRewardedAdReady())
                 {
+                    MovementSystem._Instance._DynamicJoystick.Initialization();
+                    MovementSystem._Instance.Initialization();
                     Advertising.ShowRewardedAd();
                     AdvertisingEvent._Reward_MaxHealth = true;
                 }
@@ -305,7 +307,7 @@ namespace CTJ
         {
             GameManager._InGame = false;
             MenuSystem._Instance.StateChange(MenuSystem.Status.Animation);
-            MovementSystem._Instance._DynamicJoystick.Initialize();
+            MovementSystem._Instance._DynamicJoystick.Initialization();
             _Animator.SetBool("Death", true);
             _ParticleSystem_Death.Play();
         }

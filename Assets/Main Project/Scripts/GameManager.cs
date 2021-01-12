@@ -95,11 +95,9 @@ namespace CTJ
                     };
                 }
             }
-            if (_InGame)
-            {
-                Diving();
-                ZoneTrigger();
-            }
+            if (!_InGame) return;
+            Diving();
+            ZoneTrigger();
         }
 
         private void Diving()
@@ -287,7 +285,11 @@ namespace CTJ
                         case 11000:
                             // Command
                             // Game End
-                            if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
+                            MovementSystem._Instance._DynamicJoystick.Initialization();
+                            MenuSystem._Instance.StateChange(MenuSystem.Status.Animation);
+                            TimeSystem.TimeScale(1.0f);
+                            _InGame = false;
+                            Timeline._Instance._End.Play();
                             break;
                         default:
                             Logger.LogWarningFormat("階層錯誤！當前層級數 {0}", _ZoneClassPoints[_i]);
@@ -366,7 +368,8 @@ namespace CTJ
         public void PauseGame()
         {
             _InGame = false;
-            _Joystick.background.gameObject.SetActive(false);
+            MovementSystem._Instance._DynamicJoystick.Initialization();
+            MovementSystem._Instance.Initialization();
         }
         public void GameState(bool _in_game)
         {
@@ -380,7 +383,7 @@ namespace CTJ
             else
             {
                 TimeSystem.TimeScale(0.0f);
-                MovementSystem._Instance._DynamicJoystick.Initialize();
+                MovementSystem._Instance._DynamicJoystick.Initialization();
             }
         }
         public void ResurrectControl(int _variable)

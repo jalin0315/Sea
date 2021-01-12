@@ -1,7 +1,6 @@
 ﻿using EasyMobile;
 using GoogleMobileAdsMediationTestSuite.Api;
 using Lean.Localization;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -73,9 +72,12 @@ namespace CTJ
         [SerializeField] private bool[] _Array_Vehicles_Unlock;
         [SerializeField] private GameObject[] _Array_GameObject_Vehicles_Locked;
         [SerializeField] private GameObject[] _Array_GameObject_Vehicles_Unlock;
+        [SerializeField] private GameObject[] _Array_GameObject_PromptRaycastTarget;
+        [SerializeField] private GameObject[] _Array_GameObject_UnlockPrompt;
         [SerializeField] private SpriteRenderer _SpriteRenderer_Player;
         [SerializeField] private SpriteRenderer _SpriteRenderer_AnimationPlayer;
         [SerializeField] private SpriteRenderer _SpriteRenderer_AnimationPlayer_WaterReflect;
+        [SerializeField] private SpriteRenderer _SpriteRenderer_EndPlayer;
         [Space(20)]
         [SerializeField] private Image _Image_Music_Frame;
         [SerializeField] private Image _Image_SoundEffect_Frame;
@@ -123,8 +125,6 @@ namespace CTJ
         [SerializeField] private Text _Text_TitleBar;
         [SerializeField] private LeanLocalizedText _LLT_TitleBar;
         public Text _Text_ResurrectTotal;
-        // Variable
-        private Vector2 _variable_vector2;
 
         private void Awake() => _Instance = this;
 
@@ -232,10 +232,12 @@ namespace CTJ
 
         private void OnButtonPlay()
         {
+            AudioSystem._Instance.PlaySoundEffect("Click");
             StateChange(Status.Checkpoint);
         }
         public void OnButtonCheckpoint(float _meter)
         {
+            AudioSystem._Instance.PlaySoundEffect("Click");
             StateChange(Status.Animation);
             GameManager._Meter = _meter;
             GameManager._Instance.FixZoneTrigger();
@@ -244,24 +246,56 @@ namespace CTJ
         }
         private void OnButtonIndex()
         {
+            AudioSystem._Instance.PlaySoundEffect("Click");
             StateChange(Status.Index);
         }
         private void OnButtonVehicle()
         {
+            AudioSystem._Instance.PlaySoundEffect("Click");
+            int _r = Random.Range(0, 2);
+            switch (_r)
+            {
+                case 0:
+                    AudioSystem._Instance.PlaySoundEffect("ChangeSubmarine00");
+                    break;
+                case 1:
+                    AudioSystem._Instance.PlaySoundEffect("ChangeSubmarine01");
+                    break;
+            }
             StateChange(Status.Vehicle);
             Vehicle();
         }
         private void OnButtonVehicleSelected(int _index)
         {
+            int _r = Random.Range(0, 2);
+            switch (_r)
+            {
+                case 0:
+                    AudioSystem._Instance.PlaySoundEffect("ChangeSubmarine00");
+                    break;
+                case 1:
+                    AudioSystem._Instance.PlaySoundEffect("ChangeSubmarine01");
+                    break;
+            }
             _Index_Vehicle = _index;
             VehicleChange();
         }
+        public void OnButtonPromptRaycastTargetDown(int _index)
+        {
+            _Array_GameObject_UnlockPrompt[_index].SetActive(true);
+        }
+        public void OnButtonPromptRaycastTargetUp(int _index)
+        {
+            _Array_GameObject_UnlockPrompt[_index].SetActive(false);
+        }
         private void OnButtonSettings()
         {
+            AudioSystem._Instance.PlaySoundEffect("Click");
             StateChange(Status.Settings);
         }
         private void OnButtonSettingsMusic()
         {
+            AudioSystem._Instance.PlaySoundEffect("Click");
             if (_Enable_Music)
             {
                 AudioSystem._Instance.VolumeChangeMusic(0.0f);
@@ -280,6 +314,7 @@ namespace CTJ
         }
         private void OnButtonSettingsSoundEffect()
         {
+            AudioSystem._Instance.PlaySoundEffect("Click");
             if (_Enable_SoundEffect)
             {
                 AudioSystem._Instance.VolumeChangeSoundEffect(0.0f);
@@ -298,6 +333,7 @@ namespace CTJ
         }
         private void OnButtonSettingsVibration()
         {
+            AudioSystem._Instance.PlaySoundEffect("Click");
             if (_Enable_Vibration)
             {
                 GameManager._Instance._Enable_Vibrate = false;
@@ -316,6 +352,7 @@ namespace CTJ
         }
         private void OnButtonSettingsLanguage()
         {
+            AudioSystem._Instance.PlaySoundEffect("Click");
             if (_IsEnglish)
             {
                 LeanLocalization.CurrentLanguage = "Traditional Chinese";
@@ -330,23 +367,28 @@ namespace CTJ
         }
         private void OnButtonReturn()
         {
+            AudioSystem._Instance.PlaySoundEffect("Click");
             StateChange(Status.Index);
         }
         private void OnButtonClose()
         {
+            AudioSystem._Instance.PlaySoundEffect("Click");
             StateChange(Status.MainMenu);
         }
         private void OnButtonInGameMenu()
         {
+            AudioSystem._Instance.PlaySoundEffect("Click");
             StateChange(Status.InGameMenu);
         }
         private void OnButtonFold()
         {
+            AudioSystem._Instance.PlaySoundEffect("Click");
             if (_Status == Status.InGameMenu) StateChange(Status.InGame);
             else StateChange(Status.MainMenu);
         }
         private void OnButtonReturnMainMenu()
         {
+            AudioSystem._Instance.PlaySoundEffect("Click");
             StateChange(Status.Animation);
             TimeSystem.TimeScale(1.0f);
             GameManager._InGame = false;
@@ -354,10 +396,12 @@ namespace CTJ
         }
         private void OnButtonRestart()
         {
+            AudioSystem._Instance.PlaySoundEffect("Click");
             OnButtonReturnMainMenu();
         }
         private void OnButtonResurrect()
         {
+            AudioSystem._Instance.PlaySoundEffect("Click");
             if (Advertising.IsRewardedAdReady(RewardedAdNetwork.AdMob, AdPlacement.Default))
             {
                 Advertising.ShowRewardedAd(RewardedAdNetwork.AdMob, AdPlacement.Default);
@@ -376,12 +420,16 @@ namespace CTJ
                     _Array_Button_Vehicles[_i].interactable = true;
                     _Array_GameObject_Vehicles_Locked[_i].SetActive(false);
                     _Array_GameObject_Vehicles_Unlock[_i].SetActive(true);
+                    _Array_GameObject_PromptRaycastTarget[_i].SetActive(false);
+                    _Array_GameObject_UnlockPrompt[_i].SetActive(false);
                 }
                 else
                 {
                     _Array_Button_Vehicles[_i].interactable = false;
                     _Array_GameObject_Vehicles_Locked[_i].SetActive(true);
                     _Array_GameObject_Vehicles_Unlock[_i].SetActive(false);
+                    _Array_GameObject_PromptRaycastTarget[_i].SetActive(true);
+                    _Array_GameObject_UnlockPrompt[_i].SetActive(false);
                 }
             }
             // 檢查如果當前的已選擇載具為空值，則自動順位選擇第一輛解鎖載具。
@@ -402,6 +450,7 @@ namespace CTJ
             Player._Instance._Sprite_Player = _Array_Image_Vehicles[_Index_Vehicle].sprite;
             _SpriteRenderer_AnimationPlayer.sprite = _Array_Image_Vehicles[_Index_Vehicle].sprite;
             _SpriteRenderer_AnimationPlayer_WaterReflect.sprite = _Array_Image_Vehicles[_Index_Vehicle].sprite;
+            _SpriteRenderer_EndPlayer.sprite = _Array_Image_Vehicles[_Index_Vehicle].sprite;
             _Animator_Vehicles.SetBool("00", false);
             _Animator_Vehicles.SetBool("01", false);
             _Animator_Vehicles.SetBool("02", false);
@@ -613,7 +662,7 @@ namespace CTJ
                         _Object_Play.SetActive(false);
                         _Object_Prompt.SetActive(false);
                         _Object_Checkpoint.SetActive(false);
-                        _Object_Menu.SetActive(true);
+                        _Object_Menu.SetActive(false);
                         _Object_MenuGroup.SetActive(true);
                         _Object_Return.SetActive(true);
                         _Object_Close.SetActive(false);
