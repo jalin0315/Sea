@@ -3,25 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GooglePlayUserStatus : MonoBehaviour
+namespace CTJ
 {
-    private void OnEnable()
+    public class GooglePlayUserStatus : MonoBehaviour
     {
-        GameServices.UserLoginSucceeded += OnUserLoginSucceeded;
-        GameServices.UserLoginFailed += OnUserLoginFailed;
-    }
-    private void OnDisable()
-    {
-        GameServices.UserLoginSucceeded -= OnUserLoginSucceeded;
-        GameServices.UserLoginFailed -= OnUserLoginFailed;
-    }
+        private void OnEnable()
+        {
+            GameServices.UserLoginSucceeded += OnUserLoginSucceeded;
+            GameServices.UserLoginFailed += OnUserLoginFailed;
+        }
+        private void OnDisable()
+        {
+            GameServices.UserLoginSucceeded -= OnUserLoginSucceeded;
+            GameServices.UserLoginFailed -= OnUserLoginFailed;
+        }
 
-    private void OnUserLoginSucceeded()
-    {
-        Debug.LogWarning("User logged in successfully.");
-    }
-    private void OnUserLoginFailed()
-    {
-        Debug.LogWarning("User login failed.");
+        private void OnUserLoginSucceeded()
+        {
+            Logger.LogWarning("User logged in successfully.");
+        }
+        private void OnUserLoginFailed()
+        {
+            Logger.LogWarning("User login failed.");
+        }
     }
 }

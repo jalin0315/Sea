@@ -16,30 +16,35 @@ namespace CTJ
         public enum Status
         {
             Animation,
+            PlayMenu,
             MainMenu,
             Index,
             Vehicle,
             Settings,
-            Checkpoint,
             InGame,
             InGameMenu,
+            InGameSettings,
             DeathMenu
         }
         public Status _Status;
         [Space(20)]
         [SerializeField] private GameObject _Object_Play;
-        [SerializeField] private GameObject _Object_Prompt;
-        [SerializeField] private GameObject _Object_Checkpoint;
+        [SerializeField] private GameObject _Object_Cancel;
+        [SerializeField] private GameObject _Object_PlayMenu;
+        [SerializeField] private GameObject _Object_PlayMenu_01;
+        [SerializeField] private GameObject _Object_PlayMenu_02;
+        [SerializeField] private GameObject _Object_PlayMenu_Lock_01;
+        [SerializeField] private GameObject _Object_PlayMenu_Lock_02;
         [SerializeField] private GameObject _Object_Menu;
         [SerializeField] private GameObject _Object_MenuGroup;
         [SerializeField] private GameObject _Object_Return;
         [SerializeField] private GameObject _Object_Close;
         [SerializeField] private GameObject _Object_Index;
+        [SerializeField] private GameObject _Object_Achievement;
         [SerializeField] private GameObject _Object_Vehicle;
         [SerializeField] private GameObject _Object_Settings;
         [SerializeField] private GameObject _Object_InGameMenu;
-        [SerializeField] private GameObject _Object_Fold;
-        [SerializeField] private GameObject _Object_ReturnMainMenu;
+        [SerializeField] private GameObject _Object_InGame;
         [SerializeField] private GameObject _Object_Depth;
         [SerializeField] private GameObject _Object_Health;
         [SerializeField] private GameObject _Object_ResurrectTotal;
@@ -47,10 +52,15 @@ namespace CTJ
         [SerializeField] private GameObject _Object_Death;
         [Space(20)]
         [SerializeField] private Button _Button_Play;
-        [SerializeField] private Button _Button_Checkpoint00;
-        [SerializeField] private Button _Button_Checkpoint01;
-        [SerializeField] private Button _Button_Checkpoint02;
+        [SerializeField] private Button _Button_Play_00;
+        [SerializeField] private Button _Button_Play_01;
+        [SerializeField] private Button _Button_Play_01_Ad_00;
+        [SerializeField] private Button _Button_Play_02;
+        [SerializeField] private Button _Button_Play_02_Ad_00;
+        [SerializeField] private Button _Button_Play_02_Ad_01;
+        [SerializeField] private Button _Button_Cancel;
         [SerializeField] private Button _Button_Index;
+        [SerializeField] private Button _Button_Achievement;
         [SerializeField] private Button _Button_Vehicle;
         [SerializeField] private Button[] _Array_Button_Vehicles;
         [SerializeField] private Button _Button_Settings;
@@ -61,8 +71,8 @@ namespace CTJ
         [SerializeField] private Button _Button_Return;
         [SerializeField] private Button _Button_Close;
         [SerializeField] private Button _Button_InGameMenu;
-        [SerializeField] private Button _Button_Fold;
         [SerializeField] private Button _Button_ReturnMainMenu;
+        [SerializeField] private Button _Button_InGameSettings;
         [SerializeField] private Button _Button_Restart;
         [SerializeField] private Button _Button_Resurrect;
         [Space(20)]
@@ -93,7 +103,6 @@ namespace CTJ
         [SerializeField] private bool _Enable_Music;
         [SerializeField] private bool _Enable_SoundEffect;
         [SerializeField] private bool _Enable_Vibration;
-        [SerializeField] private bool _IsEnglish;
         /*
         [SerializeField] private Image _Image_Music_Mute;
         [SerializeField] private Image _Image_Music_UnMute;
@@ -121,7 +130,6 @@ namespace CTJ
         private bool _IsVibration;
         */
         [Space(20)]
-        [SerializeField] private Text _Text_Prompt;
         [SerializeField] private Text _Text_TitleBar;
         [SerializeField] private LeanLocalizedText _LLT_TitleBar;
         public Text _Text_ResurrectTotal;
@@ -132,11 +140,14 @@ namespace CTJ
         {
             StateChange(Status.Animation);
             _Button_Play.onClick.AddListener(OnButtonPlay);
-            _Text_Prompt.text = "開始遊戲";
-            _Button_Checkpoint00.onClick.AddListener(() => OnButtonCheckpoint(0.0f));
-            _Button_Checkpoint01.onClick.AddListener(() => OnButtonCheckpoint(4000.0f));
-            _Button_Checkpoint02.onClick.AddListener(() => OnButtonCheckpoint(8000.0f));
+            _Button_Play_00.onClick.AddListener(() => OnButtonPlayIndex(0.0f));
+            _Button_Play_01.onClick.AddListener(() => OnButtonPlayIndex(4000.0f));
+            _Button_Play_01_Ad_00.onClick.AddListener(OnButtonPlay01Ad00);
+            _Button_Play_02_Ad_00.onClick.AddListener(OnButtonPlay02Ad00);
+            _Button_Play_02_Ad_01.onClick.AddListener(OnButtonPlay02Ad01);
+            _Button_Play_02.onClick.AddListener(() => OnButtonPlayIndex(8000.0f));
             _Button_Index.onClick.AddListener(OnButtonIndex);
+            _Button_Achievement.onClick.AddListener(OnButtonAchievement);
             _Button_Vehicle.onClick.AddListener(OnButtonVehicle);
             for (int _i = 0; _i < _Array_Button_Vehicles.Length; _i++)
             {
@@ -151,11 +162,15 @@ namespace CTJ
             _Button_Return.onClick.AddListener(OnButtonReturn);
             _Button_Close.onClick.AddListener(OnButtonClose);
             _Button_InGameMenu.onClick.AddListener(OnButtonInGameMenu);
-            _Button_Fold.onClick.AddListener(OnButtonFold);
+            _Button_Cancel.onClick.AddListener(OnButtonCancel);
             _Button_ReturnMainMenu.onClick.AddListener(OnButtonReturnMainMenu);
+            _Button_InGameSettings.onClick.AddListener(OnButtonInGameSettings);
             _Button_Restart.onClick.AddListener(OnButtonRestart);
             _Button_Resurrect.onClick.AddListener(OnButtonResurrect);
+            Vehicle();
+            Settings();
 
+            #region Old
             /*
             _Slider_Music.onValueChanged.AddListener(delegate { OnMusicValueChange(); });
             {
@@ -202,6 +217,7 @@ namespace CTJ
             OnSoundEffectValueChange();
             OnVibrationValueChange();
             */
+            #endregion
         }
         private void Update()
         {
@@ -233,9 +249,50 @@ namespace CTJ
         private void OnButtonPlay()
         {
             AudioSystem._Instance.PlaySoundEffect("Click");
-            StateChange(Status.Checkpoint);
+            _Object_PlayMenu_01.SetActive(Database.Instance._Play_01 == 1 ? true : false);
+            _Object_PlayMenu_02.SetActive(Database.Instance._Play_02 == 1 ? true : false);
+            _Object_PlayMenu_Lock_01.SetActive(Database.Instance._Play_01 == 0 ? true : false);
+            _Object_PlayMenu_Lock_02.SetActive(Database.Instance._Play_02 == 0 ? true : false);
+            _Button_Play_01.interactable = Database.Instance._Play_01_Unlock_00 == 1 ? true : false;
+            _Button_Play_01_Ad_00.interactable = Database.Instance._Play_01_Unlock_00 == 0 ? true : false;
+            if (Database.Instance._Play_02_Unlock_00 == 1 ? true : false)
+            {
+                if (Database.Instance._Play_02_Unlock_01 == 1 ? true : false) _Button_Play_02.interactable = true;
+                else _Button_Play_02.interactable = false;
+            }
+            else _Button_Play_02.interactable = false;
+            _Button_Play_02_Ad_00.interactable = Database.Instance._Play_02_Unlock_00 == 0 ? true : false;
+            _Button_Play_02_Ad_01.interactable = Database.Instance._Play_02_Unlock_01 == 0 ? true : false;
+            StateChange(Status.PlayMenu);
         }
-        public void OnButtonCheckpoint(float _meter)
+        private void OnButtonPlay01Ad00()
+        {
+            if (Advertising.IsRewardedAdReady())
+            {
+                AdvertisingEvent._Reward_Play_01_Ad_00 = true;
+                Advertising.ShowRewardedAd();
+            }
+            else Logger.LogWarning("Reward advertising not ready yet.");
+        }
+        private void OnButtonPlay02Ad00()
+        {
+            if (Advertising.IsRewardedAdReady())
+            {
+                AdvertisingEvent._Reward_Play_02_Ad_00 = true;
+                Advertising.ShowRewardedAd();
+            }
+            else Logger.LogWarning("Reward advertising not ready yet.");
+        }
+        private void OnButtonPlay02Ad01()
+        {
+            if (Advertising.IsRewardedAdReady())
+            {
+                AdvertisingEvent._Reward_Play_02_Ad_01 = true;
+                Advertising.ShowRewardedAd();
+            }
+            else Logger.LogWarning("Reward advertising not ready yet.");
+        }
+        private void OnButtonPlayIndex(float _meter)
         {
             AudioSystem._Instance.PlaySoundEffect("Click");
             StateChange(Status.Animation);
@@ -248,6 +305,10 @@ namespace CTJ
         {
             AudioSystem._Instance.PlaySoundEffect("Click");
             StateChange(Status.Index);
+        }
+        private void OnButtonAchievement()
+        {
+            GameServices.ShowAchievementsUI();
         }
         private void OnButtonVehicle()
         {
@@ -278,6 +339,7 @@ namespace CTJ
                     break;
             }
             _Index_Vehicle = _index;
+            Database.Instance._Vehicle_Index = _Index_Vehicle;
             VehicleChange();
         }
         public void OnButtonPromptRaycastTargetDown(int _index)
@@ -296,13 +358,13 @@ namespace CTJ
         private void OnButtonSettingsMusic()
         {
             AudioSystem._Instance.PlaySoundEffect("Click");
+            _Enable_Music = Database.Instance._Settings_Music == 1 ? true : false;
             if (_Enable_Music)
             {
                 AudioSystem._Instance.VolumeChangeMusic(0.0f);
                 _Image_Music_Frame.color = Color.gray;
                 _Image_Music.sprite = _Sprite_Mute;
                 _Enable_Music = false;
-                return;
             }
             else
             {
@@ -311,17 +373,18 @@ namespace CTJ
                 _Image_Music.sprite = _Sprite_UnMute;
                 _Enable_Music = true;
             }
+            Database.Instance._Settings_Music = _Enable_Music ? 1 : 0;
         }
         private void OnButtonSettingsSoundEffect()
         {
             AudioSystem._Instance.PlaySoundEffect("Click");
+            _Enable_SoundEffect = Database.Instance._Settings_SoundEffect == 1 ? true : false;
             if (_Enable_SoundEffect)
             {
                 AudioSystem._Instance.VolumeChangeSoundEffect(0.0f);
                 _Image_SoundEffect_Frame.color = Color.gray;
                 _Image_SoundEffect.sprite = _Sprite_Mute;
                 _Enable_SoundEffect = false;
-                return;
             }
             else
             {
@@ -330,17 +393,18 @@ namespace CTJ
                 _Image_SoundEffect.sprite = _Sprite_UnMute;
                 _Enable_SoundEffect = true;
             }
+            Database.Instance._Settings_SoundEffect = _Enable_SoundEffect ? 1 : 0;
         }
         private void OnButtonSettingsVibration()
         {
             AudioSystem._Instance.PlaySoundEffect("Click");
+            _Enable_Vibration = Database.Instance._Settings_Vibration == 1 ? true : false;
             if (_Enable_Vibration)
             {
                 GameManager._Instance._Enable_Vibrate = false;
                 _Image_Vibration_Frame.color = Color.gray;
                 _Image_Vibration.sprite = _Sprite_Vibration_Disable;
                 _Enable_Vibration = false;
-                return;
             }
             else
             {
@@ -349,26 +413,36 @@ namespace CTJ
                 _Image_Vibration.sprite = _Sprite_Vibration_Enable;
                 _Enable_Vibration = true;
             }
+            Database.Instance._Settings_Vibration = _Enable_Vibration ? 1 : 0;
         }
         private void OnButtonSettingsLanguage()
         {
             AudioSystem._Instance.PlaySoundEffect("Click");
-            if (_IsEnglish)
+            if (LeanLocalization.CurrentLanguage == "English")
             {
                 LeanLocalization.CurrentLanguage = "Traditional Chinese";
-                _IsEnglish = false;
                 return;
             }
             else
             {
                 LeanLocalization.CurrentLanguage = "English";
-                _IsEnglish = true;
             }
         }
         private void OnButtonReturn()
         {
             AudioSystem._Instance.PlaySoundEffect("Click");
-            StateChange(Status.Index);
+            switch (_Status)
+            {
+                case Status.Vehicle:
+                    StateChange(Status.Index);
+                    break;
+                case Status.Settings:
+                    StateChange(Status.Index);
+                    break;
+                case Status.InGameSettings:
+                    StateChange(Status.InGameMenu);
+                    break;
+            }
         }
         private void OnButtonClose()
         {
@@ -380,11 +454,18 @@ namespace CTJ
             AudioSystem._Instance.PlaySoundEffect("Click");
             StateChange(Status.InGameMenu);
         }
-        private void OnButtonFold()
+        private void OnButtonCancel()
         {
             AudioSystem._Instance.PlaySoundEffect("Click");
-            if (_Status == Status.InGameMenu) StateChange(Status.InGame);
-            else StateChange(Status.MainMenu);
+            switch (_Status)
+            {
+                case Status.PlayMenu:
+                    StateChange(Status.MainMenu);
+                    break;
+                case Status.InGameMenu:
+                    StateChange(Status.InGame);
+                    break;
+            }
         }
         private void OnButtonReturnMainMenu()
         {
@@ -394,6 +475,11 @@ namespace CTJ
             GameManager._InGame = false;
             Timeline._Instance._ReturnMainMenu.Play();
         }
+        private void OnButtonInGameSettings()
+        {
+            AudioSystem._Instance.PlaySoundEffect("Click");
+            StateChange(Status.InGameSettings);
+        }
         private void OnButtonRestart()
         {
             AudioSystem._Instance.PlaySoundEffect("Click");
@@ -402,16 +488,22 @@ namespace CTJ
         private void OnButtonResurrect()
         {
             AudioSystem._Instance.PlaySoundEffect("Click");
-            if (Advertising.IsRewardedAdReady(RewardedAdNetwork.AdMob, AdPlacement.Default))
+            if (Advertising.IsRewardedAdReady())
             {
-                Advertising.ShowRewardedAd(RewardedAdNetwork.AdMob, AdPlacement.Default);
                 AdvertisingEvent._Reward_Resurrect = true;
+                Advertising.ShowRewardedAd();
             }
             else Logger.LogWarning("Reward advertising not ready yet.");
         }
 
         private void Vehicle()
         {
+            // 匯入資料
+            _Index_Vehicle = Database.Instance._Vehicle_Index;
+            _Array_Vehicles_Unlock[0] = true;
+            _Array_Vehicles_Unlock[1] = Database.Instance._Vehicle_01 == 1 ? true : false;
+            _Array_Vehicles_Unlock[2] = Database.Instance._Vehicle_02 == 1 ? true : false;
+            _Array_Vehicles_Unlock[3] = Database.Instance._Vehicle_03 == 1 ? true : false;
             // 檢查所有載具狀態。
             for (int _i = 0; _i < _Array_Vehicles_Unlock.Length; _i++)
             {
@@ -472,6 +564,48 @@ namespace CTJ
                 default:
                     Logger.LogWarningFormat("{0}: {1}.", nameof(_Index_Vehicle), _Index_Vehicle);
                     break;
+            }
+        }
+        private void Settings()
+        {
+            _Enable_Music = Database.Instance._Settings_Music == 1 ? true : false;
+            if (_Enable_Music)
+            {
+                AudioSystem._Instance.VolumeChangeMusic(1.0f);
+                _Image_Music_Frame.color = Color.white;
+                _Image_Music.sprite = _Sprite_UnMute;
+            }
+            else
+            {
+                AudioSystem._Instance.VolumeChangeMusic(0.0f);
+                _Image_Music_Frame.color = Color.gray;
+                _Image_Music.sprite = _Sprite_Mute;
+            }
+            _Enable_SoundEffect = Database.Instance._Settings_SoundEffect == 1 ? true : false;
+            if (_Enable_SoundEffect)
+            {
+                AudioSystem._Instance.VolumeChangeSoundEffect(1.0f);
+                _Image_SoundEffect_Frame.color = Color.white;
+                _Image_SoundEffect.sprite = _Sprite_UnMute;
+            }
+            else
+            {
+                AudioSystem._Instance.VolumeChangeSoundEffect(0.0f);
+                _Image_SoundEffect_Frame.color = Color.gray;
+                _Image_SoundEffect.sprite = _Sprite_Mute;
+            }
+            _Enable_Vibration = Database.Instance._Settings_Vibration == 1 ? true : false;
+            if (_Enable_Vibration)
+            {
+                GameManager._Instance._Enable_Vibrate = true;
+                _Image_Vibration_Frame.color = Color.white;
+                _Image_Vibration.sprite = _Sprite_Vibration_Enable;
+            }
+            else
+            {
+                GameManager._Instance._Enable_Vibrate = false;
+                _Image_Vibration_Frame.color = Color.gray;
+                _Image_Vibration.sprite = _Sprite_Vibration_Disable;
             }
         }
 
@@ -590,18 +724,18 @@ namespace CTJ
                 case Status.Animation:
                     {
                         _Object_Play.SetActive(false);
-                        _Object_Prompt.SetActive(false);
-                        _Object_Checkpoint.SetActive(false);
+                        _Object_Cancel.SetActive(false);
+                        _Object_PlayMenu.SetActive(false);
                         _Object_Menu.SetActive(false);
                         _Object_MenuGroup.SetActive(false);
                         _Object_Return.SetActive(false);
                         _Object_Close.SetActive(false);
                         _Object_Index.SetActive(false);
+                        _Object_Achievement.SetActive(false);
                         _Object_Vehicle.SetActive(false);
                         _Object_Settings.SetActive(false);
                         _Object_InGameMenu.SetActive(false);
-                        _Object_Fold.SetActive(false);
-                        _Object_ReturnMainMenu.SetActive(false);
+                        _Object_InGame.SetActive(false);
                         _Object_Depth.SetActive(false);
                         _Object_Health.SetActive(false);
                         _Object_ResurrectTotal.SetActive(false);
@@ -610,21 +744,45 @@ namespace CTJ
                         Advertising.HideBannerAd();
                     }
                     break;
+                case Status.PlayMenu:
+                    {
+                        _Object_Play.SetActive(false);
+                        _Object_Cancel.SetActive(true);
+                        _Object_PlayMenu.SetActive(true);
+                        _Object_Menu.SetActive(false);
+                        _Object_MenuGroup.SetActive(false);
+                        _Object_Return.SetActive(false);
+                        _Object_Close.SetActive(false);
+                        _Object_Index.SetActive(false);
+                        _Object_Achievement.SetActive(false);
+                        _Object_Vehicle.SetActive(false);
+                        _Object_Settings.SetActive(false);
+                        _Object_InGameMenu.SetActive(false);
+                        _Object_InGame.SetActive(false);
+                        _Object_Depth.SetActive(false);
+                        _Object_Health.SetActive(false);
+                        _Object_ResurrectTotal.SetActive(false);
+                        _Object_PropTime.SetActive(false);
+                        _Object_Death.SetActive(false);
+
+                        Advertising.ShowBannerAd(BannerAdPosition.Bottom);
+                    }
+                    break;
                 case Status.MainMenu:
                     {
                         _Object_Play.SetActive(true);
-                        _Object_Prompt.SetActive(true);
-                        _Object_Checkpoint.SetActive(false);
+                        _Object_Cancel.SetActive(false);
+                        _Object_PlayMenu.SetActive(false);
                         _Object_Menu.SetActive(true);
                         _Object_MenuGroup.SetActive(false);
                         _Object_Return.SetActive(false);
                         _Object_Close.SetActive(false);
                         _Object_Index.SetActive(false);
+                        _Object_Achievement.SetActive(true);
                         _Object_Vehicle.SetActive(false);
                         _Object_Settings.SetActive(false);
                         _Object_InGameMenu.SetActive(false);
-                        _Object_Fold.SetActive(false);
-                        _Object_ReturnMainMenu.SetActive(false);
+                        _Object_InGame.SetActive(false);
                         _Object_Depth.SetActive(false);
                         _Object_Health.SetActive(false);
                         _Object_ResurrectTotal.SetActive(false);
@@ -636,18 +794,18 @@ namespace CTJ
                 case Status.Index:
                     {
                         _Object_Play.SetActive(false);
-                        _Object_Prompt.SetActive(false);
-                        _Object_Checkpoint.SetActive(false);
+                        _Object_Cancel.SetActive(false);
+                        _Object_PlayMenu.SetActive(false);
                         _Object_Menu.SetActive(false);
                         _Object_MenuGroup.SetActive(true);
                         _Object_Return.SetActive(false);
                         _Object_Close.SetActive(true);
                         _Object_Index.SetActive(true);
+                        _Object_Achievement.SetActive(false);
                         _Object_Vehicle.SetActive(false);
                         _Object_Settings.SetActive(false);
                         _Object_InGameMenu.SetActive(false);
-                        _Object_Fold.SetActive(false);
-                        _Object_ReturnMainMenu.SetActive(false);
+                        _Object_InGame.SetActive(false);
                         _Object_Depth.SetActive(false);
                         _Object_Health.SetActive(false);
                         _Object_ResurrectTotal.SetActive(false);
@@ -660,18 +818,18 @@ namespace CTJ
                 case Status.Vehicle:
                     {
                         _Object_Play.SetActive(false);
-                        _Object_Prompt.SetActive(false);
-                        _Object_Checkpoint.SetActive(false);
+                        _Object_Cancel.SetActive(false);
+                        _Object_PlayMenu.SetActive(false);
                         _Object_Menu.SetActive(false);
                         _Object_MenuGroup.SetActive(true);
                         _Object_Return.SetActive(true);
                         _Object_Close.SetActive(false);
                         _Object_Index.SetActive(false);
+                        _Object_Achievement.SetActive(false);
                         _Object_Vehicle.SetActive(true);
                         _Object_Settings.SetActive(false);
                         _Object_InGameMenu.SetActive(false);
-                        _Object_Fold.SetActive(false);
-                        _Object_ReturnMainMenu.SetActive(false);
+                        _Object_InGame.SetActive(false);
                         _Object_Depth.SetActive(false);
                         _Object_Health.SetActive(false);
                         _Object_ResurrectTotal.SetActive(false);
@@ -684,18 +842,18 @@ namespace CTJ
                 case Status.Settings:
                     {
                         _Object_Play.SetActive(false);
-                        _Object_Prompt.SetActive(false);
-                        _Object_Checkpoint.SetActive(false);
+                        _Object_Cancel.SetActive(false);
+                        _Object_PlayMenu.SetActive(false);
                         _Object_Menu.SetActive(false);
                         _Object_MenuGroup.SetActive(true);
                         _Object_Return.SetActive(true);
                         _Object_Close.SetActive(false);
                         _Object_Index.SetActive(false);
+                        _Object_Achievement.SetActive(false);
                         _Object_Vehicle.SetActive(false);
                         _Object_Settings.SetActive(true);
                         _Object_InGameMenu.SetActive(false);
-                        _Object_Fold.SetActive(false);
-                        _Object_ReturnMainMenu.SetActive(false);
+                        _Object_InGame.SetActive(false);
                         _Object_Depth.SetActive(false);
                         _Object_Health.SetActive(false);
                         _Object_ResurrectTotal.SetActive(false);
@@ -705,44 +863,21 @@ namespace CTJ
                         Advertising.ShowBannerAd(BannerAdPosition.Bottom);
                     }
                     break;
-                case Status.Checkpoint:
-                    {
-                        _Object_Play.SetActive(false);
-                        _Object_Prompt.SetActive(false);
-                        _Object_Checkpoint.SetActive(true);
-                        _Object_Menu.SetActive(true);
-                        _Object_MenuGroup.SetActive(false);
-                        _Object_Return.SetActive(false);
-                        _Object_Close.SetActive(false);
-                        _Object_Index.SetActive(false);
-                        _Object_Vehicle.SetActive(false);
-                        _Object_Settings.SetActive(false);
-                        _Object_InGameMenu.SetActive(false);
-                        _Object_Fold.SetActive(false);
-                        _Object_ReturnMainMenu.SetActive(false);
-                        _Object_Depth.SetActive(false);
-                        _Object_Health.SetActive(false);
-                        _Object_ResurrectTotal.SetActive(false);
-                        _Object_PropTime.SetActive(false);
-                        _Object_Death.SetActive(false);
-                        Advertising.ShowBannerAd(BannerAdPosition.Bottom);
-                    }
-                    break;
                 case Status.InGame:
                     {
                         _Object_Play.SetActive(false);
-                        _Object_Prompt.SetActive(false);
-                        _Object_Checkpoint.SetActive(false);
+                        _Object_Cancel.SetActive(false);
+                        _Object_PlayMenu.SetActive(false);
                         _Object_Menu.SetActive(false);
                         _Object_MenuGroup.SetActive(false);
                         _Object_Return.SetActive(false);
                         _Object_Close.SetActive(false);
                         _Object_Index.SetActive(false);
+                        _Object_Achievement.SetActive(false);
                         _Object_Vehicle.SetActive(false);
                         _Object_Settings.SetActive(false);
                         _Object_InGameMenu.SetActive(true);
-                        _Object_Fold.SetActive(false);
-                        _Object_ReturnMainMenu.SetActive(false);
+                        _Object_InGame.SetActive(false);
                         _Object_Depth.SetActive(true);
                         _Object_Health.SetActive(true);
                         _Object_ResurrectTotal.SetActive(true);
@@ -755,18 +890,18 @@ namespace CTJ
                 case Status.InGameMenu:
                     {
                         _Object_Play.SetActive(false);
-                        _Object_Prompt.SetActive(false);
-                        _Object_Checkpoint.SetActive(false);
+                        _Object_Cancel.SetActive(true);
+                        _Object_PlayMenu.SetActive(false);
                         _Object_Menu.SetActive(false);
                         _Object_MenuGroup.SetActive(false);
                         _Object_Return.SetActive(false);
                         _Object_Close.SetActive(false);
                         _Object_Index.SetActive(false);
+                        _Object_Achievement.SetActive(false);
                         _Object_Vehicle.SetActive(false);
                         _Object_Settings.SetActive(false);
                         _Object_InGameMenu.SetActive(false);
-                        _Object_Fold.SetActive(true);
-                        _Object_ReturnMainMenu.SetActive(true);
+                        _Object_InGame.SetActive(true);
                         _Object_Depth.SetActive(true);
                         _Object_Health.SetActive(true);
                         _Object_ResurrectTotal.SetActive(true);
@@ -776,21 +911,45 @@ namespace CTJ
                         Advertising.ShowBannerAd(BannerAdPosition.Bottom);
                     }
                     break;
+                case Status.InGameSettings:
+                    {
+                        _Object_Play.SetActive(false);
+                        _Object_Cancel.SetActive(false);
+                        _Object_PlayMenu.SetActive(false);
+                        _Object_Menu.SetActive(false);
+                        _Object_MenuGroup.SetActive(true);
+                        _Object_Return.SetActive(true);
+                        _Object_Close.SetActive(false);
+                        _Object_Index.SetActive(false);
+                        _Object_Achievement.SetActive(false);
+                        _Object_Vehicle.SetActive(false);
+                        _Object_Settings.SetActive(true);
+                        _Object_InGameMenu.SetActive(false);
+                        _Object_InGame.SetActive(false);
+                        _Object_Depth.SetActive(false);
+                        _Object_Health.SetActive(false);
+                        _Object_ResurrectTotal.SetActive(false);
+                        _Object_PropTime.SetActive(false);
+                        _Object_Death.SetActive(false);
+                        _LLT_TitleBar.TranslationName = "_Index/Title/Settings";
+                        Advertising.ShowBannerAd(BannerAdPosition.Bottom);
+                    }
+                    break;
                 case Status.DeathMenu:
                     {
                         _Object_Play.SetActive(false);
-                        _Object_Prompt.SetActive(false);
-                        _Object_Checkpoint.SetActive(false);
+                        _Object_Cancel.SetActive(false);
+                        _Object_PlayMenu.SetActive(false);
                         _Object_Menu.SetActive(false);
                         _Object_MenuGroup.SetActive(false);
                         _Object_Return.SetActive(false);
                         _Object_Close.SetActive(false);
                         _Object_Index.SetActive(false);
+                        _Object_Achievement.SetActive(false);
                         _Object_Vehicle.SetActive(false);
                         _Object_Settings.SetActive(false);
                         _Object_InGameMenu.SetActive(false);
-                        _Object_Fold.SetActive(false);
-                        _Object_ReturnMainMenu.SetActive(false);
+                        _Object_InGame.SetActive(false);
                         _Object_Depth.SetActive(true);
                         _Object_Health.SetActive(true);
                         _Object_ResurrectTotal.SetActive(true);

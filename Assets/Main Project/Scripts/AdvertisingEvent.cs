@@ -7,11 +7,17 @@ namespace CTJ
 {
     public class AdvertisingEvent : MonoBehaviour
     {
+        public static bool _Reward_Play_01_Ad_00;
+        public static bool _Reward_Play_02_Ad_00;
+        public static bool _Reward_Play_02_Ad_01;
         public static bool _Reward_Resurrect;
         public static bool _Reward_MaxHealth;
 
         private void Start()
         {
+            _Reward_Play_01_Ad_00 = false;
+            _Reward_Play_02_Ad_00 = false;
+            _Reward_Play_02_Ad_01 = false;
             _Reward_MaxHealth = false;
             _Reward_MaxHealth = false;
         }
@@ -39,6 +45,21 @@ namespace CTJ
         private void RewardedAdCompletedHandler(RewardedAdNetwork _rewarded_ad_network, AdPlacement _ad_placement)
         {
             Logger.Log("Rewarded ad has completed. The user should be rewarded now.");
+            if (_Reward_Play_01_Ad_00)
+            {
+                Database.Instance._Play_01_Unlock_00 = 1;
+                _Reward_Play_01_Ad_00 = false;
+            }
+            if (_Reward_Play_02_Ad_00)
+            {
+                Database.Instance._Play_02_Unlock_00 = 1;
+                _Reward_Play_02_Ad_00 = false;
+            }
+            if (_Reward_Play_02_Ad_01)
+            {
+                Database.Instance._Play_02_Unlock_01 = 1;
+                _Reward_Play_02_Ad_01 = false;
+            }
             if (_Reward_Resurrect)
             {
                 Player._Instance.Resurrection();
@@ -55,7 +76,10 @@ namespace CTJ
         private void RewardedAdSkippedHandler(RewardedAdNetwork _rewarded_ad_network, AdPlacement _ad_placement)
         {
             Logger.Log("Rewarded ad was skipped. The user should NOT be rewarded.");
-            _Reward_Resurrect = false;
+            _Reward_Play_01_Ad_00 = false;
+            _Reward_Play_02_Ad_00 = false;
+            _Reward_Play_02_Ad_01 = false;
+            _Reward_MaxHealth = false;
             _Reward_MaxHealth = false;
             Advertising.LoadRewardedAd();
         }

@@ -199,6 +199,8 @@ namespace CTJ
                             EnemyManager._Instance.IEnumeratorSpawnNpcNPC(true);
                             SuppliesManager._Instance.IEnumeratorCallSupplies(true);
                             SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
+                            Database.Instance._Play_01 = 1;
+                            Database.Instance._Vehicle_01 = 1;
                             break;
                         case 4900:
                             // 生成海底地形
@@ -251,6 +253,8 @@ namespace CTJ
                             EnemyManager._Instance.IEnumeratorSpawnNpcNPC(true);
                             SuppliesManager._Instance.IEnumeratorCallSupplies(true);
                             SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
+                            Database.Instance._Play_02 = 1;
+                            Database.Instance._Vehicle_02 = 1;
                             break;
                         case 8900:
                             // 生成海底地形
@@ -290,6 +294,7 @@ namespace CTJ
                             TimeSystem.TimeScale(1.0f);
                             _InGame = false;
                             Timeline._Instance._End.Play();
+                            Database.Instance._Vehicle_03 = 1;
                             break;
                         default:
                             Logger.LogWarningFormat("階層錯誤！當前層級數 {0}", _ZoneClassPoints[_i]);
@@ -412,7 +417,5 @@ namespace CTJ
             LightRays2DControl._Instance.Initialization(false);
             AudioSystem._Instance.StopAll();
         }
-
-        private void OnApplicationQuit() => print("OnApplicationQuit()");
     }
 }
