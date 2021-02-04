@@ -53,16 +53,18 @@ namespace CTJ
             _variable_quaternion = Quaternion.Euler(_Slope);
             if (_Rigidbody2D.velocity.x >= 0)
             {
-                transform.localScale = _Scale * _Scale_Magnification;
+                _variable_vector3 = _Scale * _Scale_Magnification;
+                _variable_vector3.z = 1.0f;
+                transform.localScale = _variable_vector3;
                 if (_Rigidbody2D.velocity.y > 0) _variable_quaternion.z = +_variable_quaternion.z;
                 else if (_Rigidbody2D.velocity.y < 0) _variable_quaternion.z = -_variable_quaternion.z;
             }
             else if (_Rigidbody2D.velocity.x < 0)
             {
-                _variable_vector3.x = -_Scale.x;
-                _variable_vector3.y = _Scale.y;
+                _variable_vector3.x = -_Scale.x * _Scale_Magnification;
+                _variable_vector3.y = _Scale.y * _Scale_Magnification;
                 _variable_vector3.z = 1.0f;
-                transform.localScale = _variable_vector3 * _Scale_Magnification;
+                transform.localScale = _variable_vector3;
                 if (_Rigidbody2D.velocity.y > 0) _variable_quaternion.z = -_variable_quaternion.z;
                 else if (_Rigidbody2D.velocity.y < 0) _variable_quaternion.z = +_variable_quaternion.z;
             }

@@ -198,7 +198,7 @@ namespace CTJ
             print("HandleRewardedAdClosed event received");
             _Resurrect = false;
             _MaxHealthPower = false;
-            if (MenuSystem._Instance._Status == MenuSystem.Status.InGame) Time.timeScale = 1.0f;
+            if (MenuSystem._Instance._Status == MenuSystem.Status.InGameMenu) Time.timeScale = 1.0f;
             RequestRewardedAd();
         }
         private void HandleUserEarnedReward(object sender, Reward args)

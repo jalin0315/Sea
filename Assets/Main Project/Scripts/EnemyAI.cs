@@ -31,6 +31,7 @@ namespace CTJ
         }
         [HideInInspector] public Status _Status;
         // --- 狀態 ---
+        [SerializeField] private Transform _Transform;
         private Vector3 _Scale;
         [SerializeField] private SpriteRenderer _SpriteRenderer;
         private Color _Color;
@@ -61,7 +62,7 @@ namespace CTJ
 
         private void Awake()
         {
-            _Scale = transform.localScale;
+            _Scale = _Transform.localScale;
             _RotateSpeed = 10.0f;
         }
 
@@ -82,8 +83,8 @@ namespace CTJ
 
         public void ScreenChange(Screen _screen)
         {
-            transform.localScale = _Scale * _ScaleMagnification;
-            _variable_vector3 = transform.position;
+            _Transform.localScale = _Scale * _ScaleMagnification;
+            _variable_vector3 = _Transform.localPosition;
             _Screen = _screen;
             switch (_Screen)
             {
@@ -98,7 +99,7 @@ namespace CTJ
                     _variable_vector3.x = _SpriteRenderer.bounds.max.x;
                     break;
             }
-            transform.position = _variable_vector3;
+            _Transform.localPosition = _variable_vector3;
         }
         public void StateChange(Status _status)
         {
@@ -107,7 +108,7 @@ namespace CTJ
             {
                 case Status.Patrol:
                     {
-                        transform.localScale = _Scale * _ScaleMagnification;
+                        _Transform.localScale = _Scale * _ScaleMagnification;
                         _variable_int = Random.Range(0, 2);
                         switch (_variable_int)
                         {
@@ -122,12 +123,12 @@ namespace CTJ
                     break;
                 case Status.SwimUp:
                     {
-                        transform.localScale = _Scale * _ScaleMagnification;
+                        _Transform.localScale = _Scale * _ScaleMagnification;
                     }
                     break;
                 case Status.SwimDown:
                     {
-                        transform.localScale = _Scale * _ScaleMagnification;
+                        _Transform.localScale = _Scale * _ScaleMagnification;
                     }
                     break;
                 case Status.SwimLeft:
@@ -135,17 +136,17 @@ namespace CTJ
                         _variable_vector3.x = -_Scale.x;
                         _variable_vector3.y = _Scale.y;
                         _variable_vector3.z = 1.0f;
-                        transform.localScale = _variable_vector3 * _ScaleMagnification;
+                        _Transform.localScale = _variable_vector3 * _ScaleMagnification;
                     }
                     break;
                 case Status.SwimRight:
                     {
-                        transform.localScale = _Scale * _ScaleMagnification;
+                        _Transform.localScale = _Scale * _ScaleMagnification;
                     }
                     break;
                 case Status.SwimLeftStyle:
                     {
-                        transform.localScale = _Scale * _ScaleMagnification;
+                        _Transform.localScale = _Scale * _ScaleMagnification;
                     }
                     break;
                 case Status.SwimRightStyle:
@@ -153,39 +154,39 @@ namespace CTJ
                         _variable_vector3.x = -_Scale.x;
                         _variable_vector3.y = _Scale.y;
                         _variable_vector3.z = 1.0f;
-                        transform.localScale = _variable_vector3 * _ScaleMagnification;
+                        _Transform.localScale = _variable_vector3 * _ScaleMagnification;
                     }
                     break;
                 case Status.Target:
                     {
-                        transform.localScale = _Scale * _ScaleMagnification;
-                        if (_Bait != null) transform.right = (_Bait.position - transform.position).normalized;
+                        _Transform.localScale = _Scale * _ScaleMagnification;
+                        if (_Bait != null) _Transform.right = (_Bait.localPosition - _Transform.localPosition).normalized;
                         else
                         {
                             if (_Player == null) _Player = GameObject.FindGameObjectWithTag("Player").transform;
-                            transform.right = (_Player.position - transform.position).normalized;
+                            _Transform.right = (_Player.localPosition - _Transform.localPosition).normalized;
                         }
                         float _delta(float _value)
                         {
                             float _result = Mathf.DeltaAngle(0, _value);
                             return _result;
                         }
-                        if (_delta(transform.eulerAngles.z) > 90.0f || _delta(transform.eulerAngles.z) < -90.0f) transform.localScale = new Vector3(transform.localScale.x, -_Scale.y * _ScaleMagnification, transform.localScale.z);
-                        else transform.localScale = new Vector3(transform.localScale.x, _Scale.y * _ScaleMagnification, transform.localScale.z);
+                        if (_delta(_Transform.eulerAngles.z) > 90.0f || _delta(_Transform.eulerAngles.z) < -90.0f) _Transform.localScale = new Vector3(_Transform.localScale.x, -_Scale.y * _ScaleMagnification, _Transform.localScale.z);
+                        else _Transform.localScale = new Vector3(_Transform.localScale.x, _Scale.y * _ScaleMagnification, _Transform.localScale.z);
                     }
                     break;
                 case Status.TargetLock:
                     {
-                        transform.localScale = _Scale * _ScaleMagnification;
+                        _Transform.localScale = _Scale * _ScaleMagnification;
                         _DistanceUpdate = Random.Range(1.0f, 5.0f);
                         _TargetLockTime = Random.Range(5.0f, 10.0f);
                         _T_L_Timer = _TargetLockTime;
                         if (_Player == null)
                         {
                             _Player = GameObject.FindGameObjectWithTag("Player").transform;
-                            _CurrentPlayerPosition = _Player.position;
+                            _CurrentPlayerPosition = _Player.localPosition;
                         }
-                        else _CurrentPlayerPosition = _Player.position;
+                        else _CurrentPlayerPosition = _Player.localPosition;
                     }
                     break;
             }
@@ -204,12 +205,12 @@ namespace CTJ
                             if (_PatrolIntervalTime > 0.0f)
                             {
                                 _PatrolIntervalTime -= TimeSystem._FixedDeltaTime();
-                                if (Vector2.Distance(transform.position, _WaypointTarget.transform.position) > 1.0f)
+                                if (Vector2.Distance(_Transform.localPosition, _WaypointTarget.transform.position) > 1.0f)
                                 {
-                                    transform.position = Vector2.MoveTowards(transform.position, _WaypointTarget.transform.position, TimeSystem._FixedDeltaTime() * _Speed);
-                                    transform.right = Vector2.Lerp(transform.right, (_WaypointTarget.transform.position - transform.position).normalized, TimeSystem._FixedDeltaTime() * _RotateSpeed);
+                                    _Transform.localPosition = Vector2.MoveTowards(_Transform.localPosition, _WaypointTarget.transform.position, TimeSystem._FixedDeltaTime() * _Speed);
+                                    _Transform.right = Vector2.Lerp(_Transform.right, (_WaypointTarget.transform.position - _Transform.localPosition).normalized, TimeSystem._FixedDeltaTime() * _RotateSpeed);
                                 }
-                                else transform.position = Vector2.Lerp(transform.position, _WaypointTarget.transform.position, TimeSystem._FixedDeltaTime() * 0.5f);
+                                else _Transform.localPosition = Vector2.Lerp(_Transform.localPosition, _WaypointTarget.transform.position, TimeSystem._FixedDeltaTime() * 0.5f);
                             }
                             else if (_PatrolIntervalTime < 0.0f)
                             {
@@ -220,46 +221,46 @@ namespace CTJ
                         else if (_PatrolTime < 0.0f)
                         {
                             _FadeDisappear = true;
-                            transform.Translate(Vector2.right * TimeSystem._FixedDeltaTime() * (_Speed * 2.0f), Space.Self);
+                            _Transform.Translate(Vector2.right * TimeSystem._FixedDeltaTime() * (_Speed * 2.0f), Space.Self);
                         }
-                        if (_delta(transform.eulerAngles.z) > 90.0f || _delta(transform.eulerAngles.z) < -90.0f)
+                        if (_delta(_Transform.eulerAngles.z) > 90.0f || _delta(_Transform.eulerAngles.z) < -90.0f)
                         {
-                            _variable_vector3.x = transform.localScale.x;
+                            _variable_vector3.x = _Transform.localScale.x;
                             _variable_vector3.y = -_Scale.y * _ScaleMagnification;
                             _variable_vector3.z = 1.0f;
-                            transform.localScale = _variable_vector3;
+                            _Transform.localScale = _variable_vector3;
                         }
                         else
                         {
-                            _variable_vector3.x = transform.localScale.x;
+                            _variable_vector3.x = _Transform.localScale.x;
                             _variable_vector3.y = _Scale.y * _ScaleMagnification;
                             _variable_vector3.z = 1.0f;
-                            transform.localScale = _variable_vector3;
+                            _Transform.localScale = _variable_vector3;
                         }
                     }
                     break;
                 case Status.SwimUp:
                     {
-                        transform.position = new Vector2(Camera.main.transform.position.x, transform.position.y);
-                        transform.Translate(Vector2.up * TimeSystem._DeltaTime() * _Speed, Space.World);
-                        transform.right = Vector2.Lerp(transform.right, Vector2.up, TimeSystem._DeltaTime() * _RotateSpeed);
+                        _Transform.localPosition = new Vector2(Camera.main.transform.localPosition.x, _Transform.localPosition.y);
+                        _Transform.Translate(Vector2.up * TimeSystem._DeltaTime() * _Speed, Space.World);
+                        _Transform.right = Vector2.Lerp(_Transform.right, Vector2.up, TimeSystem._DeltaTime() * _RotateSpeed);
                     }
                     break;
                 case Status.SwimDown:
                     {
-                        transform.position = new Vector2(Camera.main.transform.position.x, transform.position.y);
-                        transform.Translate(Vector2.down * TimeSystem._DeltaTime() * _Speed, Space.World);
-                        transform.right = Vector2.Lerp(transform.right, Vector2.down, TimeSystem._DeltaTime() * _RotateSpeed);
+                        _Transform.localPosition = new Vector2(Camera.main.transform.localPosition.x, _Transform.localPosition.y);
+                        _Transform.Translate(Vector2.down * TimeSystem._DeltaTime() * _Speed, Space.World);
+                        _Transform.right = Vector2.Lerp(_Transform.right, Vector2.down, TimeSystem._DeltaTime() * _RotateSpeed);
                     }
                     break;
                 case Status.SwimLeft:
                     {
-                        transform.Translate(Vector2.left * TimeSystem._FixedDeltaTime() * _Speed, Space.World);
+                        _Transform.Translate(Vector2.left * TimeSystem._FixedDeltaTime() * _Speed, Space.World);
                     }
                     break;
                 case Status.SwimRight:
                     {
-                        transform.Translate(Vector2.right * TimeSystem._FixedDeltaTime() * _Speed, Space.World);
+                        _Transform.Translate(Vector2.right * TimeSystem._FixedDeltaTime() * _Speed, Space.World);
                     }
                     break;
                 case Status.SwimLeftStyle:
@@ -267,7 +268,7 @@ namespace CTJ
                         _variable_vector3.x = 1.0f;
                         _variable_vector3.y = Mathf.Sin(TimeSystem._Time() * 2.5f);
                         _variable_vector3.z = 0.0f;
-                        transform.Translate(_variable_vector3 * TimeSystem._DeltaTime() * _Speed, Space.World);
+                        _Transform.Translate(_variable_vector3 * TimeSystem._DeltaTime() * _Speed, Space.World);
                     }
                     break;
                 case Status.SwimRightStyle:
@@ -275,12 +276,12 @@ namespace CTJ
                         _variable_vector3.x = -1.0f;
                         _variable_vector3.y = Mathf.Sin(TimeSystem._Time() * 2.5f);
                         _variable_vector3.z = 0.0f;
-                        transform.Translate(_variable_vector3 * TimeSystem._DeltaTime() * _Speed, Space.World);
+                        _Transform.Translate(_variable_vector3 * TimeSystem._DeltaTime() * _Speed, Space.World);
                     }
                     break;
                 case Status.Target:
                     {
-                        transform.Translate(Vector2.right * TimeSystem._DeltaTime() * _Speed, Space.Self);
+                        _Transform.Translate(Vector2.right * TimeSystem._DeltaTime() * _Speed, Space.Self);
                     }
                     break;
                 case Status.TargetLock:
@@ -288,17 +289,17 @@ namespace CTJ
                         if (_T_L_Timer > 0.0f)
                         {
                             _T_L_Timer -= TimeSystem._DeltaTime();
-                            transform.position = Vector2.MoveTowards(transform.position, _CurrentPlayerPosition, TimeSystem._DeltaTime() * _Speed);
-                            transform.right = Vector2.Lerp(transform.right, (_CurrentPlayerPosition - transform.position).normalized, TimeSystem._DeltaTime() * _RotateSpeed);
-                            if (Vector2.Distance(transform.position, _CurrentPlayerPosition) < _DistanceUpdate)
+                            _Transform.localPosition = Vector2.MoveTowards(_Transform.localPosition, _CurrentPlayerPosition, TimeSystem._DeltaTime() * _Speed);
+                            _Transform.right = Vector2.Lerp(_Transform.right, (_CurrentPlayerPosition - _Transform.localPosition).normalized, TimeSystem._DeltaTime() * _RotateSpeed);
+                            if (Vector2.Distance(_Transform.localPosition, _CurrentPlayerPosition) < _DistanceUpdate)
                             {
-                                _CurrentPlayerPosition = _Player.position;
+                                _CurrentPlayerPosition = _Player.localPosition;
                                 _DistanceUpdate = Random.Range(1.0f, 5.0f);
                             }
                         }
-                        else if (_T_L_Timer < 0.0f) transform.Translate(Vector2.right * TimeSystem._DeltaTime() * _Speed, Space.Self);
-                        if (_delta(transform.eulerAngles.z) > 90.0f || _delta(transform.eulerAngles.z) < -90.0f) transform.localScale = new Vector3(transform.localScale.x, -_Scale.y * _ScaleMagnification, transform.localScale.z);
-                        else transform.localScale = new Vector3(transform.localScale.x, _Scale.y * _ScaleMagnification, transform.localScale.z);
+                        else if (_T_L_Timer < 0.0f) _Transform.Translate(Vector2.right * TimeSystem._DeltaTime() * _Speed, Space.Self);
+                        if (_delta(_Transform.eulerAngles.z) > 90.0f || _delta(_Transform.eulerAngles.z) < -90.0f) _Transform.localScale = new Vector3(_Transform.localScale.x, -_Scale.y * _ScaleMagnification, _Transform.localScale.z);
+                        else _Transform.localScale = new Vector3(_Transform.localScale.x, _Scale.y * _ScaleMagnification, _Transform.localScale.z);
                     }
                     break;
             }

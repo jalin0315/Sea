@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 2799251751922020159}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -123,7 +123,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 10.24, y: 10.24}
+    oldSize: {x: 5.12, y: 5.12}
     newSize: {x: 10.24, y: 10.24}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -131,20 +131,14 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.41681647, y: -1.3568468}
-      - {x: 1.4755822, y: 0.122137405}
-      - {x: 0.8729812, y: 1.7152278}
-      - {x: 3.130297, y: 3.024397}
-      - {x: 2.279517, y: 3.9730098}
-      - {x: 0.39484543, y: 2.253594}
-      - {x: -2.3355327, y: 3.0069723}
-      - {x: -1.8874911, y: 0.7668561}
-      - {x: -3.8377545, y: -0.024837255}
-      - {x: -1.7737383, y: -0.7191814}
-      - {x: -2.380505, y: -2.6017375}
-      - {x: -0.08195919, y: -2.527002}
-      - {x: 1.3565037, y: -3.6500616}
-      - {x: 2.8242483, y: -3.1342285}
+    - - {x: 0.6745224, y: 0.077952124}
+      - {x: 1.5587001, y: 1.5409553}
+      - {x: 1.1528662, y: 1.9689376}
+      - {x: -1.1786953, y: 1.3029833}
+      - {x: -1.8797249, y: -0.0033873338}
+      - {x: -1.3325934, y: -1.2294691}
+      - {x: 0.53998065, y: -1.8078401}
+      - {x: 1.3014383, y: -1.5617186}
 --- !u!114 &3149235484797990409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,15 +152,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Status: -1
-  _EnableSpriteRenderers: 0
+  _Transform: {fileID: 7232249481727047978}
   _SpriteRenderer: {fileID: 354465831693471038}
-  _Array_SpriteRenderer: []
   _Collider2D:
   - {fileID: 9027245717114993090}
   _ScaleMagnification: 1
   _Speed: 1.5
-  _EnableOffset: 0
-  _Offset: 0
   _ActivityTime: 0
   _FadeDisappear: 0
 --- !u!114 &1252256918091610484

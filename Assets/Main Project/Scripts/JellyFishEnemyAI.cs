@@ -37,8 +37,8 @@ namespace CTJ
                 {
                     case 0:
                         // 下方螢幕外生成
-                        _position.x = Random.Range(CameraControl._Instance._Origin().x, CameraControl._Instance._Vertex().x);
-                        _position.y = CameraControl._Instance._Origin().y;
+                        _position.x = Random.Range(CameraControl._Origin.x, CameraControl._Vertex.x);
+                        _position.y = CameraControl._Origin.y;
                         transform.position = _position;
                         // 重新計算位置
                         _new_position = transform.position;
@@ -47,8 +47,8 @@ namespace CTJ
                         break;
                     case 1:
                         // 右螢幕外生成
-                        _position.x = CameraControl._Instance._Vertex().x;
-                        _position.y = Random.Range(CameraControl._Instance._Origin().y, CameraControl._Instance._Vertex().y);
+                        _position.x = CameraControl._Vertex.x;
+                        _position.y = Random.Range(CameraControl._Origin.y, CameraControl._Vertex.y);
                         transform.position = _position;
                         // 重新計算位置
                         _new_position = transform.position;
@@ -64,8 +64,8 @@ namespace CTJ
                 {
                     case 0:
                         // 下方螢幕外生成
-                        _position.x = Random.Range(CameraControl._Instance._Origin().x, CameraControl._Instance._Vertex().x);
-                        _position.y = CameraControl._Instance._Origin().y;
+                        _position.x = Random.Range(CameraControl._Origin.x, CameraControl._Vertex.x);
+                        _position.y = CameraControl._Origin.y;
                         transform.position = _position;
                         // 重新計算位置
                         _new_position = transform.position;
@@ -74,8 +74,8 @@ namespace CTJ
                         break;
                     case 1:
                         // 左螢幕外生成
-                        _position.x = CameraControl._Instance._Origin().x;
-                        _position.y = Random.Range(CameraControl._Instance._Origin().y, CameraControl._Instance._Vertex().y);
+                        _position.x = CameraControl._Origin.x;
+                        _position.y = Random.Range(CameraControl._Origin.y, CameraControl._Vertex.y);
                         transform.position = _position;
                         // 重新計算位置
                         _new_position = transform.position;
@@ -87,8 +87,8 @@ namespace CTJ
             else
             {
                 // 下方螢幕外生成
-                _position.x = Random.Range(CameraControl._Instance._Origin().x + -5.0f, CameraControl._Instance._Vertex().x + 5.0f);
-                _position.y = CameraControl._Instance._Origin().y;
+                _position.x = Random.Range(CameraControl._Origin.x + -5.0f, CameraControl._Vertex.x + 5.0f);
+                _position.y = CameraControl._Origin.y;
                 transform.position = _position;
                 // 重新計算位置
                 _new_position = transform.position;

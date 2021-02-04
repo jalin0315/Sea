@@ -13,6 +13,7 @@ namespace CTJ
             Time.fixedDeltaTime = Time.timeScale * _FixedTimeStep;
         }
         public static float _DeltaTime() { return Time.deltaTime; }
+        public static float _UnscaledDeltaTime() { return Time.unscaledDeltaTime; }
         public static float _FixedDeltaTime() { return Time.fixedDeltaTime; }
     }
 }

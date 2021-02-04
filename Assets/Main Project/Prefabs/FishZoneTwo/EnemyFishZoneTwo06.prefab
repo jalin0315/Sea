@@ -315,7 +315,7 @@ MonoBehaviour:
     m_Center: {x: -0.5581436, y: 0, z: 0}
     m_Extent: {x: 19.792227, y: 11.550003, z: 0}
   m_UseBatching: 1
-  m_AlwaysUpdate: 1
+  m_AlwaysUpdate: 0
 --- !u!114 &4335501782922745573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,9 +329,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Status: -1
-  _EnableSpriteRenderers: 0
+  _Transform: {fileID: 2854533323023326394}
   _SpriteRenderer: {fileID: 854377774987011343}
-  _Array_SpriteRenderer: []
   _Collider2D:
   - {fileID: 4382898995086680547}
   - {fileID: 4684608156976380304}
@@ -340,8 +339,6 @@ MonoBehaviour:
   - {fileID: 4810470080104357756}
   _ScaleMagnification: 1
   _Speed: 1.5
-  _EnableOffset: 0
-  _Offset: 0
   _ActivityTime: 0
   _FadeDisappear: 0
 --- !u!1 &3319812418869314317
@@ -627,7 +624,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 2
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295

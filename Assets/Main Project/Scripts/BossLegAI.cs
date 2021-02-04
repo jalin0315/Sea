@@ -30,17 +30,17 @@ namespace CTJ
             switch (_variable_int)
             {
                 case 0:
-                    _variable_vector3.x = CameraControl._Instance._Origin().x;
-                    _variable_vector3.y = Random.Range(CameraControl._Instance._Origin().y, CameraControl._Instance._Vertex().y);
-                    _variable_vector3.z = 0.0f;
+                    _variable_vector3.x = CameraControl._Origin.x;
+                    _variable_vector3.y = Random.Range(CameraControl._Origin.y, CameraControl._Vertex.y);
+                    _variable_vector3.z = -1.0f;
                     transform.position = _variable_vector3;
                     _variable_vector3.x = _SpriteRenderer.bounds.min.x;
                     transform.position = _variable_vector3;
                     break;
                 case 1:
-                    _variable_vector3.x = CameraControl._Instance._Vertex().x;
-                    _variable_vector3.y = Random.Range(CameraControl._Instance._Origin().y, CameraControl._Instance._Vertex().y);
-                    _variable_vector3.z = 0.0f;
+                    _variable_vector3.x = CameraControl._Vertex.x;
+                    _variable_vector3.y = Random.Range(CameraControl._Origin.y, CameraControl._Vertex.y);
+                    _variable_vector3.z = -1.0f;
                     transform.position = _variable_vector3;
                     _variable_vector3.x = _SpriteRenderer.bounds.max.x;
                     transform.position = _variable_vector3;
@@ -49,6 +49,7 @@ namespace CTJ
             _variable_vector3 = BossAI._Instance._Player.position;
             _variable_vector3.x += Random.Range(-5.0f, 5.0f);
             _variable_vector3.y += Random.Range(-5.0f, 5.0f);
+            _variable_vector3.z = -1.0f;
             transform.right = (_variable_vector3 - transform.position).normalized;
             if (_Delta(transform.eulerAngles.z) > 90.0f || _Delta(transform.eulerAngles.z) < -90.0f)
             {
@@ -100,7 +101,7 @@ namespace CTJ
             }
             _Speed -= TimeSystem._DeltaTime() * 4.5f;
             transform.Translate(Vector2.right * TimeSystem._DeltaTime() * _Speed);
-            if (_Speed <= -10.0f)
+            if (_Speed <= -15.0f)
             {
                 for (int _i = 0; _i < _Array_Collider2D.Length; _i++) _Array_Collider2D[_i].enabled = false;
                 BossAI._Instance.Recycle(gameObject);

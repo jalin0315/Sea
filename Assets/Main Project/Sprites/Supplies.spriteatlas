@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Supplies
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 1024
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 99d82e71d6046d945a607e4718be61ae, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 3dded251ea459a245961ce9c70260547, type: 3}
+  - {fileID: 21300000, guid: 7e36c7221de8596498f096c23168d8cb, type: 3}
+  - {fileID: 21300000, guid: bb03ae52030141248b05c49e1e08b832, type: 3}
+  - {fileID: 21300000, guid: 025b5b46b95af9b4f88ae19cd4e90f80, type: 3}
+  - {fileID: 21300000, guid: b52dea660a308d1428840f85584be677, type: 3}
+  - {fileID: 21300000, guid: 04cbb3795e0a07c4297b1924c72ae392, type: 3}
+  - {fileID: 21300000, guid: 28514babb14c16e429b8969a08437c5b, type: 3}
+  - {fileID: 21300000, guid: 78c9196e9b5cea74aafb93904fde49ff, type: 3}
+  - {fileID: 21300000, guid: e34c44ae1014695468fd71768531b07b, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Health
+  - SlowMotion
+  - Bomb
+  - Spy
+  - Shield
+  - Attack
+  - Shrink
+  - Accelerate
+  - Life
+  m_Tag: Supplies
+  m_IsVariant: 0

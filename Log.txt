@@ -1,6 +1,7 @@
  * Password: Wolf1115cub
  * Fingerprint: keytool -keystore "C:\Unity Project\Project S\user.keystore" -list -v
  * --- ADB 調用 ---
+ * cd C:\Users\Chris\AppData\Local\Android\Sdk\platform-tools
  * adb devices
  * 指定設備
  * adb -s emulator-5554  forward tcp:34999 localabstract:Unity-com.WolfCub.ProjectS
@@ -20,9 +21,9 @@
  * R = 已修正且未測試
  * X = 未修正
  * ------
- * X 玩家當前血量不會隨著紀錄點而減少。
- * X 運行模擬器缺失 android.os.VibrationEffect 震動。
- * R 低階手機運行容易過熱。
+ * O 玩家當前血量不會隨著紀錄點而減少。
+ * O 運行模擬器缺失 android.os.VibrationEffect 震動。
+ * O 低階手機運行容易過熱。
  * R 獎勵廣告結束導致遊戲卡頓。
  * O 玩家在某些中層魚 Collider 相交時僅觸發一次。
  * O 死亡動畫過程，玩家會觸發其他條件。
@@ -50,4 +51,20 @@
  * X 切換峽谷時，Rigidbody2D Velocity 未歸零。
  * X 暫停遊戲時，水母與海天使會彈飛。
  * X 第二次進行遊戲時，Boss 會馬上消失。
+ * O 動畫潛艇蓋住船下緣。
+ * X 搖桿無反應。
+ * X 防護罩圖層被背景覆蓋。
+ * X 啟用廣告潛艇後受傷會馬上死亡。
+ * X Boss 眼睛圖層被背景覆蓋。
+ * X 偽裝敵人，燈光會隨著縮放。
+ * O 深層敵人存續時間更長。
+ * X 優化幀數。
+ * X 玩家特效修正。
+ * X 技能經過峽谷，圖示會冷卻。
+ * R 死亡聲音與背景聲音衝突。
+ * O 人間手臂消失。
+ * X 人間攻擊結束，攝影機鎖定修正。
+ * X 終點音樂節奏點修正。
+ * O UI 動畫選載具問題。
+ * O UI 動畫血量問題。
  * ------

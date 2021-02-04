@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: FishZoneOne
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 1024
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: ee4a3910e0336164ca21b3d369e36710, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 3c1024302db401947bbfc73463f2cdaa, type: 3}
+  - {fileID: 21300000, guid: 7e4d9ae0cb1a4c84fb1802d2b7b8de56, type: 3}
+  - {fileID: 21300000, guid: aaad1aa1c961c8f4ab13e17dccde2876, type: 3}
+  - {fileID: 21300000, guid: 50d5aac17b4d5c345ab8f28c87a03d94, type: 3}
+  - {fileID: 21300000, guid: b22cab1285e2ba34d9427cd7770a0eba, type: 3}
+  - {fileID: 21300000, guid: 2e9b8822098392e4386c4c8ff9e6fc49, type: 3}
+  - {fileID: 21300000, guid: e2161a8307d6b6140be7c675cdf4adf8, type: 3}
+  - {fileID: 21300000, guid: 939ef5c55db8095418eccf9a1310d3fb, type: 3}
+  - {fileID: 21300000, guid: f7cba456677d55648ad4737ccbc6da7d, type: 3}
+  - {fileID: 21300000, guid: f1e95f962c21c1b478f184bbdc4f9bd4, type: 3}
+  - {fileID: 21300000, guid: c5cae9a61173c914896730b389dc51e4, type: 3}
+  - {fileID: 21300000, guid: 2088e2d7b505ac24db9f5e4edb667096, type: 3}
+  - {fileID: 21300000, guid: c582e918eff83004fa74bd718b12dbf4, type: 3}
+  - {fileID: 21300000, guid: 5d9167a83943fb64eb60447a09699848, type: 3}
+  - {fileID: 21300000, guid: d9ce4c692c1add24eaca418827aa6229, type: 3}
+  - {fileID: 21300000, guid: bec7f589d227fe34d9245e19dac23353, type: 3}
+  - {fileID: 21300000, guid: 4a45d7a9f20e3394182e1fd6fdaf3ba0, type: 3}
+  - {fileID: 21300000, guid: af9cc5dc5f067ad4babe4c17ef88b12e, type: 3}
+  - {fileID: 21300000, guid: 50b175eccf3db4b4bad3dfa90b1ee1e1, type: 3}
+  - {fileID: 21300000, guid: a8c9a11da8668e144b3e64efbaeef746, type: 3}
+  - {fileID: 21300000, guid: caba502dbd2518b4c98e2db48ca88de4, type: 3}
+  - {fileID: 21300000, guid: 5e62464d798139842bae33f8c6458320, type: 3}
+  - {fileID: 21300000, guid: e79924cdfdc3f134e8ba68c2d4f46998, type: 3}
+  - {fileID: 21300000, guid: 321900fd67be5a14cbdececd853142b2, type: 3}
+  - {fileID: 21300000, guid: 5917bf1e9e56bde43812717f07045ba7, type: 3}
+  - {fileID: 21300000, guid: 9d8d669e13b7a6c4c9c0e16da57d9637, type: 3}
+  - {fileID: 21300000, guid: 668ce4aeaa6205e47a9409b21b281033, type: 3}
+  - {fileID: 21300000, guid: a2e2d9ae6448b7e4b9b346c074f7368e, type: 3}
+  - {fileID: 21300000, guid: dc813dce5b6329c4c94ccbc249d09f7c, type: 3}
+  - {fileID: 21300000, guid: 6ca6badec9632544e928fb8e314a31e8, type: 3}
+  - {fileID: 21300000, guid: 46c520eedb2903e40818d238dc20a2eb, type: 3}
+  - {fileID: 21300000, guid: 4fde07fe38e85a64189c32c652f8e0a1, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - EnemyFishGroupZoneOne11
+  - EnemyFishZoneOne16
+  - EnemyFishGroupZoneOne06
+  - EnemyFishZoneOne11
+  - EnemyFishZoneOne01
+  - EnemyFishGroupZoneOne07
+  - EnemyFishZoneOne08
+  - EnemyFishZoneOne04
+  - EnemyFishZoneOne12
+  - EnemyFishZoneOne17
+  - EnemyFishZoneOne06
+  - EnemyFishGroupZoneOne00
+  - EnemyFishZoneOne19
+  - EnemyFishGroupZoneOne10
+  - EnemyFishZoneOne07
+  - EnemyFishZoneOne00
+  - EnemyFishGroupZoneOne03
+  - EnemyFishZoneOne09
+  - EnemyFishGroupZoneOne01
+  - EnemyFishZoneOne10
+  - EnemyFishGroupZoneOne08
+  - EnemyFishGroupZoneOne12
+  - EnemyFishZoneOne05
+  - EnemyFishZoneOne14
+  - EnemyFishZoneOne18
+  - EnemyFishGroupZoneOne02
+  - EnemyFishGroupZoneOne04
+  - EnemyFishZoneOne02
+  - EnemyFishGroupZoneOne05
+  - EnemyFishZoneOne15
+  - EnemyFishGroupZoneOne09
+  - EnemyFishZoneOne03
+  m_Tag: FishZoneOne
+  m_IsVariant: 0

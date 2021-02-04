@@ -31,7 +31,7 @@ namespace CTJ
             switch (_variable_r)
             {
                 case 0:
-                    _variable_vector3.x = CameraControl._Instance._Origin().x;
+                    _variable_vector3.x = CameraControl._Origin.x;
                     if (_Target.position.y > 1.5f) _variable_vector3.y = 1.5f;
                     else if (_Target.position.y < -5.5f) _variable_vector3.y = -5.5f;
                     else _variable_vector3.y = _Target.position.y;
@@ -46,7 +46,7 @@ namespace CTJ
                     transform.localScale = _variable_vector3;
                     break;
                 case 1:
-                    _variable_vector3.x = CameraControl._Instance._Vertex().x;
+                    _variable_vector3.x = CameraControl._Vertex.x;
                     if (_Target.position.y > 1.5f) _variable_vector3.y = 1.5f;
                     else if (_Target.position.y < -5.5f) _variable_vector3.y = -5.5f;
                     else _variable_vector3.y = _Target.position.y;

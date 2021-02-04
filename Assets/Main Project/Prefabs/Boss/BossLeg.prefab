@@ -391,7 +391,7 @@ MonoBehaviour:
     m_Center: {x: -0.005958557, y: -0.06486797, z: 0}
     m_Extent: {x: 34.971817, y: 4.0001307, z: 0}
   m_UseBatching: 1
-  m_AlwaysUpdate: 1
+  m_AlwaysUpdate: 0
 --- !u!114 &3901594460248633301
 MonoBehaviour:
   m_ObjectHideFlags: 0

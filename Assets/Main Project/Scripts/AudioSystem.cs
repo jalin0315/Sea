@@ -225,6 +225,70 @@ namespace CTJ
                 _AudioSoundEffect[_i]._AudioSource.volume = _volume;
             }
         }
+        public void FadeMusic(string _name, float _target_volume, float _duration)
+        {
+            StartCoroutine(IEnumeratorFadeMusic(_name, _target_volume, _duration));
+        }
+        private IEnumerator IEnumeratorFadeMusic(string _name, float _target_volume, float _duration)
+        {
+            yield return OPT._WaitForEndOfFrame;
+            var _var = Array.Find(_AudioMusic, _x => _x._Name == _name);
+            if (_var == null)
+            {
+                Logger.LogWarningFormat("FadeMusic({0}) not find.", _name);
+                yield break;
+            }
+            switch (Database._Settings_Music)
+            {
+                case 0:
+                    if (_target_volume == 0.0f) _var._AudioSource.Stop();
+                    yield break;
+                case 1:
+                    if (_target_volume == 1.0f) _var._AudioSource.volume = 0.0f;
+                    float _current_time = 0;
+                    float _start = _var._AudioSource.volume;
+                    while (_current_time < _duration)
+                    {
+                        _current_time += TimeSystem._UnscaledDeltaTime();
+                        _var._AudioSource.volume = Mathf.Lerp(_start, _target_volume, _current_time / _duration);
+                        yield return null;
+                    }
+                    if (_target_volume == 0.0f) { _var._AudioSource.Stop(); _var._AudioSource.volume = 1.0f; }
+                    yield break;
+            }
+        }
+        public void FadeSoundEffect(string _name, float _target_volume, float _duration)
+        {
+            StartCoroutine(IEnumeratorFadeSoundEffect(_name, _target_volume, _duration));
+        }
+        private IEnumerator IEnumeratorFadeSoundEffect(string _name, float _target_volume, float _duration)
+        {
+            yield return OPT._WaitForEndOfFrame;
+            var _var = Array.Find(_AudioSoundEffect, _x => _x._Name == _name);
+            if (_var == null)
+            {
+                Logger.LogWarningFormat("FadeSoundEffect({0}) not find.", _name);
+                yield break;
+            }
+            switch (Database._Settings_SoundEffect)
+            {
+                case 0:
+                    if (_target_volume == 0.0f) _var._AudioSource.Stop();
+                    yield break;
+                case 1:
+                    if (_target_volume == 1.0f) _var._AudioSource.volume = 0.0f;
+                    float _current_time = 0;
+                    float _start = _var._AudioSource.volume;
+                    while (_current_time < _duration)
+                    {
+                        _current_time += TimeSystem._UnscaledDeltaTime();
+                        _var._AudioSource.volume = Mathf.Lerp(_start, _target_volume, _current_time / _duration);
+                        yield return null;
+                    }
+                    if (_target_volume == 0.0f) { _var._AudioSource.Stop(); _var._AudioSource.volume = 1.0f; }
+                    yield break;
+            }
+        }
     }
 
     [Serializable]
@@ -237,6 +301,7 @@ namespace CTJ
         public bool _Loop;
         [HideInInspector] public AudioSource _AudioSource;
     }
+
     [Serializable]
     public class AudioSoundEffect
     {

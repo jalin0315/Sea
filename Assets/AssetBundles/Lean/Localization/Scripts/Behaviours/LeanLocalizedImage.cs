@@ -24,6 +24,7 @@ namespace Lean.Localization
 			if (translation != null && translation.Data is Sprite)
 			{
 				image.sprite = (Sprite)translation.Data;
+				image.SetNativeSize();
 			}
 			// Use fallback?
 			else

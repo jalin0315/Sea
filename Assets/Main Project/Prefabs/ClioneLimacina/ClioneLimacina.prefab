@@ -165,10 +165,10 @@ MonoBehaviour:
   - {fileID: 5382978257442613636}
   - {fileID: 5382978257290901508}
   m_Bounds:
-    m_Center: {x: 0.00011873245, y: 0.0019607544, z: 0}
+    m_Center: {x: 0.00011920929, y: 0.0019607544, z: 0}
     m_Extent: {x: 6.9153595, y: 15.278038, z: 0}
   m_UseBatching: 1
-  m_AlwaysUpdate: 1
+  m_AlwaysUpdate: 0
 --- !u!1 &5382978255787948864
 GameObject:
   m_ObjectHideFlags: 0

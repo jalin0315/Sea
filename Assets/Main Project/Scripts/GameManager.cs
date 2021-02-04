@@ -20,17 +20,15 @@ namespace CTJ
         public static float _Meter;
         public static float _MaxMeter;
         public int _ResurrectTotal;
-        public float _Light_MaxMeter;
-        private float _Light_Result;
-        [SerializeField] private Light _Light_BG;
+        public float _Color_MaxMeter;
+        private float _Color_Result;
+        [SerializeField] private SpriteRenderer _Background;
         [SerializeField] private Color _Color_BG_Original;
-        [SerializeField] private List<Light> _List_AmbientLights_00;
         [SerializeField] private Color _Color_AmbientLights_00_Original;
-        [SerializeField] private GameObject _Object_Background_DeepSea;
-        [SerializeField] private GameObject _Object_AmbientLight;
-        [SerializeField] private GameObject _Object_PlayerLight;
         [SerializeField] private int[] _ZoneClassPoints;
         [SerializeField] private bool[] _ZonePoints;
+        public int _MusicIndex;
+        public bool _End;
         private Color _variable_color;
 
         private void Initialization()
@@ -40,10 +38,7 @@ namespace CTJ
             _MaxMeter = 11000.0f;
             _ResurrectTotal = 1;
             MenuSystem._Instance._Text_ResurrectTotal.text = "x" + " " + _ResurrectTotal.ToString();
-            _Light_Result = 1 / _Light_MaxMeter;
-            _Object_Background_DeepSea.SetActive(false);
-            _Object_AmbientLight.SetActive(true);
-            _Object_PlayerLight.SetActive(false);
+            _Color_Result = 1 / _Color_MaxMeter;
             _ZoneClassPoints = new int[]
             {
             0,
@@ -66,11 +61,12 @@ namespace CTJ
             7900,
             8000,
             8900,
-            9000,
+            9500,
             9900,
             10000,
             10800,
             10900,
+            10950,
             11000
             };
         }
@@ -83,18 +79,6 @@ namespace CTJ
 
         private void Update()
         {
-            if (Input.GetKeyUp(KeyCode.Escape))
-            {
-                // Ask if user wants to exit
-                NativeUI.AlertPopup _alert = NativeUI.ShowTwoButtonAlert("離開應用程式", "是否離開應用程式？", "確定", "取消");
-                if (_alert != null)
-                {
-                    _alert.OnComplete += delegate (int _button)
-                    {
-                        if (_button == 0) Application.Quit();
-                    };
-                }
-            }
             if (!_InGame) return;
             Diving();
             ZoneTrigger();
@@ -105,17 +89,18 @@ namespace CTJ
             if (_Meter >= _MaxMeter) return;
             _Meter += TimeSystem._DeltaTime() * _Time;
             _Slider_Depth.value = _Meter;
-            if (_Meter >= _Light_MaxMeter) return;
-            _variable_color.r = _Color_BG_Original.r - (_Meter * _Color_BG_Original.r * _Light_Result);
-            _variable_color.g = _Color_BG_Original.g - (_Meter * _Color_BG_Original.g * _Light_Result);
-            _variable_color.b = _Color_BG_Original.b - (_Meter * _Color_BG_Original.b * _Light_Result);
+            if (_Meter >= _Color_MaxMeter) return;
+            _variable_color.r = _Color_BG_Original.r - (_Meter * _Color_BG_Original.r * _Color_Result);
+            _variable_color.g = _Color_BG_Original.g - (_Meter * _Color_BG_Original.g * _Color_Result);
+            _variable_color.b = _Color_BG_Original.b - (_Meter * _Color_BG_Original.b * _Color_Result);
             _variable_color.a = 1.0f;
-            _Light_BG.color = _variable_color;
-            _variable_color.r = _Color_AmbientLights_00_Original.r - (_Meter * _Color_AmbientLights_00_Original.r * _Light_Result);
-            _variable_color.g = _Color_AmbientLights_00_Original.g - (_Meter * _Color_AmbientLights_00_Original.g * _Light_Result);
-            _variable_color.b = _Color_AmbientLights_00_Original.b - (_Meter * _Color_AmbientLights_00_Original.b * _Light_Result);
+            _Background.color = _variable_color;
+            /*
+            _variable_color.r = _Color_AmbientLights_00_Original.r - (_Meter * _Color_AmbientLights_00_Original.r * _Color_Result);
+            _variable_color.g = _Color_AmbientLights_00_Original.g - (_Meter * _Color_AmbientLights_00_Original.g * _Color_Result);
+            _variable_color.b = _Color_AmbientLights_00_Original.b - (_Meter * _Color_AmbientLights_00_Original.b * _Color_Result);
             _variable_color.a = 1.0f;
-            for (int _i = 0; _i < _List_AmbientLights_00.Count; _i++) _List_AmbientLights_00[_i].color = _variable_color;
+            */
         }
 
         public void FixZoneTrigger()
@@ -135,27 +120,6 @@ namespace CTJ
                     switch (_ZoneClassPoints[_i])
                     {
                         case 0:
-                            int _index = Random.Range(0, 5);
-                            switch (_index)
-                            {
-                                case 0:
-                                    AudioSystem._Instance.PlayMusic("00");
-                                    break;
-                                case 1:
-                                    AudioSystem._Instance.PlayMusic("01");
-                                    break;
-                                case 2:
-                                    AudioSystem._Instance.PlayMusic("02");
-                                    break;
-                                case 3:
-                                    AudioSystem._Instance.PlayMusic("03");
-                                    break;
-                                case 4:
-                                    AudioSystem._Instance.PlayMusic("04");
-                                    break;
-                                default:
-                                    break;
-                            }
                             EnemyManager._Instance.IEnumeratorSpawnNpc00(true);
                             EnemyManager._Instance.IEnumeratorSpawnNpcNPC(true);
                             SuppliesManager._Instance.IEnumeratorCallSupplies(true);
@@ -169,14 +133,13 @@ namespace CTJ
                             break;
                         case 900:
                             // 生成海底地形
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_00);
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_01);
                             break;
                         case 1000:
-                            Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                             break;
                         case 1900:
                             // 生成海底地形
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_01);
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_02);
                             break;
                         case 2000:
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
@@ -185,52 +148,74 @@ namespace CTJ
                             break;
                         case 2900:
                             // 生成海底地形
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_02);
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_03);
                             break;
                         case 3000:
-                            Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                             break;
                         case 4000:
+                            switch (_MusicIndex)
+                            {
+                                case 0:
+                                    AudioSystem._Instance.FadeMusic("ZoneOne00", 0.0f, 3.0f);
+                                    break;
+                                case 1:
+                                    AudioSystem._Instance.FadeMusic("ZoneOne01", 0.0f, 3.0f);
+                                    break;
+                                case 2:
+                                    AudioSystem._Instance.FadeMusic("ZoneOne02", 0.0f, 3.0f);
+                                    break;
+                            }
                             // 生態域分界
                             if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
-                            _Object_PlayerLight.SetActive(true);
+                            //_Object_PlayerLight.SetActive(true);
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                             EnemyManager._Instance.IEnumeratorSpawnNpc02(false);
                             EnemyManager._Instance.IEnumeratorSpawnNpcNPC(true);
                             SuppliesManager._Instance.IEnumeratorCallSupplies(true);
                             SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
-                            Database.Instance._Play_01 = 1;
-                            Database.Instance._Vehicle_01 = 1;
+                            Database._Play_01 = 1;
+                            Database._Vehicle_01 = 1;
                             break;
                         case 4900:
                             // 生成海底地形
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_03);
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_04);
                             break;
                         case 5000:
-                            Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                             break;
                         case 5900:
                             // 生成海底地形
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_04);
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_05);
                             break;
                         case 6000:
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                             break;
                         case 6500:
-                            if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
-                            _Object_PlayerLight.SetActive(true);
-                            Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
+                            //_Object_PlayerLight.SetActive(true);
+                            EnemyManager._Instance.IEnumeratorSpawnNpcJellyFish(true);
                             EnemyManager._Instance.IEnumeratorSpawnNpc03(false);
                             SuppliesManager._Instance.IEnumeratorCallSupplies(true);
                             SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
                             break;
                         case 6900:
+                            switch (_MusicIndex)
+                            {
+                                case 0:
+                                    AudioSystem._Instance.FadeMusic("ZoneTwo00", 0.0f, 5.0f);
+                                    break;
+                                case 1:
+                                    AudioSystem._Instance.FadeMusic("ZoneTwo01", 0.0f, 5.0f);
+                                    break;
+                                case 2:
+                                    AudioSystem._Instance.FadeMusic("ZoneTwo02", 0.0f, 5.0f);
+                                    break;
+                            }
                             EnemyManager._Instance.IEnumeratorSpawnNpcJellyFish(false);
                             // 生成海底地形
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_05);
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_06);
                             break;
                         case 7000:
-                            Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
+                            AudioSystem._Instance.PlayMusic("Boss00");
+                            AudioSystem._Instance.FadeMusic("Boss00", 1.0f, 2.0f);
                             CameraControl._Instance.StatusChange(CameraControl.Status.Lock);
                             EnemyManager._Instance.IEnumeratorSpawnNpcHuman(true);
                             break;
@@ -241,38 +226,46 @@ namespace CTJ
                             // 定向攻擊生物比例不變
                             break;
                         case 7900:
+                            AudioSystem._Instance.FadeMusic("Boss00", 0.0f, 2.0f);
                             CameraControl._Instance.StatusChange(CameraControl.Status.Free);
                             EnemyManager._Instance.IEnumeratorSpawnNpcHuman(false);
                             break;
                         case 8000:
                             // 生態域分界
                             // Command
-                            // Disable witch.
                             if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                             EnemyManager._Instance.IEnumeratorSpawnNpcNPC(true);
                             SuppliesManager._Instance.IEnumeratorCallSupplies(true);
                             SuppliesManager._Instance.IEnumeratorCallSuppliesAd(true);
-                            Database.Instance._Play_02 = 1;
-                            Database.Instance._Vehicle_02 = 1;
+                            Database._Play_02 = 1;
+                            Database._Vehicle_02 = 1;
                             break;
                         case 8900:
                             // 生成海底地形
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_06);
+                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_07);
                             break;
-                        case 9000:
-                            Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
+                        case 9500:
                             EnemyManager._Instance.IEnumeratorSpawnNpc04(false);
                             EnemyManager._Instance.IEnumeratorSpawnNpcClioneLimacina(true);
                             break;
                         case 9900:
+                            switch (_MusicIndex)
+                            {
+                                case 0:
+                                    AudioSystem._Instance.FadeMusic("ZoneThree00", 0.0f, 3.0f);
+                                    break;
+                                case 1:
+                                    AudioSystem._Instance.FadeMusic("ZoneThree01", 0.0f, 3.0f);
+                                    break;
+                            }
                             EnemyManager._Instance.IEnumeratorSpawnNpcClioneLimacina(false);
-                            // 生成海底地形
-                            BackgroundManager._Instance.ReUse(BackgroundManager._Instance._Pool_Background_07);
                             break;
                         case 10000:
                             // Command
                             // Boss 出場
+                            AudioSystem._Instance.PlayMusic("Boss01");
+                            AudioSystem._Instance.FadeMusic("Boss01", 1.0f, 2.0f);
                             Player._Instance.VerifyHealth(_ZoneClassPoints[_i]);
                             CameraControl._Instance.StatusChange(CameraControl.Status.Lock);
                             EnemyManager._Instance.ReUseBoss();
@@ -281,10 +274,24 @@ namespace CTJ
                             BossAI._Instance._Animator.SetTrigger("End");
                             break;
                         case 10900:
+                            AudioSystem._Instance.FadeMusic("Boss01", 0.0f, 3.0f);
                             // 生態域分界
                             // Command
                             // Boss End
-                            if (!Timeline._Instance._SkipEnable) Timeline._Instance._FadeIn.Play();
+                            break;
+                        case 10950:
+                            _MusicIndex = Random.Range(0, 2);
+                            switch (_MusicIndex)
+                            {
+                                case 0:
+                                    AudioSystem._Instance.PlayMusic("End00");
+                                    AudioSystem._Instance.FadeMusic("End00", 1.0f, 2.0f);
+                                    break;
+                                case 1:
+                                    AudioSystem._Instance.PlayMusic("End01");
+                                    AudioSystem._Instance.FadeMusic("End01", 1.0f, 2.0f);
+                                    break;
+                            }
                             break;
                         case 11000:
                             // Command
@@ -294,7 +301,8 @@ namespace CTJ
                             TimeSystem.TimeScale(1.0f);
                             _InGame = false;
                             Timeline._Instance._End.Play();
-                            Database.Instance._Vehicle_03 = 1;
+                            _End = true;
+                            Database._Vehicle_03 = 1;
                             break;
                         default:
                             Logger.LogWarningFormat("階層錯誤！當前層級數 {0}", _ZoneClassPoints[_i]);
@@ -312,7 +320,7 @@ namespace CTJ
         }
         public void GameStartInitialize()
         {
-            MenuSystem._Instance.StateChange(MenuSystem.Status.InGame);
+            MenuSystem._Instance.StateChange(MenuSystem.Status.InGameMenu);
             _InGame = true;
         }
         public void OnMainMenu()
@@ -328,11 +336,6 @@ namespace CTJ
                 EnemyManager._Instance.IEnumeratorSpawnNpc04(true);
                 return;
             }
-            if (_Meter >= 6500)
-            {
-                EnemyManager._Instance.IEnumeratorSpawnNpcJellyFish(true);
-                return;
-            }
             if (_Meter >= 4000)
             {
                 EnemyManager._Instance.IEnumeratorSpawnNpc03(true);
@@ -345,28 +348,132 @@ namespace CTJ
             EnemyAI._Recycle = true;
             JellyFishEnemyAI._Recycle = true;
             HumanEnemyAI._Recycle = true;
-            _variable_color.r = _Color_BG_Original.r - (_Meter * _Color_BG_Original.r * _Light_Result);
-            _variable_color.g = _Color_BG_Original.g - (_Meter * _Color_BG_Original.g * _Light_Result);
-            _variable_color.b = _Color_BG_Original.b - (_Meter * _Color_BG_Original.b * _Light_Result);
+            _variable_color.r = _Color_BG_Original.r - (_Meter * _Color_BG_Original.r * _Color_Result);
+            _variable_color.g = _Color_BG_Original.g - (_Meter * _Color_BG_Original.g * _Color_Result);
+            _variable_color.b = _Color_BG_Original.b - (_Meter * _Color_BG_Original.b * _Color_Result);
             _variable_color.a = 1.0f;
-            _Light_BG.color = _variable_color;
-            _variable_color.r = _Color_AmbientLights_00_Original.r - (_Meter * _Color_AmbientLights_00_Original.r * _Light_Result);
-            _variable_color.g = _Color_AmbientLights_00_Original.g - (_Meter * _Color_AmbientLights_00_Original.g * _Light_Result);
-            _variable_color.b = _Color_AmbientLights_00_Original.b - (_Meter * _Color_AmbientLights_00_Original.b * _Light_Result);
+            _Background.color = _variable_color;
+            /*
+            _variable_color.r = _Color_AmbientLights_00_Original.r - (_Meter * _Color_AmbientLights_00_Original.r * _Color_Result);
+            _variable_color.g = _Color_AmbientLights_00_Original.g - (_Meter * _Color_AmbientLights_00_Original.g * _Color_Result);
+            _variable_color.b = _Color_AmbientLights_00_Original.b - (_Meter * _Color_AmbientLights_00_Original.b * _Color_Result);
             _variable_color.a = 1.0f;
-            for (int _i = 0; _i < _List_AmbientLights_00.Count; _i++) _List_AmbientLights_00[_i].color = _variable_color;
+            */
             // 生態域分界
-            if (_Meter >= 8000)
+            PlayMusic();
+        }
+        public void StopMusic()
+        {
+            if (_Meter >= 8000.0f)
             {
-                _Object_Background_DeepSea.SetActive(true);
-                _Object_AmbientLight.SetActive(false);
-                _Object_PlayerLight.SetActive(true);
+                switch (_MusicIndex)
+                {
+                    case 0:
+                        AudioSystem._Instance.FadeMusic("ZoneThree00", 0.0f, 3.0f);
+                        break;
+                    case 1:
+                        AudioSystem._Instance.FadeMusic("ZoneThree01", 0.0f, 3.0f);
+                        break;
+                }
                 return;
             }
-            if (_Meter >= 4000) return;
-            if (_Meter >= 0)
+            if (_Meter >= 4000.0f)
             {
-                LightRays2DControl._Instance.Initialization(true);
+                switch (_MusicIndex)
+                {
+                    case 0:
+                        AudioSystem._Instance.FadeMusic("ZoneTwo00", 0.0f, 5.0f);
+                        break;
+                    case 1:
+                        AudioSystem._Instance.FadeMusic("ZoneTwo01", 0.0f, 5.0f);
+                        break;
+                    case 2:
+                        AudioSystem._Instance.FadeMusic("ZoneTwo02", 0.0f, 5.0f);
+                        break;
+                }
+                return;
+            }
+            if (_Meter >= 0.0f)
+            {
+                switch (_MusicIndex)
+                {
+                    case 0:
+                        AudioSystem._Instance.FadeMusic("ZoneOne00", 0.0f, 3.0f);
+                        break;
+                    case 1:
+                        AudioSystem._Instance.FadeMusic("ZoneOne01", 0.0f, 3.0f);
+                        break;
+                    case 2:
+                        AudioSystem._Instance.FadeMusic("ZoneOne02", 0.0f, 3.0f);
+                        break;
+                }
+                return;
+            }
+        }
+        public void PlayMusic()
+        {
+            if (_Meter >= 10000.0f)
+            {
+                return;
+            }
+            if (_Meter >= 8000.0f)
+            {
+                _MusicIndex = Random.Range(0, 2);
+                switch (_MusicIndex)
+                {
+                    case 0:
+                        AudioSystem._Instance.PlayMusic("ZoneThree00");
+                        AudioSystem._Instance.FadeMusic("ZoneThree00", 1.0f, 2.0f);
+                        break;
+                    case 1:
+                        AudioSystem._Instance.PlayMusic("ZoneThree01");
+                        AudioSystem._Instance.FadeMusic("ZoneThree01", 1.0f, 2.0f);
+                        break;
+                }
+                return;
+            }
+            if (_Meter >= 7000.0f)
+            {
+                return;
+            }
+            if (_Meter >= 4000.0f)
+            {
+                _MusicIndex = Random.Range(0, 3);
+                switch (_MusicIndex)
+                {
+                    case 0:
+                        AudioSystem._Instance.PlayMusic("ZoneTwo00");
+                        AudioSystem._Instance.FadeMusic("ZoneTwo00", 1.0f, 2.0f);
+                        break;
+                    case 1:
+                        AudioSystem._Instance.PlayMusic("ZoneTwo01");
+                        AudioSystem._Instance.FadeMusic("ZoneTwo01", 1.0f, 2.0f);
+                        break;
+                    case 2:
+                        AudioSystem._Instance.PlayMusic("ZoneTwo02");
+                        AudioSystem._Instance.FadeMusic("ZoneTwo02", 1.0f, 2.0f);
+                        break;
+                }
+                return;
+            }
+            if (_Meter >= 0.0f)
+            {
+                _MusicIndex = Random.Range(0, 3);
+                switch (_MusicIndex)
+                {
+                    case 0:
+                        AudioSystem._Instance.PlayMusic("ZoneOne00");
+                        AudioSystem._Instance.FadeMusic("ZoneOne00", 1.0f, 2.0f);
+                        break;
+                    case 1:
+                        AudioSystem._Instance.PlayMusic("ZoneOne01");
+                        AudioSystem._Instance.FadeMusic("ZoneOne01", 1.0f, 2.0f);
+                        break;
+                    case 2:
+                        AudioSystem._Instance.PlayMusic("ZoneOne02");
+                        AudioSystem._Instance.FadeMusic("ZoneOne02", 1.0f, 2.0f);
+                        break;
+                }
                 return;
             }
         }
@@ -414,8 +521,12 @@ namespace CTJ
             SuppliesControl._Recycle = true;
             BaitControl._RecoveryAll = true;
             BackgroundControl._RecoveryAll = true;
-            LightRays2DControl._Instance.Initialization(false);
+            if (_End) return;
             AudioSystem._Instance.StopAll();
+            AudioSystem._Instance.PlayMusic("Home00");
+            AudioSystem._Instance.FadeMusic("Home00", 1.0f, 2.0f);
+            AudioSystem._Instance.PlayMusic("Home01");
+            AudioSystem._Instance.FadeMusic("Home01", 1.0f, 2.0f);
         }
     }
 }

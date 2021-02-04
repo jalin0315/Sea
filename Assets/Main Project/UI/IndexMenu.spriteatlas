@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: IndexMenu
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 1024
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 2fd28ad4e683a6742a9772548a13773e, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: c86e10103808c3b4abe984ad114b62cc, type: 3}
+  - {fileID: 21300000, guid: b77c73c1c5d3b9a4b88a9e4eb45739f4, type: 3}
+  - {fileID: 21300000, guid: 3d5037c15705eae448162944928ca710, type: 3}
+  - {fileID: 21300000, guid: 4cacbe024ada2a542981f91ba3f60585, type: 3}
+  - {fileID: 21300000, guid: 2d3138b4aaaa2fb46a2f9c05fdcb20df, type: 3}
+  - {fileID: 21300000, guid: 937c2e16905c7a2409e8448a72a8b7c3, type: 3}
+  - {fileID: 21300000, guid: 1a21ffe647dc121448c9bbb5de918d9e, type: 3}
+  - {fileID: 21300000, guid: 2933ee37e039c2c479d2f868298deadf, type: 3}
+  - {fileID: 21300000, guid: 2fac8157d0f406c4cab3eb05e13748d6, type: 3}
+  - {fileID: 21300000, guid: 323a5d9784a666c44b5cd20ab3f05c23, type: 3}
+  - {fileID: 21300000, guid: 42589c984b76ab848b217d14e633c6d2, type: 3}
+  - {fileID: 21300000, guid: 2fec2e790ec7d934c97b1648f360a6cd, type: 3}
+  - {fileID: 21300000, guid: 8d941d7e7692e35419de9c0569b0fb11, type: 3}
+  - {fileID: 21300000, guid: 71bb45eee3bc82f4f8048a795730777e, type: 3}
+  - {fileID: 21300000, guid: 9c2472ff72e869e4bae86ef13b19c2b7, type: 3}
+  - {fileID: 21300000, guid: 74c3aaff527b20e49880e847ae5d7dd2, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - TitleFrame
+  - HowToPlay
+  - twOptions
+  - Frame
+  - VehicleIcon
+  - DescriptionIcon
+  - Cancel
+  - Options
+  - Submarine
+  - WindowFrame
+  - Menu
+  - Return
+  - twHowToPlay
+  - twMenu
+  - SettingIcon
+  - twSubmarine
+  m_Tag: IndexMenu
+  m_IsVariant: 0

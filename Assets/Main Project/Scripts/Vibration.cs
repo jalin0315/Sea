@@ -6,13 +6,104 @@ namespace CTJ
     public static class Vibration
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
-    public static AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-    public static AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-    public static AndroidJavaObject vibrator = currentActivity.Call<AndroidJavaObject>("getSystemService", "vibrator");
-    public static AndroidJavaClass vibrationEffectClass = new AndroidJavaClass("android.os.VibrationEffect");
-    public static int defaultAmplitude = vibrationEffectClass.GetStatic<int>("DEFAULT_AMPLITUDE");
-    public static AndroidJavaClass androidVersion = new AndroidJavaClass("android.os.Build$VERSION");
-    public static int apiLevel = androidVersion.GetStatic<int>("SDK_INT");
+        public static AndroidJavaClass unityPlayer
+        {
+            get
+            {
+                try
+                {
+                    return new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+        public static AndroidJavaObject currentActivity
+        {
+            get
+            {
+                try
+                {
+                    return unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+        public static AndroidJavaObject vibrator
+        {
+            get
+            {
+                try
+                {
+                    return currentActivity.Call<AndroidJavaObject>("getSystemService", "vibrator");
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+        public static AndroidJavaClass vibrationEffectClass
+        {
+            get
+            {
+                try
+                {
+                    return new AndroidJavaClass("android.os.VibrationEffect");
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+        public static int defaultAmplitude
+        {
+            get
+            {
+                try
+                {
+                    return vibrationEffectClass.GetStatic<int>("DEFAULT_AMPLITUDE");
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+        }
+        public static AndroidJavaClass androidVersion
+        {
+            get
+            {
+                try
+                {
+                    return new AndroidJavaClass("android.os.Build$VERSION");
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+        public static int apiLevel
+        {
+            get
+            {
+                try
+                {
+                    return androidVersion.GetStatic<int>("SDK_INT");
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+        }
 #else
         public static AndroidJavaClass unityPlayer;
         public static AndroidJavaObject vibrator;
@@ -74,8 +165,8 @@ namespace CTJ
         public static bool HasAmplituideControl()
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
-        if (apiLevel >= 26) return vibrator.Call<bool>("hasAmplitudeControl"); // API 26+ specific
-        else return false; // no amplitude control below API level 26
+            if (apiLevel >= 26) return vibrator.Call<bool>("hasAmplitudeControl"); // API 26+ specific
+            else return false; // no amplitude control below API level 26
 #else
             return false;
 #endif
@@ -89,7 +180,7 @@ namespace CTJ
         private static bool isAndroid()
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
-        return true;
+            return true;
 #else
             return false;
 #endif

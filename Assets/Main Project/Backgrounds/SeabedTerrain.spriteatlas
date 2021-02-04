@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SeabedTerrain
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 0
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 8b300fa8801b6344ca361a07b85c218b, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 1765ba209e4b5a1438010d74b8daafc3, type: 3}
+  - {fileID: 21300000, guid: 02131f900d37d0d43b6fabbeaaf2d892, type: 3}
+  - {fileID: 21300000, guid: 6d28f1d0e9a4951418e03b0b9be6ce13, type: 3}
+  - {fileID: 21300000, guid: 48f549b113aadc74085640a36b6f5b10, type: 3}
+  - {fileID: 21300000, guid: 10d00ee18a5b7d6478c2bc609f31180c, type: 3}
+  - {fileID: 21300000, guid: 303fd7a2f99af1b40b62afe158ad8b45, type: 3}
+  - {fileID: 21300000, guid: bd77be0344a40c3428e1adafbe8cc5e5, type: 3}
+  - {fileID: 21300000, guid: 3a5ed653f7fa63f488ca94820b8d481e, type: 3}
+  - {fileID: 21300000, guid: 47e6ac63431edbb439e1c3b5b1ddd2e9, type: 3}
+  - {fileID: 21300000, guid: 4ef37d54df36f094cb83a454c26da033, type: 3}
+  - {fileID: 21300000, guid: 09ce6587da2ad9f40b0e2eeb4f026def, type: 3}
+  - {fileID: 21300000, guid: 64c79c58b34d1ed489de55440aef6258, type: 3}
+  - {fileID: 21300000, guid: f00bca697ecdc934ea6e6a4ef5651136, type: 3}
+  - {fileID: 21300000, guid: 5c42a5790acce1c4aa9bfb4cc2cf0e68, type: 3}
+  - {fileID: 21300000, guid: 685ee02a0c73715468c0624747b8a417, type: 3}
+  - {fileID: 21300000, guid: 3c34057a07abac746852e7c36dc21922, type: 3}
+  - {fileID: 21300000, guid: d0904ebb8fe111b45b73389727e4ad7f, type: 3}
+  - {fileID: 21300000, guid: 021122eb751a0ae46b305a951b0df019, type: 3}
+  - {fileID: 21300000, guid: 898c112d3eb772b46b037f8c4e16e063, type: 3}
+  - {fileID: 21300000, guid: 81fb8e9dea2cb60439bc87e50228ee0f, type: 3}
+  - {fileID: 21300000, guid: 8cce68cdef20f9c48a658cd586fc68b3, type: 3}
+  - {fileID: 21300000, guid: dab30b3ee92a9ef4abe4b8d0cb508a05, type: 3}
+  - {fileID: 21300000, guid: ae53a27f8acf77a4582098f01a5b42d6, type: 3}
+  - {fileID: 21300000, guid: 624017af13633ea4f8a0b8569ae6e2b6, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Terrain5-3
+  - Terrain4-3
+  - Terrain5-1
+  - Terrain4-1
+  - Terrain3-1
+  - Terrain6-2
+  - Terrain8-2
+  - Terrain2-3
+  - Terrain4-2
+  - Terrain5-2
+  - Terrain1-2
+  - Terrain6-1
+  - Terrain7-3
+  - Terrain1-3
+  - Terrain3-2
+  - Terrain3-3
+  - Terrain2-2
+  - Terrain8-3
+  - Terrain7-1
+  - Terrain2-1
+  - Terrain6-3
+  - Terrain8-1
+  - Terrain7-2
+  - Terrain1-1
+  m_Tag: SeabedTerrain
+  m_IsVariant: 0

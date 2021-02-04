@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Home
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 3aedbf44f07a22741b2b0e3f4ec87585, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 4be5af948d7490743b78f6255cf27493, type: 3}
+  - {fileID: 21300000, guid: 1a8fa2a7425fcc5479be4c16a05e7b96, type: 3}
+  - {fileID: 21300000, guid: e82d07096d310764f8a9da72b9419b70, type: 3}
+  - {fileID: 21300000, guid: 2f395a4bff5e4e64c976b2eb7e1b6e8a, type: 3}
+  - {fileID: 2669142961033076756, guid: 28e40cbe24351e84f970ebed52323f35, type: 3}
+  - {fileID: -3967920315399815954, guid: 28e40cbe24351e84f970ebed52323f35, type: 3}
+  - {fileID: -1749161583622989117, guid: 28e40cbe24351e84f970ebed52323f35, type: 3}
+  - {fileID: -5240784962635489071, guid: 28e40cbe24351e84f970ebed52323f35, type: 3}
+  - {fileID: 1327514091082312007, guid: 28e40cbe24351e84f970ebed52323f35, type: 3}
+  - {fileID: 5063102313881138252, guid: 28e40cbe24351e84f970ebed52323f35, type: 3}
+  - {fileID: 7433681639430268716, guid: 28e40cbe24351e84f970ebed52323f35, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Bubble
+  - Skybox
+  - Mountain
+  - MarineResearchShip
+  - Clouds_0
+  - Clouds_1
+  - Clouds_2
+  - Clouds_3
+  - Clouds_4
+  - Clouds_5
+  - Clouds_6
+  m_Tag: Home
+  m_IsVariant: 0

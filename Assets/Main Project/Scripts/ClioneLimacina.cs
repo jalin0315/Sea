@@ -39,8 +39,8 @@ namespace CTJ
                 {
                     case 0:
                         // 下方螢幕外生成
-                        _variable_vector3.x = Random.Range(CameraControl._Instance._Origin().x, CameraControl._Instance._Vertex().x);
-                        _variable_vector3.y = CameraControl._Instance._Origin().y;
+                        _variable_vector3.x = Random.Range(CameraControl._Origin.x, CameraControl._Vertex.x);
+                        _variable_vector3.y = CameraControl._Origin.y;
                         _variable_vector3.z = 0.0f;
                         transform.position = _variable_vector3;
                         // 重新計算位置
@@ -49,8 +49,8 @@ namespace CTJ
                         break;
                     case 1:
                         // 右方螢幕外生成
-                        _variable_vector3.x = CameraControl._Instance._Vertex().x;
-                        _variable_vector3.y = Random.Range(CameraControl._Instance._Origin().y, CameraControl._Instance._Vertex().y);
+                        _variable_vector3.x = CameraControl._Vertex.x;
+                        _variable_vector3.y = Random.Range(CameraControl._Origin.y, CameraControl._Vertex.y);
                         _variable_vector3.z = 0.0f;
                         transform.position = _variable_vector3;
                         // 重新計算位置
@@ -66,8 +66,8 @@ namespace CTJ
                 {
                     case 0:
                         // 下方螢幕外生成
-                        _variable_vector3.x = Random.Range(CameraControl._Instance._Origin().x, CameraControl._Instance._Vertex().x);
-                        _variable_vector3.y = CameraControl._Instance._Origin().y;
+                        _variable_vector3.x = Random.Range(CameraControl._Origin.x, CameraControl._Vertex.x);
+                        _variable_vector3.y = CameraControl._Origin.y;
                         _variable_vector3.z = 0.0f;
                         transform.position = _variable_vector3;
                         // 重新計算位置
@@ -76,8 +76,8 @@ namespace CTJ
                         break;
                     case 1:
                         // 左方螢幕外生成
-                        _variable_vector3.x = CameraControl._Instance._Origin().x;
-                        _variable_vector3.y = Random.Range(CameraControl._Instance._Origin().y, CameraControl._Instance._Vertex().y);
+                        _variable_vector3.x = CameraControl._Origin.x;
+                        _variable_vector3.y = Random.Range(CameraControl._Origin.y, CameraControl._Vertex.y);
                         _variable_vector3.z = 0.0f;
                         transform.position = _variable_vector3;
                         // 重新計算位置
@@ -89,17 +89,17 @@ namespace CTJ
             else
             {
                 // 下方螢幕外生成
-                _variable_vector3.x = Random.Range(CameraControl._Instance._Origin().x + -5.0f, CameraControl._Instance._Vertex().x + 5.0f);
-                _variable_vector3.y = CameraControl._Instance._Origin().y;
+                _variable_vector3.x = Random.Range(CameraControl._Origin.x + -5.0f, CameraControl._Vertex.x + 5.0f);
+                _variable_vector3.y = CameraControl._Origin.y;
                 _variable_vector3.z = 0.0f;
                 transform.position = _variable_vector3;
                 // 重新計算位置
                 _variable_vector3.y = _SpriteRenderer.bounds.min.y;
                 transform.position = _variable_vector3;
             }
-            _Animator.speed = Random.Range(0.5f, 2.0f);
+            _Animator.speed = Random.Range(0.5f, 2.5f);
             _Light.color = Random.ColorHSV(0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            _Speed = Random.Range(50.0f, 200.0f);
+            _Speed = Random.Range(80.0f, 250.0f);
             _Time = 3.0f;
         }
 

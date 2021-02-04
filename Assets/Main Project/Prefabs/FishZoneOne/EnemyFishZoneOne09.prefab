@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 624057944460187340}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.055, y: 0.055, z: 1}
+  m_LocalScale: {x: 0.32, y: 0.32, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -123,7 +123,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 18.19, y: 23.400202}
+    oldSize: {x: 5.12, y: 5.12}
     newSize: {x: 2.43, y: 2.43}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -131,10 +131,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -5.0733004, y: 11.586097}
-      - {x: -8.578121, y: 0.26826423}
-      - {x: -5.000392, y: -11.7656765}
-      - {x: 9.118927, y: 0.92125654}
+    - - {x: -1.0915954, y: 2.5643659}
+      - {x: -1.9463754, y: 0.07659507}
+      - {x: -1.0425739, y: -2.5233815}
+      - {x: 2.0252295, y: 0.12664688}
 --- !u!114 &7782373853165367191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,15 +148,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Status: -1
-  _EnableSpriteRenderers: 0
+  _Transform: {fileID: 4130994301614455757}
   _SpriteRenderer: {fileID: 7801964139892930430}
-  _Array_SpriteRenderer: []
   _Collider2D:
   - {fileID: 8315720791554944277}
   _ScaleMagnification: 1
   _Speed: 1.5
-  _EnableOffset: 0
-  _Offset: 0
   _ActivityTime: 0
   _FadeDisappear: 0
 --- !u!114 &4669625109740405728

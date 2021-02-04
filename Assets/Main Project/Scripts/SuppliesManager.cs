@@ -7,9 +7,6 @@ namespace CTJ
     public class SuppliesManager : MonoBehaviour
     {
         public static SuppliesManager _Instance;
-        [SerializeField] private Camera _Camera;
-        public Vector2 _Origin() { return _Camera.ScreenToWorldPoint(Vector2.zero); }
-        public Vector2 _Vertex() { return _Camera.ScreenToWorldPoint(new Vector2(_Camera.pixelWidth, _Camera.pixelHeight)); }
         [SerializeField] private Transform _Parent;
         [SerializeField] private List<GameObject> _Prefab_Props;
         [SerializeField] private GameObject _Prefab_SuppliesAd;
@@ -85,8 +82,8 @@ namespace CTJ
             if (_queue_gameobject.Count <= 0) { Logger.LogWarningFormat("Queue index out of range. Count: {0}.", _queue_gameobject.Count); return; }
             SuppliesControl._Recycle = false;
             GameObject _go = _queue_gameobject.Dequeue();
-            _variable_vector2.x = Random.Range(_Origin().x + 1.0f, _Vertex().x + -1.0f);
-            _variable_vector2.y = _Vertex().y + 1.0f;
+            _variable_vector2.x = Random.Range(CameraControl._Origin.x + 1.0f, CameraControl._Vertex.x + -1.0f);
+            _variable_vector2.y = CameraControl._Vertex.y + 1.0f;
             _go.transform.position = _variable_vector2;
             _go.SetActive(true);
             SuppliesControl _s_c = _go.GetComponent<SuppliesControl>();
@@ -98,8 +95,8 @@ namespace CTJ
             if (_Pool_SuppliesAd.Count <= 0) { Logger.LogWarningFormat("Queue index out of range. Count: {0}.", _Pool_SuppliesAd.Count); return; }
             SuppliesControl._Recycle = false;
             GameObject _go = _Pool_SuppliesAd.Dequeue();
-            _variable_vector2.x = Random.Range(_Origin().x + 1.0f, _Vertex().x + -1.0f);
-            _variable_vector2.y = _Vertex().y + 1.0f;
+            _variable_vector2.x = Random.Range(CameraControl._Origin.x + 1.0f, CameraControl._Vertex.x + -1.0f);
+            _variable_vector2.y = CameraControl._Vertex.y + 1.0f;
             _go.transform.position = _variable_vector2;
             _go.SetActive(true);
             SuppliesControl _s_c = _go.GetComponent<SuppliesControl>();
@@ -126,8 +123,8 @@ namespace CTJ
             float _interval = 25.0f;
             while (true)
             {
-                yield return new WaitForEndOfFrame();
-                yield return new WaitForSeconds(_interval);
+                yield return OPT._WaitForEndOfFrame;
+                yield return OPT._WaitForSeconds(_interval);
                 _r = Random.Range(0, 8);
                 switch (_r)
                 {
@@ -175,13 +172,14 @@ namespace CTJ
         private IEnumerator _CallSuppliesAd_Singleton;
         private IEnumerator _CallSuppliesAd_Logic()
         {
-            float _interval = 25.0f;
+            float _interval;
             while (true)
             {
-                yield return new WaitForEndOfFrame();
-                if (Player._Instance._Slider_Health.value > 20) continue;
-                if (Player._Instance._Slider_Health.value <= 20) ReUseAd();
-                yield return new WaitForSeconds(_interval);
+                yield return OPT._WaitForEndOfFrame;
+                _interval = Random.Range(25.0f, 30.0f);
+                yield return OPT._WaitForSeconds(_interval);
+                if (Player._Instance._Image_Health.fillAmount > 0.2f) continue;
+                if (Player._Instance._Image_Health.fillAmount <= 0.2f) ReUseAd();
             }
         }
         public void IEnumeratorCallSuppliesAd(bool _enable)

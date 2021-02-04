@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: FishZoneThree
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: b4c8c9077cc352d4c89a41279c29f661, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 1e6a4df22a1cd3342a923d52372077d6, type: 3}
+  - {fileID: 21300000, guid: 9109a5033621b8f4f8dee026170f4797, type: 3}
+  - {fileID: 21300000, guid: 3774bc930defaee44b4b5576f053e88e, type: 3}
+  - {fileID: 21300000, guid: b168a977bc83b56498f86ddedeea81cc, type: 3}
+  - {fileID: 21300000, guid: d02e72c7c0628f44a89233c013553b35, type: 3}
+  - {fileID: 21300000, guid: 08149ceb854ea7b4089c80188309c40b, type: 3}
+  - {fileID: 21300000, guid: 62a763bc27793d546923b55b33322dcf, type: 3}
+  - {fileID: 21300000, guid: 2ce3b37d335c90d42b0737c1b17459a0, type: 3}
+  - {fileID: 21300000, guid: 64292b7f4243469459917cc459b6528a, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - boos
+  - lefthand_1
+  - lefthand_2
+  - righthand_1
+  - bosseyes
+  - body
+  - leg
+  - leg_2
+  - bosseyes_light
+  m_Tag: FishZoneThree
+  m_IsVariant: 0

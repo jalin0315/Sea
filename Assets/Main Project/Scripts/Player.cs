@@ -12,15 +12,14 @@ namespace CTJ
         public Animator _Animator;
         [SerializeField] private SpriteRenderer _SpriteRenderer;
         public Sprite _Sprite_Player;
-        public Slider _Slider_MaxHealth;
-        public Slider _Slider_Health;
-        [SerializeField] private Image _Image_Health;
-        [SerializeField] private Color _HighHealthColor;
-        [SerializeField] private Color _LowHealthColor;
-        private bool _Invincible;
+        [SerializeField] private Animator _Animator_Health;
+        [SerializeField] private Image _Image_WaterPressure;
+        public Image _Image_Health;
+        [SerializeField] private int _Health;
+        [SerializeField] private int _WaterPressure;
+        [HideInInspector] public bool _Invincible;
         private bool _Spy;
         private bool _Attack;
-        [SerializeField] private GameObject _Object_PropTime;
         [SerializeField] private Image _Image_PropTimeBackground;
         [SerializeField] private Image _Image_PropTime;
         private float _PropTimer;
@@ -57,9 +56,7 @@ namespace CTJ
             _Animator.SetBool("Shield", false);
             _Animator.SetBool("Death", false);
             _SpriteRenderer.sprite = _Sprite_Player;
-            _Slider_MaxHealth.value = 100.0f - (GameManager._Meter * 0.005f);
-            _Slider_Health.maxValue = _Slider_MaxHealth.value;
-            _Slider_Health.value = _Slider_Health.maxValue;
+            InitHealth();
             HealthBarColorChange();
             StopAllCoroutines();
             _Image_PropTime.fillAmount = 1.0f;
@@ -81,12 +78,33 @@ namespace CTJ
 
         private void Update()
         {
-            if (!GameManager._InGame) return;
             PropTime();
+            if (!GameManager._InGame) return;
         }
 
-        public void VerifyHealth(float _meter) => _Slider_MaxHealth.value = 100.0f - (_meter * 0.005f);
-        private void HealthBarColorChange() => _Image_Health.color = Color.Lerp(_LowHealthColor, _HighHealthColor, _Slider_Health.value / _Slider_MaxHealth.value);
+        public void InitHealth()
+        {
+            _Health = 100 - Mathf.FloorToInt(GameManager._Meter * 0.005f);
+            _WaterPressure = Mathf.FloorToInt(GameManager._Meter * 0.005f);
+            _Image_WaterPressure.fillAmount = _WaterPressure * 0.01f;
+            _Image_Health.fillAmount = _Health * 0.01f;
+        }
+        public void VerifyHealth(float _meter)
+        {
+            _WaterPressure = Mathf.FloorToInt(_meter * 0.005f);
+            _Image_WaterPressure.fillAmount = _WaterPressure * 0.01f;
+        }
+        private void HealthBarColorChange()
+        {
+            _Image_Health.fillAmount = _Health * 0.01f;
+            if (_Health <= 20)
+            {
+                AudioSystem._Instance.PlaySoundEffect("HealthAlert");
+                _Animator_Health.SetTrigger("Danger");
+            }
+            else if (_Health <= 40) _Animator_Health.SetTrigger("Warning");
+            else _Animator_Health.SetTrigger("Normal");
+        }
 
         public void Supplies(string _tag, int _id, Sprite _sprite)
         {
@@ -97,12 +115,14 @@ namespace CTJ
                     case 0:
                         {
                             // 護盾
+                            AudioSystem._Instance.PlaySoundEffect("Power");
                             Shield(true);
                         }
                         break;
                     case 1:
                         {
                             // 炸彈
+                            AudioSystem._Instance.PlaySoundEffect("Bomb");
                             EnemyAI._Recycle = true;
                             JellyFishEnemyAI._Recycle = true;
                             ClioneLimacina._Recycle = true;
@@ -112,20 +132,22 @@ namespace CTJ
                     case 2:
                         {
                             // 玩家加速
-                            MovementSystem._Instance._SpeedAddition = 3.0f;
+                            AudioSystem._Instance.PlaySoundEffect("Power");
+                            MovementSystem._Instance._SpeedAddition = 5.0f;
                             _ParticleSystem_Accelerate.Play();
                             _Image_PropTimeBackground.sprite = _sprite;
                             _Image_PropTime.sprite = _sprite;
                             _Image_PropTime.fillAmount = 1.0f;
                             _PropTimer = _AccelerateTime;
                             Accelerate(_AccelerateTime);
-                            _Object_PropTime.SetActive(true);
+                            MenuSystem._Instance._Animator.SetBool("PropTime", true);
                         }
                         break;
                     case 3:
                         {
                             // 偽裝
-                            MovementSystem._Instance._Scale_Magnification = 2.0f;
+                            AudioSystem._Instance.PlaySoundEffect("Buff");
+                            MovementSystem._Instance._Scale_Magnification = 3.0f;
                             _SpriteRenderer.sprite = _Array_Sprite_Enemies[Random.Range(0, _Array_Sprite_Enemies.Length)];
                             _Spy = true;
                             _Image_PropTimeBackground.sprite = _sprite;
@@ -133,12 +155,13 @@ namespace CTJ
                             _Image_PropTime.fillAmount = 1.0f;
                             _PropTimer = _SpyTime;
                             Spy(_SpyTime);
-                            _Object_PropTime.SetActive(true);
+                            MenuSystem._Instance._Animator.SetBool("PropTime", true);
                         }
                         break;
                     case 4:
                         {
                             // 慢動作
+                            AudioSystem._Instance.PlaySoundEffect("Buff");
                             _SlowMotionActivity = true;
                             TimeSystem.TimeScale(_SlowMotionActivityTime);
                             MovementSystem._Instance._SpeedAddition = 5.0f;
@@ -147,12 +170,13 @@ namespace CTJ
                             _Image_PropTime.fillAmount = 1.0f;
                             _PropTimer = _SlowMotionTime;
                             SlowMotion(_SlowMotionTime);
-                            _Object_PropTime.SetActive(true);
+                            MenuSystem._Instance._Animator.SetBool("PropTime", true);
                         }
                         break;
                     case 5:
                         {
                             // 撞魚
+                            AudioSystem._Instance.PlaySoundEffect("Power");
                             _Attack = true;
                             _ParticleSystem_Attack.Play();
                             _Image_PropTimeBackground.sprite = _sprite;
@@ -160,24 +184,26 @@ namespace CTJ
                             _Image_PropTime.fillAmount = 1.0f;
                             _PropTimer = _AttackTime;
                             Attack(_AttackTime);
-                            _Object_PropTime.SetActive(true);
+                            MenuSystem._Instance._Animator.SetBool("PropTime", true);
                         }
                         break;
                     case 6:
                         {
                             // 玩家縮小
+                            AudioSystem._Instance.PlaySoundEffect("Buff");
                             MovementSystem._Instance._Scale_Magnification = 0.5f;
                             _Image_PropTimeBackground.sprite = _sprite;
                             _Image_PropTime.sprite = _sprite;
                             _Image_PropTime.fillAmount = 1.0f;
                             _PropTimer = _ShrinkTime;
                             Shrink(_ShrinkTime);
-                            _Object_PropTime.SetActive(true);
+                            MenuSystem._Instance._Animator.SetBool("PropTime", true);
                         }
                         break;
                     case 7:
                         {
                             // 增加復活次數
+                            AudioSystem._Instance.PlaySoundEffect("Life");
                             GameManager._Instance.ResurrectControl(1);
                         }
                         break;
@@ -186,20 +212,24 @@ namespace CTJ
             }
             if (_tag == "SuppliesAd")
             {
-                if (Advertising.IsRewardedAdReady())
+                if (Advertising.IsInterstitialAdReady())
                 {
+                    AdvertisingEvent._Interstitial_MaxHealth = true;
+                    Advertising.ShowInterstitialAd();
                     MovementSystem._Instance._DynamicJoystick.Initialization();
                     MovementSystem._Instance.Initialization();
-                    Advertising.ShowRewardedAd();
-                    AdvertisingEvent._Reward_MaxHealth = true;
                 }
-                else Logger.LogWarning("Reward advertising not ready yet.");
+                else
+                {
+                    MaxHealth();
+                    Logger.LogWarning("Interstitial advertising not ready yet.");
+                }
             }
         }
         private IEnumerator IEnumeratorSingletonAccelerate;
         private IEnumerator IEnumeratorAccelerate(float _time)
         {
-            yield return new WaitForSeconds(_time);
+            yield return OPT._WaitForSeconds(_time);
             MovementSystem._Instance._SpeedAddition = 1.0f;
             _ParticleSystem_Accelerate.Stop();
         }
@@ -212,7 +242,7 @@ namespace CTJ
         private IEnumerator IEnumeratorSingletonSpy;
         private IEnumerator IEnumeratorSpy(float _time)
         {
-            yield return new WaitForSeconds(_time);
+            yield return OPT._WaitForSeconds(_time);
             MovementSystem._Instance._Scale_Magnification = 1.0f;
             _SpriteRenderer.sprite = _Sprite_Player;
             _Spy = false;
@@ -226,7 +256,7 @@ namespace CTJ
         private IEnumerator IEnumeratorSingletonSlowMotion;
         private IEnumerator IEnumeratorSlowMotion(float _time)
         {
-            yield return new WaitForSeconds(_time);
+            yield return OPT._WaitForSeconds(_time);
             _SlowMotionActivity = false;
             TimeSystem.TimeScale(1.0f);
             MovementSystem._Instance._SpeedAddition = 1.0f;
@@ -240,7 +270,7 @@ namespace CTJ
         private IEnumerator IEnumeratorSingletonAttack;
         private IEnumerator IEnumeratorAttack(float _time)
         {
-            yield return new WaitForSeconds(_time);
+            yield return OPT._WaitForSeconds(_time);
             _Attack = false;
             _ParticleSystem_Attack.Stop();
         }
@@ -253,7 +283,7 @@ namespace CTJ
         private IEnumerator IEnumeratorSingletonShrink;
         private IEnumerator IEnumeratorShrink(float _time)
         {
-            yield return new WaitForSeconds(_time);
+            yield return OPT._WaitForSeconds(_time);
             MovementSystem._Instance._Scale_Magnification = 1.0f;
         }
         private void Shrink(float _time)
@@ -269,13 +299,14 @@ namespace CTJ
             if (_Image_PropTime.fillAmount <= 0.0f)
             {
                 _Image_PropTime.fillAmount = 1.0f;
-                _Object_PropTime.SetActive(false);
+                MenuSystem._Instance._Animator.SetBool("PropTime", false);
                 _PropTimer = 0.0f;
             }
         }
         public void MaxHealth()
         {
-            _Slider_Health.value = _Slider_MaxHealth.value;
+            _Health = 100 - _WaterPressure;
+            _Image_Health.fillAmount = _Health * 0.01f;
             HealthBarColorChange();
             Invincible();
         }
@@ -305,6 +336,7 @@ namespace CTJ
         }
         private void Death()
         {
+            GameManager._Instance.StopMusic();
             GameManager._InGame = false;
             MenuSystem._Instance.StateChange(MenuSystem.Status.Animation);
             MovementSystem._Instance._DynamicJoystick.Initialization();
@@ -313,9 +345,11 @@ namespace CTJ
         }
         public void Resurrection()
         {
+            GameManager._Instance.PlayMusic();
             GameManager._Instance.GameState(true);
-            MenuSystem._Instance.StateChange(MenuSystem.Status.InGame);
-            _Slider_Health.value = _Slider_MaxHealth.value;
+            MenuSystem._Instance.StateChange(MenuSystem.Status.InGameMenu);
+            _Health = 100 - _WaterPressure;
+            _Image_Health.fillAmount = _Health * 0.01f;
             HealthBarColorChange();
             _Animator.SetBool("Death", false);
             _ParticleSystem_Death.Stop();
@@ -323,6 +357,7 @@ namespace CTJ
         }
         public void DeathMenu()
         {
+            AudioSystem._Instance.PlaySoundEffect("Fail");
             GameManager._Instance.GameState(false);
             MenuSystem._Instance.StateChange(MenuSystem.Status.DeathMenu);
         }
@@ -334,6 +369,7 @@ namespace CTJ
             {
                 Attack _attack = collision.GetComponent<Attack>();
                 if (_attack == null) return;
+                AudioSystem._Instance.PlaySoundEffect("Attack");
                 _attack.AttackEnemy();
                 _ParticleSystem_Kick.Play();
             }
@@ -349,12 +385,14 @@ namespace CTJ
             {
                 if (_Animator.GetBool("Shield"))
                 {
+                    AudioSystem._Instance.PlaySoundEffect("Destroy");
                     Shield(false);
                     Invincible();
                     return;
                 }
-                _Slider_Health.value -= 10.0f;
-                if (_Slider_Health.value <= 0.0f) Death();
+                AudioSystem._Instance.PlaySoundEffect("Injured");
+                _Health -= 10;
+                if (_Health <= 0) Death();
                 else _Animator.SetTrigger("Injured");
                 _ParticleSystem_Damage.Play();
                 _Invincible = true;

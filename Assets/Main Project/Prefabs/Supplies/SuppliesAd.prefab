@@ -165,13 +165,13 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: 22a001bda1a271f42898fdfdf4a01bf7, type: 3}
+  m_SortingOrder: 7
+  m_Sprite: {fileID: 21300000, guid: 3dded251ea459a245961ce9c70260547, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 4.98, y: 5.68}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -225,6 +225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SpriteRenderer: {fileID: 4961833591325763449}
+  _Tag: SuppliesAd
   _ID: 0
   _Speed: 0.25
   _AdTime: 0

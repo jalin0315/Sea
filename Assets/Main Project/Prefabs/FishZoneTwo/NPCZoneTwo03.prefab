@@ -269,7 +269,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fcf19e5795d06164ba51fc650b6c47a9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -345,7 +345,7 @@ MonoBehaviour:
     m_Center: {x: 0.0051546097, y: 0.005582571, z: 0}
     m_Extent: {x: 13.434845, y: 3.1994185, z: 0}
   m_UseBatching: 1
-  m_AlwaysUpdate: 1
+  m_AlwaysUpdate: 0
 --- !u!114 &-5768183736517784948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,8 +358,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956403724c618004b929071ef1fa53b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _EnableSpriteRenderers: 0
+  _Transform: {fileID: 7466435866396977194}
   _SpriteRenderer: {fileID: 5465137102487753119}
-  _Array_SpriteRenderer: []
-  _EnableOffect: 0
-  _Offect: 0

@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 7
   m_Sprite: {fileID: 21300000, guid: 78c9196e9b5cea74aafb93904fde49ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SpriteRenderer: {fileID: 5005943971315637921}
+  _Tag: SuppliesProps
   _ID: 2
   _Speed: 0.5
   _AdTime: 0
@@ -169,7 +170,7 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 0.5019608, g: 0.5019608, b: 0.2509804, a: 1}
+  m_Color: {r: 0.5, g: 0.5019608, b: 0.2509804, a: 1}
   m_Intensity: 10
   m_Range: 2
   m_SpotAngle: 30
@@ -204,7 +205,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 2
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
