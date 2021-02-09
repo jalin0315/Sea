@@ -9,10 +9,11 @@
  * IP 查詢。x 為設備代碼
  * adb -s xxxxxxxx shell ip -f inet addr show wlan0
  * --- 注意事項 ---
- * Scripting Define Symbols: UNITY_POST_PROCESSING_STACK_V2;NATIVE_PLUGINS_LITE_VERSION;USES_SHARING;USES_RATE_MY_APP;EASY_MOBILE;EASY_MOBILE_PRO;EM_ADMOB;EM_GPGS;ENABLE_LOGS
+ * Scripting Define Symbols: ENABLE_LOGS
  * Unity Dashboard 已覆蓋 Test mode
  * Google Admob 已啟用測試模式
  * https://www.example.com
+ * https://www.example.com/privacy
  * --- 新功能 ---
  * 新增 6,500 公尺水母區
  * 待加入海底垃圾

@@ -24,9 +24,14 @@
 
 public static class EM_GPGSIds
 {
-        public const string achievement_dive_to_1000_meters = "CgkI77fu3dEFEAIQAw"; // <GPGSID>
-        public const string achievement_injured_more_than_20_times = "CgkI77fu3dEFEAIQBA"; // <GPGSID>
-        public const string leaderboard_total_depth = "CgkI77fu3dEFEAIQAg"; // <GPGSID>
+        public const string achievement_tidal_arrived = "CgkIn8S4rtgeEAIQBg"; // <GPGSID>
+        public const string achievement_burger_arrived = "CgkIn8S4rtgeEAIQAg"; // <GPGSID>
+        public const string achievement_tidal_start_off = "CgkIn8S4rtgeEAIQBQ"; // <GPGSID>
+        public const string achievement_fishkenstein_start_off = "CgkIn8S4rtgeEAIQBw"; // <GPGSID>
+        public const string achievement_torpedo_start_off = "CgkIn8S4rtgeEAIQAw"; // <GPGSID>
+        public const string achievement_burger_start_off = "CgkIn8S4rtgeEAIQAQ"; // <GPGSID>
+        public const string achievement_fishkenstein_arrived = "CgkIn8S4rtgeEAIQCA"; // <GPGSID>
+        public const string achievement_torpedo_arrived = "CgkIn8S4rtgeEAIQBA"; // <GPGSID>
 
 }
 

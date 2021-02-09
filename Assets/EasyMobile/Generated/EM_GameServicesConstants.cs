@@ -8,9 +8,14 @@ namespace EasyMobile
 {
 	public static class EM_GameServicesConstants
 	{
-		public const string Achievement_ConsecutiveInjuries = "ConsecutiveInjuries";
-		public const string Achievement_ContinuousDiving = "ContinuousDiving";
-		public const string Leaderboard_TotalDepth = "TotalDepth";
+		public const string Achievement_tidal_start_off = "tidal_start_off";
+		public const string Achievement_fishkenstein_start_off = "fishkenstein_start_off";
+		public const string Achievement_burger_start_off = "burger_start_off";
+		public const string Achievement_tidal_arrived = "tidal_arrived";
+		public const string Achievement_burger_arrived = "burger_arrived";
+		public const string Achievement_fishkenstein_arrived = "fishkenstein_arrived";
+		public const string Achievement_torpedo_start_off = "torpedo_start_off";
+		public const string Achievement_torpedo_arrived = "torpedo_arrived";
 
 	}
 }

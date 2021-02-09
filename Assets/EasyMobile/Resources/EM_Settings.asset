@@ -57,19 +57,20 @@ MonoBehaviour:
         mExtraOptions:
           keys: []
           values: []
-      mEnableTestMode: 1
+      mEnableTestMode: 0
+      mUseAdaptiveBanner: 1
       mAppId:
         mIosId: 
         mAndroidId: 
       mDefaultBannerAdId:
         mIosId: 
-        mAndroidId: ca-app-pub-3940256099942544/6300978111
+        mAndroidId: ca-app-pub-5150445231268035/3743269893
       mDefaultInterstitialAdId:
         mIosId: 
-        mAndroidId: ca-app-pub-3940256099942544/1033173712
+        mAndroidId: ca-app-pub-5150445231268035/2876060720
       mDefaultRewardedAdId:
         mIosId: 
-        mAndroidId: ca-app-pub-3940256099942544/5224354917
+        mAndroidId: ca-app-pub-5150445231268035/1810391069
       mCustomBannerAdIds:
         keys: []
         values: []
@@ -271,12 +272,48 @@ MonoBehaviour:
     mGpgsForceRefreshServerAuthCode: 0
     mGpgsOauthScopes: []
     mLeaderboards: []
-    mAchievements: []
+    mAchievements:
+    - _name: burger_start_off
+      _iosId: 
+      _androidId: CgkIn8S4rtgeEAIQAQ
+    - _name: burger_arrived
+      _iosId: 
+      _androidId: CgkIn8S4rtgeEAIQAg
+    - _name: torpedo_start_off
+      _iosId: 
+      _androidId: CgkIn8S4rtgeEAIQAw
+    - _name: torpedo_arrived
+      _iosId: 
+      _androidId: CgkIn8S4rtgeEAIQBA
+    - _name: tidal_start_off
+      _iosId: 
+      _androidId: CgkIn8S4rtgeEAIQBQ
+    - _name: tidal_arrived
+      _iosId: 
+      _androidId: CgkIn8S4rtgeEAIQBg
+    - _name: fishkenstein_start_off
+      _iosId: 
+      _androidId: CgkIn8S4rtgeEAIQBw
+    - _name: fishkenstein_arrived
+      _iosId: 
+      _androidId: CgkIn8S4rtgeEAIQCA
     mAndroidXmlResources: "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<!--Google
       Play game services IDs. Save this file as res/values/games-ids.xml in your
       project.-->\r\n<resources>\r\n  <!--app_id-->\r\n  <string name=\"app_id\"
-      translatable=\"false\">193738808303</string>\r\n  <!--package_name-->\r\n 
-      <string name=\"package_name\" translatable=\"false\">com.WolfCub.ProjectS</string>\r\n</resources>"
+      translatable=\"false\">1054511866399</string>\r\n  <!--package_name-->\r\n 
+      <string name=\"package_name\" translatable=\"false\">com.WolfCub.SubmarineExplore</string>\r\n 
+      <!--achievement Burger start off-->\r\n  <string name=\"achievement_burger_start_off\"
+      translatable=\"false\">CgkIn8S4rtgeEAIQAQ</string>\r\n  <!--achievement Burger
+      arrived-->\r\n  <string name=\"achievement_burger_arrived\" translatable=\"false\">CgkIn8S4rtgeEAIQAg</string>\r\n 
+      <!--achievement Torpedo start off-->\r\n  <string name=\"achievement_torpedo_start_off\"
+      translatable=\"false\">CgkIn8S4rtgeEAIQAw</string>\r\n  <!--achievement Torpedo
+      arrived-->\r\n  <string name=\"achievement_torpedo_arrived\" translatable=\"false\">CgkIn8S4rtgeEAIQBA</string>\r\n 
+      <!--achievement Tidal start off-->\r\n  <string name=\"achievement_tidal_start_off\"
+      translatable=\"false\">CgkIn8S4rtgeEAIQBQ</string>\r\n  <!--achievement Tidal
+      arrived-->\r\n  <string name=\"achievement_tidal_arrived\" translatable=\"false\">CgkIn8S4rtgeEAIQBg</string>\r\n 
+      <!--achievement Fishkenstein start off-->\r\n  <string name=\"achievement_fishkenstein_start_off\"
+      translatable=\"false\">CgkIn8S4rtgeEAIQBw</string>\r\n  <!--achievement Fishkenstein
+      arrived-->\r\n  <string name=\"achievement_fishkenstein_arrived\" translatable=\"false\">CgkIn8S4rtgeEAIQCA</string>\r\n</resources>"
     mEnableMultiplayer: 0
     mEnableSavedGames: 0
     mAutoConflictResolutionStrategy: 0
@@ -394,5 +431,5 @@ MonoBehaviour:
   mIsGameServiceModuleEnable: 1
   mIsNotificationModuleEnable: 0
   mIsSharingModuleEnable: 0
-  mActiveModuleIndex: 8
+  mActiveModuleIndex: 0
   mIsSelectingModule: 1
