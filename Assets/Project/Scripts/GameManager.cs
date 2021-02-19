@@ -388,6 +388,10 @@ namespace CTJ
             {
                 AudioSystem._Instance.FadeMusic("Boss01", 0.0f, 3.0f);
             }
+            if (_Meter >= 9900.0f)
+            {
+                return;
+            }
             if (_Meter >= 8000.0f)
             {
                 switch (_MusicIndex)
@@ -408,6 +412,10 @@ namespace CTJ
             if (_Meter >= 7000.0f)
             {
                 AudioSystem._Instance.FadeMusic("Boss00", 0.0f, 2.0f);
+                return;
+            }
+            if (_Meter >= 6900.0f)
+            {
                 return;
             }
             if (_Meter >= 4000.0f)
@@ -455,6 +463,10 @@ namespace CTJ
                 AudioSystem._Instance.FadeMusic("Boss01", 1.0f, 2.0f);
                 return;
             }
+            if (_Meter >= 9900.0f)
+            {
+                return;
+            }
             if (_Meter >= 8000.0f)
             {
                 _MusicIndex = Random.Range(0, 2);
@@ -479,6 +491,10 @@ namespace CTJ
             {
                 AudioSystem._Instance.PlayMusic("Boss00");
                 AudioSystem._Instance.FadeMusic("Boss00", 1.0f, 2.0f);
+                return;
+            }
+            if (_Meter >= 6900.0f)
+            {
                 return;
             }
             if (_Meter >= 4000.0f)
